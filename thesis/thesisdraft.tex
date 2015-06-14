@@ -416,7 +416,7 @@ simplicity, the popularity algorithm can perform reasonably well.
 Another advantage for this algorithm is lack of parameters and the fact that due to its simplicity we are able to make recommendations for datasets containing hundreds of thousands of users and tens of millions of items very fast. Both of these factors contributed in making experimentation much easier, an important factor for a baseline algorithm.
 This benefit however comes at a cost for the quality of the recommendations. Since the algorithm performs no personalization in the recommendations made, all users are presented with the same recommendation list.
 \subsection{Prediction based on PageRank scores}
-For each addon we have calculated its PageRank score by running the regular PageRank algorithm over the whole user addon graph. Now, like in \autoref{sec:PPR_addons_method}, when we are predicting the missing add-on, we are looking at the addons ranking list (the ranking is according to PageRank scores) and check the Recall@X.
+For each addon we have calculated its PageRank score by running the regular PageRank algorithm over the whole user addon graph. Now, like in \autoref{sec:PPR_addons_method}, when we are predicting the missing add-on, we are looking at the addons ranking list (the ranking is according to PageRank scores) and check the Recall@K.
 
 \section{Personalized PageRank addons analysis}
 \label{sec:PPR_addons_method}
