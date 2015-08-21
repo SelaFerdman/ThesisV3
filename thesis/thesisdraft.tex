@@ -1032,6 +1032,21 @@ Zugo               & Search Toolbar              & Advertisement company        
 \iffalse
 At first, we have tried to classify add-ons clash with Support Vector machine, but we saw no signal and the SVM could not converge. [Need much more info here - RON, UPDATE: did we actually use SVM for predicting clash? I think we used SVM to predict an addon survival which is mainly affected by the user behavior. Anyhow, I would love to see a paragraph explaning what we did back then.]
 \fi
+[SELA SVM]
+\subsection{Support Vector machine - SVM}
+First we have tried running analysis on our data using SVM. We were trying to classify users that are staying long in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.
+We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.
+The 3 days threshold, it turns out that the toolbar doesn't survive that well - the number of users for whom the toolbar survived 3 or more days is less than 10 percentage of all users.
+We have considered a user to be a positive example if s/he survived in the system for three or more days (you wrote "more than three days").
+The training very long time and gave no results, trying to run SVM with another kernel did not help either - and every run took a few days to finish.SVMlight classifier on data - it ran for 16 hours and never finished.
+We have spited the dataset to 2/3 training set and 1/3 test set (uniformly at random). In the training set, I took all positive instances and a sample of 1/3 of negative instances (because it runs too slow on the entire training set).
+Running training libsvm on the new samples took one hour.
+optimization finished, iter = 41654
+nu = 0.706971
+obj = -196797.924484, rho = 1.994601
+nSV = 40041, nBSV = 39227
+Total nSV = 40041
+Then we've decided to find another way to represent our data.
 
 In \autoref{chap:user_ecosystem} our algorithm's viewpoint was set of add-ons of a specific user set of add-ons - we were viewing user add-ons as its ecosystem and predicting a missing addon according to it. Now, we are aiming to investigate symbiotic relations between companies that are producing a variety of add-ons, the algorithm viewpoint is the symbiotic relationships between ecosystems created by add-ons manufactures.
 \section{Experimental design}
