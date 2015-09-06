@@ -404,41 +404,12 @@ Given a successful resolution of first problem, the system can infer what addon 
 As for the second problem we were investigating, these days it becomes more and more relevant. See, for example, recent discovery about SuperFish security breach is a good example about two companies having a major symbiosis (SuperFish and Komodia) and SuperFish and all major anti-viruses addons is a good example of a clash between two companies.\\
 It is also interesting to see how the addons in browser ecosystem evolve day by day.
 
-\chapter{Method}
-\label{sec:method}
-In this chapter we will present the algorithms we implemented for this thesis.
-\section{Baseline algorithms}
-We chose to use two algorithms to test our algorithms, a popularity baseline and an pagerank ranking based baseline. The popularity baseline is a simple recommendation technique and the reason that we chose this method was its speed and simplicity. This allowed us to iterate quickly in the early stages of our research. The item similarity baseline is a more complicated algorithm and was used as a more realistic test of the performance the algorithms. Because the largest datasets we worked with contained hundred of thousands of users and tens of millions of items, we had to make sure that the
-baseline algorithms were implemented in a high performance, parallel or distributed
-environment. We chose to use igraph \citep{igraph}, a high-performance, parallel machine learning framework. This allowed us to focus our efforts on the development of our algorithms and not the baseline algorithms.
-\subsection{Popularity}
-The popularity algorithm is one of the simplest one can employ for recommending items, as it simply recommends the most popular items in the dataset to all the users. The popularity of the items is determined by the total number of user for each addon in the dataset, and all the users are presented with the same recommendation list, where the items are ranked according to their popularity. Despite its
-simplicity, the popularity algorithm can perform reasonably well.
-Another advantage for this algorithm is lack of parameters and the fact that due to its simplicity we are able to make recommendations for datasets containing hundreds of thousands of users and tens of millions of items very fast. Both of these factors contributed in making experimentation much easier, an important factor for a baseline algorithm.
-This benefit however comes at a cost for the quality of the recommendations. Since the algorithm performs no personalization in the recommendations made, all users are presented with the same recommendation list.
-\subsection{Prediction based on PageRank scores}
-For each addon we have calculated its PageRank score by running the regular PageRank algorithm over the whole user addon graph. Now, like in \autoref{sec:PPR_addons_method}, when we are predicting the missing add-on, we are looking at the addons ranking list (the ranking is according to PageRank scores) and check the Recall@K. This measure seems to give similar results as the Popularity baseline.
 
-\section{Personalized PageRank addons analysis}
-\label{sec:PPR_addons_method}
-The PageRank that is described in \citep{page1999pagerank} gives a universal score for the nodes in a graph. It is however possible to change the calculations so that the results will reflect someone’s personal preferences. In the PageRank formula the teleportation vector $\vv{u}$ has a great influence on determining the outcome. The biasing of the PageRank by this vector is first suggested in \citep{brin1998can}, and thereafter explored many times (\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}).In this thesis the goal of biasing the PageRank with the teleportation vector is to personalize the user addons of choice results. PageRank exists for any graph and not just the web graph. PageRank on a graph produces an importance score for each node, and this places PageRank amongst a class of network analysis techniques \citep{brandes2005network} known as centrality measures or indices \citep{koschutzki2005centrality}.
-Instead of looking at a “randomsurfer” on the web, the non-web PageRank models a random walk on the graph. The behavior of the walk is the same as the random surfer: with probability $\alpha$ the walk continues along an edge
-of the graph and with probability 1-$\alpha$ the walk jumps to a random node in the graph. Personalized PageRank is an important extension of PageRank model, in which the surfer does not randomly restart browsing anywhere on the web after choosing not to follow a link. Rather, the surfer in this new model restarts at one of only a few pages. If the pages relate to one person, then the resulting PageRank vector is called a personalized PageRank vector. If the pages are topically related, then the vector may be called a topic-specific PageRank vector.
-In \citep{freschi2007protein}, the authors used the Personalized PageRank model, which they call ProteinRank, to predict protein functions. The Personalized PageRank model seems to perfectly apply to our set of problems as well. We are dealing with users and looking for their personal preferences in browsers extensions, we are also interested in Company based addons propagation in users network. All our dataset was transformed to undirected graph, where user nodes are connected to addon nodes according to their relationship in the original dataset, e.g. each user node has an edge connected to addon node if this user has this addon installed in its ecosystem. Since our goal is to determine/predict a missing addon in user ecosystem, the seed nodes for the personalization vector would be the specific user addons, our hypothesis is that a higher the PageRank score suggests a higher relevance of an addon to the specific user. We would run multiple experiments to show the correctness of our hypothesis.
 
-\iffalse
-\subsection{Support Vector machine}
-First we have tried running analysis on our data using SVM. We were trying to classify users that are staying long in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.\\
-We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.\\
-The training very long time and gave no results, trying to run SVM with another kernel did not help either - and every run took a few days to finish. Then we've decided to find another way to represent our data.
-\subsection{GraphChi}
-\subsection{iGraph}
-\fi
-
-\chapter{Datasets}
+\chapter{Data}
 \label{sec:datasets}
 
-\section{Data}
+%\section{Data}
 \iffalse
 \textcolor{green}{\textit{Einat:
 Describe here the data that we've used. How it was extracted, relevant
@@ -450,13 +421,20 @@ add-ons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-In our experiments we have used large-scale authentic data.The data was collected from various anonymous users that have agreed to share it for improving the product. The users are from all around the globe. This data consists of users, detailing the browser add-ons installed on every user's machine per day, over time. The addons in the database are from three main browsers [citation], Internet Explorer, Mozilla Firefox and Google Chrome. This is a common scenario that user has more than one browser. Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox). The data is stored in relational database in cloud at Amazon RDS , including over 1.5 billion records to date. The data was collected over period of two months from  1/8/2013 to 1/10/2013. This a real data collected from users that have agreed to anonymously send this information. The data was very noisy and special treatment to clean this data was needed.The data in SQL is split into several tables.
-Following is a summary of information available in this dataset about a specific user:
+We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS , and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
+
+\textcolor{red}{Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known forthese objects,
+
+{\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
+
+{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
-\renewcommand{\labelitemi}{$\bullet$} 
-\item A user record specifies his origin: IP, ISP, Country, City and Operating System versio (i.e. Windows XP, Vista, etc.).
-\item The user's homepage and the default search Website defined per browser are given.
-\item The installed add-ons are listed for every user. As can be seen at \ref{fig:db_addons_snapshot}, the type of add-on is specified (extension, bho, toolbar, etc.), as well as the name of the program, the full path where it resides on the user's machine and the description of the addon; for example, from DB data at figure \ref{fig:db_addons_snapshot} by examining the FileName,Name or Description columns, we can infer that the  user has Conduit, Skype and Babylon addons installed.
+\item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
+\item The name of the program. (Name column)
+\item The full path where it resides on the user's machine. (FileName column)
+\item A textual description of the add-on. (Description column)
+\end{itemize}
+
 \begin{figure}[t]
 \centering
 \begin{small}
@@ -466,11 +444,7 @@ Following is a summary of information available in this dataset about a specific
 \label{fig:db_addons_snapshot}
 \end{figure}
 
-\item The add-ons lists are updated on a daily basis. Thus, we can infer add-on changes (installation and removal) over time. But, since we are not monitoring user actions or other programs actions, we cannot recall whether an addon was removed by the user or by hostile/protecting program. So it is not possible to determine which party initiated either of these status changes.
-
-\item One of the issues we had to overcome was identifying similar addons also they did not look exactly the same by looking at their attributes. At \ref{fig:addons_versioning_snapshot} you can see four addons that should be considered the same but look different - There are often small lexical differences between
-add-ons with respect to the path, add-on name and also description, in particular, in version number, but essentially it is the
-same addon.
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figure \ref{fig:addons_versioning_snapshot} \textcolor{red}{also here: use examples that include non-empty description values} illustrates the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with resepct to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.  \textcolor{red}{Say a bit more about the data: is there any add-on attribute that is always populated? path perhaps? how often is the add-on name or description left empty?}
 
 \begin{figure}[t]
 \centering
@@ -481,17 +455,11 @@ same addon.
 \label{fig:addons_versioning_snapshot}
 \end{figure}
 
-\end{itemize}
-We are were looking at the data that was collected over two months and included:
-\begin{itemize}
-\renewcommand{\labelitemi}{$\bullet$} 
-\item 907,844 users
-\item 456,458 addons
-\end{itemize}
-We have observed that most users have between 9 and 21 addons installed on their PCs.
-\iffalse
-\textcolor{green}{\textit{Add graph description, title and axes names}}
-\fi
+Finally, we note another characteristic of interest of this data.  Since the add-ons lists per user are updated on a daily basis, it is straightforward to derive add-on changes (installation and removal) over time. However, there is no tracking of user actions or other programs actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, by hostile/protecting program. 
+
+\section{Experimental data}
+
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 users \textcolor{red}{are these users unique? probably not} and 456,458 addons \textcolor{red}{how come the number of addons is smaller than the number of users?}. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \begin{figure}[t]
 \centering
@@ -502,60 +470,57 @@ We have observed that most users have between 9 and 21 addons installed on their
 \label{fig:user_addons_histogram}
 \end{figure}
 
-\
+In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields descrbing each add-on mention into a bag-of-words. This gives rise to another lexical object type, representing {\it terms}. For examples..
 
-\section{Arranging the data}
-Since the data origins in SQL tables, we needed to turn it to some format that can be accepted by our algorithms. We have started by creating a document which had in every line a user id and all its addons attributes. This has created a document with 17942715 lines and 3.5 GB size. We than broke the addons into collection of words, so that each user is actually represented as it ID and a collection of words from its addons that describes him.\\
-For cleaning the data we first meant to remove all non-alphanumeric characters but it turned to be not good enough. On the one hand dashes and underscore appear to be an integral part of word strings, while on the other hand we had to perform addition clean up before we could use the data.
-\begin{itemize}
-\renewcommand{\labelitemi}{$\bullet$} 
-\item Removing some non-ASCII characters like in "chromeâ„¢/firefoxâ„¢, since the data is sent over network encrypted and decrypted on the server side before storing to SQL tables, some metamorphoses could happen to the text and we need to clean this up, specially because many of the algorithms implementation do not support non-ASCII characters.
-\item Fixing Windows shortcuts to full paths, Windows sometimes adds ~1 as path suffix, so actually VIDEOD~1 and VIDEOD~2 and VIDEOD are the same path to addon.
-\item We have also converted all strings to lower case since, addon wise, as long as the strings are the same it is the same addon.
-\end{itemize}
+In converting text strings into individual {\it terms}, in addition to word tokenization, text cleanup and normalization steps were applied. Specifically, we removed some non-ASCII characters, originally added for encryption purposes on the server side prior to storing that data in SQL tables. Likewise,  Windows shortcuts for full paths have been removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings were converted all strings to lower case, since capitzliation is meaningless in this case. \textcolor{red}{How many unique terms did we get?}
 
 
 \section{Graph representation}
-We have decided to transform our data of users and it addons into a relational graph. Each user is defined by a set of its addons, so each user is a node which is connected to its addons with bi-directional edge. Each user has a 'relation' with other users if they share similar add-ons. There exists another layer of nodes - each addon is to be seen as bag of terms. Each term is a node that connected to addons that contain it. This came to emphasize that addons that are not exactly still might be of same origin. For example, addon that is called Skype-US is most probably well related to addon Skype-UK. Our hypothesis was that,if we did not add the layer of term nodes, see \ref{fig:skype-no-terms}, than two users having each one addon would have nothing in common, while with the terms nodes the user will be connected by the "Skype" term node, see \ref{fig:skype-with-terms}.\\
 
-\begin{figure}[h]
-\centering
-\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{figures/skype_exampe1.pdf}
-	\caption{Without terms layer}
-	\label{fig:skype-no-terms}
-\end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{figures/skype_exampe2.pdf}
-	\caption{With terms layer}
-	\label{fig:skype-with-terms}
-\end{subfigure}
-	\caption{Terms layer example}
-	\label{fig:terms_layer}
-\end{figure}
-On the other hand, many addons have a file-system path in their name, such as C://Program Files (x86)//..., thus we have hypothesized that connecting these addons into term nodes will create massively connected addons while they don't actually have something in common (besides being installed on user PC). We have tested this issue in two ways. First, we have ran experiment comparing results on graph with removed addons prefix that contain a common prefixes like C://Program Files (x86) and on graph where addons remained with full paths. Second, we have ran experiment on a graph when we have removed high degree nodes (higher than 500) and on graph with all nodes, and compared the results. Removing high degree node should only result in only a small approximation error[cite Purnamrita Sarkar], while improving the performance and giving equal opportunity for low-degree nodes.
-Another issue we had to overcome was the same addons, but with different versions. Addons with different version usually resulted in slightly different addon name, this difference could be at the name itself or in path leading to this addon. Splitting the addon nodes into terms should elegantly overcome this obstacle, since the addons will differ only slightly because of its versions.Thus users having the same addon but with different versions will still be strongly connected.
+\begin{table}[t]
+\begin{center}
+\begin{small}
+\begin{tabular}{llll}
+\hline 
+\textbf{source type} & \textbf{edge type} & \textbf{target type} \\
+\hline
+{\it user} & has-add-on & {\it add-on} \\
+\hline
+{\it add-on} &  has-add-on$^{-1}$ & {\it user} \\
+{\it add-on} & has-term & {\it term} \\
+\hline
+{\it term} & has-term$^{-1}$ & {\it add-on} \\
+\hline
+\end{tabular}
+\end{small}
+\end{center}
+\caption{\label{tab:graph_structure} The graph node and directional edge types}
+\end{table}
 
-After trying different approaches to represent our data, we've chosen to represent it as bi-directional graph.
-We have three type of nodes:
+We compactly represent the dataset using a relational graph. Each node in the graph represent a unique, typed,  object.  Concretely, the graph includes the following node types:
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$} 
-\item User node - this node represents user by his unique user id. The node is linked to addon nodes
-\item Addon node - this node represents an addon with all it attributes - file path, addon name and description. The node is linked to user nodes and term nodes.
-\item Term node - this node contain a term from addon attributes.
+\item {\it User} - this node represents user by his unique user id. 
+\item {\it Add-on} - this node represents unique addons, where an {\it add-on} is defined as the concatation of all its attributes, namely, file path, addon name and description.
+\item {\it Terms} 
 \end{itemize}
+Directional edges link node pairs.
+Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
+First, we represent the structural relationship between each user and the {\it add-ons} installed on his PC via the {\it has-add-on} edge type, originating at the {\it user} node. An inverse relation exists between each {\it add-on} node and the {\it users} that it is known to be installed at. 
+In addition, as described above, each {\it add-on} is associated with its bag of terms representation. Concretely, each {\it add-on} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it add-ons} that contain it over {\it has-term$^{-1}$} relation.
 
-\begin{description}
-\item Graph construction description:
-\end{description}
+
+
+\iffalse
+\begin{small}
 \begin{enumerate}[(a)]
 \item Go over all users, for each user create a graph node. Graph node name for a user has a prefix "u-" appended to user ID, for example u-00004c1b-8ffc-4ca4-b406-a27e436fa34a node.
 
 \item For each user, go over all its add-ons.
 \item For each addon create a graph node, graph node name has a suffix "a-" and appended all addon attributes. For example "a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll"
 \item For each addon create term nodes according to its attributes, each term node has prefix "w-" and appedned with a term. For example the addon above would create 6 term nodes:
+\end{enumerate}
+\end{small}
 
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$} 
@@ -566,9 +531,11 @@ We have three type of nodes:
 \item "w-internetexplorer"
 \item "w-skypeieplugin.dll"
 \end{itemize}
-\end{enumerate}
+%\end{enumerate}
 User has edges to all its addons and addon has edges to all it terms, all edges are bi-directional.\\
 We have added additional steps for data cleanup.
+\fi
+
 \begin{figure}
     \centering 
     \begin{tikzpicture}[
@@ -602,7 +569,7 @@ We have added additional steps for data cleanup.
     \caption{An example graph view}
     \label{fig:sample_graph}
   \end{figure}
-  \\Sample graph:
+ 
   \begin{figure}
     \centering 
     \begin{tikzpicture}[
@@ -659,8 +626,62 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-  In this sample graph, there are two users - u-1 and u-2.The first user has 3 addons and the second user has two add-ons. Both users share one addon - a-2, but also connected via term node w-2.
+Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?}; for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
+The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/skype_exampe1.pdf}
+	\caption{Without terms layer}
+%	\label{fig:skype-no-terms}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{figures/skype_exampe2.pdf}
+	\caption{With terms layer}
+%	\label{fig:skype-with-terms}
+\end{subfigure}
+	\caption{Terms layer example}
+	\label{fig:terms_layer}
+\end{figure}
+  
+Figure \ref{fig:sample_graph2} shows another toy graph, demostrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This gtaph includes two users named shortly as `u-1' and `u-2'. The two users are similar in that they share two add-ons, `a-1' and `a-2'. In addition, while {\it add-ons} `a-3' and `a-4' are distinct from each other, these add-on nodes are connected via the common term node `w-2'. 
+
+We will apply random walks in the graph in order to assess similarity, or relatedness, between users and add-ons.  
+
+\chapter{General Approach}
+\label{sec:method}
+In this chapter we will present the algorithms we implemented for this thesis.
+\section{Baseline algorithms}
+We chose to use two algorithms to test our algorithms, a popularity baseline and an pagerank ranking based baseline. The popularity baseline is a simple recommendation technique and the reason that we chose this method was its speed and simplicity. This allowed us to iterate quickly in the early stages of our research. The item similarity baseline is a more complicated algorithm and was used as a more realistic test of the performance the algorithms. Because the largest datasets we worked with contained hundred of thousands of users and tens of millions of items, we had to make sure that the
+baseline algorithms were implemented in a high performance, parallel or distributed
+environment. We chose to use igraph \citep{igraph}, a high-performance, parallel machine learning framework. This allowed us to focus our efforts on the development of our algorithms and not the baseline algorithms.
+\subsection{Popularity}
+The popularity algorithm is one of the simplest one can employ for recommending items, as it simply recommends the most popular items in the dataset to all the users. The popularity of the items is determined by the total number of user for each addon in the dataset, and all the users are presented with the same recommendation list, where the items are ranked according to their popularity. Despite its
+simplicity, the popularity algorithm can perform reasonably well.
+Another advantage for this algorithm is lack of parameters and the fact that due to its simplicity we are able to make recommendations for datasets containing hundreds of thousands of users and tens of millions of items very fast. Both of these factors contributed in making experimentation much easier, an important factor for a baseline algorithm.
+This benefit however comes at a cost for the quality of the recommendations. Since the algorithm performs no personalization in the recommendations made, all users are presented with the same recommendation list.
+\subsection{Prediction based on PageRank scores}
+For each addon we have calculated its PageRank score by running the regular PageRank algorithm over the whole user addon graph. Now, like in \autoref{sec:PPR_addons_method}, when we are predicting the missing add-on, we are looking at the addons ranking list (the ranking is according to PageRank scores) and check the Recall@K. This measure seems to give similar results as the Popularity baseline.
+
+\section{Personalized PageRank addons analysis}
+\label{sec:PPR_addons_method}
+The PageRank that is described in \citep{page1999pagerank} gives a universal score for the nodes in a graph. It is however possible to change the calculations so that the results will reflect someone’s personal preferences. In the PageRank formula the teleportation vector $\vv{u}$ has a great influence on determining the outcome. The biasing of the PageRank by this vector is first suggested in \citep{brin1998can}, and thereafter explored many times (\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}).In this thesis the goal of biasing the PageRank with the teleportation vector is to personalize the user addons of choice results. PageRank exists for any graph and not just the web graph. PageRank on a graph produces an importance score for each node, and this places PageRank amongst a class of network analysis techniques \citep{brandes2005network} known as centrality measures or indices \citep{koschutzki2005centrality}.
+Instead of looking at a “randomsurfer” on the web, the non-web PageRank models a random walk on the graph. The behavior of the walk is the same as the random surfer: with probability $\alpha$ the walk continues along an edge
+of the graph and with probability 1-$\alpha$ the walk jumps to a random node in the graph. Personalized PageRank is an important extension of PageRank model, in which the surfer does not randomly restart browsing anywhere on the web after choosing not to follow a link. Rather, the surfer in this new model restarts at one of only a few pages. If the pages relate to one person, then the resulting PageRank vector is called a personalized PageRank vector. If the pages are topically related, then the vector may be called a topic-specific PageRank vector.
+In \citep{freschi2007protein}, the authors used the Personalized PageRank model, which they call ProteinRank, to predict protein functions. The Personalized PageRank model seems to perfectly apply to our set of problems as well. We are dealing with users and looking for their personal preferences in browsers extensions, we are also interested in Company based addons propagation in users network. All our dataset was transformed to undirected graph, where user nodes are connected to addon nodes according to their relationship in the original dataset, e.g. each user node has an edge connected to addon node if this user has this addon installed in its ecosystem. Since our goal is to determine/predict a missing addon in user ecosystem, the seed nodes for the personalization vector would be the specific user addons, our hypothesis is that a higher the PageRank score suggests a higher relevance of an addon to the specific user. We would run multiple experiments to show the correctness of our hypothesis.
+
+\iffalse
+\subsection{Support Vector machine}
+First we have tried running analysis on our data using SVM. We were trying to classify users that are staying long in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.\\
+We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.\\
+The training very long time and gave no results, trying to run SVM with another kernel did not help either - and every run took a few days to finish. Then we've decided to find another way to represent our data.
+\subsection{GraphChi}
+\subsection{iGraph}
+\fi
 
 \section{Similarity in graphs using Personalized PageRank}
 \iffalse
@@ -724,6 +745,8 @@ on the link structure of the graph. In this paper, we use the rankings of Person
 \textcolor{green}{\textit{Einat:Explain how the dataset was constructed - we removed one addon per
 user; use the remaining addon as a query.. how many queries?}}\\
 \fi
+ADD THIS SOMEWHERE: On the other hand, many addons have a file-system path in their name, such as C://Program Files (x86)//..., thus we have hypothesized that connecting these addons into term nodes will create massively connected addons while they don't actually have something in common (besides being installed on user PC). We have tested this issue in two ways. First, we have ran experiment comparing results on graph with removed addons prefix that contain a common prefixes like C://Program Files (x86) and on graph where addons remained with full paths. Second, we have ran experiment on a graph when we have removed high degree nodes (higher than 500) and on graph with all nodes, and compared the results. Removing high degree node should only result in only a small approximation error[cite Purnamrita Sarkar], while improving the performance and giving equal opportunity for low-degree nodes.
+Another issue we had to overcome was the same addons, but with different versions. Addons with different version usually resulted in slightly different addon name, this difference could be at the name itself or in path leading to this addon. Splitting the addon nodes into terms should elegantly overcome this obstacle, since the addons will differ only slightly because of its versions.Thus users having the same addon but with different versions will still be strongly connected.
 
 
 Given the large scale of our graph - 1,331,814 nodes and 18,552,622 edges , and our need to execute the algorithm multiple number of times (thousands), we needed to find a fast and memory wise implementation of Personalized PageRank.
