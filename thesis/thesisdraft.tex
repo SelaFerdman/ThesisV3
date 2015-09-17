@@ -1063,7 +1063,7 @@ At first, we have tried to classify add-ons clash with Support Vector machine, b
 \fi
 [SELA SVM]
 \subsection{Preliminary Experimentation Efforts}
-Initially, our experimentation efforts were concentrated on addon survival prediction. We were trying to classify users that are staying long in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.
+Initially, our experimentation efforts were concentrated on addon survival prediction. On an example of Speedbit addons, we aimed to identify users for whom  in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.
 We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.
 The 3 days threshold, it turns out that the toolbar doesn't survive that well - the number of users for whom the toolbar survived 3 or more days is less than 10 percentage of all users.
 We have considered a user to be a positive example if s/he survived in the system for three or more days (you wrote "more than three days").
