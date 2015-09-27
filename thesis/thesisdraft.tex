@@ -421,11 +421,11 @@ same addon.}}
 
 We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS , and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
 
-\textcolor{red}{Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known forthese objects,
+\textcolor{red}{Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
 
 {\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
 
-{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
+{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values}[SELA: All the examples with all fileds non empty are with less relevant companies, should we show it anyway?] includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
 \item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
@@ -457,7 +457,7 @@ Finally, we note another characteristic of interest of this data.  Since the add
 
 \section{Experimental data}
 
-For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 users \textcolor{red}{are these users unique? probably not} and 456,458 addons \textcolor{red}{how come the number of addons is smaller than the number of users?}. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 users \textcolor{red}{are these users unique? probably not} [SELA: This is the number of unique users]and 456,458 addons \textcolor{red}{how come the number of addons is smaller than the number of users?} [SELA: This is the number of unique addons, if 100 users have the same addon, it would be counted once]. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \begin{figure}[t]
 \centering
@@ -1011,8 +1011,7 @@ Second, the clash could mean that a newly installed addon is hostile to other ad
 Third, an addon developing company can ask a third-party distributing company not to install their addon on a machine that keeps the hostile addon. Since in most cases addon developers are paying distributors per install, this could decrease the developers' costs and improve their profits in a long run.
 Fourth, a clash can occur between addons of seemingly non-competing companies. This can happen when something goes wrong in the distribution process and the problem slips off the company's radar. The addon ecosystem is complex enough to make the distribution monitoring barely possible. If an unintended clash gets detected, the owner of the affected addon can contact the owner of the hostile addon and ask to act.
 
-[RON: We need to finish the story here. An intermediate conclusion and outline of the rest of the chapter?]
-To the best of our knowledge, ours is the first study to research the addons ecosystem and its relations. Both the addons developers and security companies can benefit from this study and its conclusions.In the following sections,we will first describe the experimental setup for this chapter,in particular, the reasons behind its structure. We will then mention preliminary experimental efforts we have conducted before coming up with current experimental design. Following is the experimental design. In two sections that follows we describe our findings about symbiotic relationships and clash relationships. We finish this chapter with a discussion of the results and preliminary conclusions.
+To the best of our knowledge, this thesis is the first research study of the addon ecosystem in the Web browser. This is a true Big Data study as we analysed Web browsers of close to a million users. Both addon developers and computer security companies can benefit from this study and its conclusions. In the rest of this chapter, we will describe the setup of our empirical analysis, in particular, the reasons behind its design choices. We will provide background information and cover the history of this project starting with preliminary experimental efforts we made before coming up with our final experimental design. We will then present our findings: the identified symbiosis and competition relationships. We will conclude this chapter with a discussion of the results.
 
 \iffalse
 Another observation we've made, is that company addons tend to collocate together - we succeeded detecting company addon without any clues in its name that it belongs to any specific company.
@@ -1062,13 +1061,11 @@ Zugo               & Search Toolbar              & Advertisement company        
 At first, we have tried to classify add-ons clash with Support Vector machine, but we saw no signal and the SVM could not converge. [Need much more info here - RON, UPDATE: did we actually use SVM for predicting clash? I think we used SVM to predict an addon survival which is mainly affected by the user behavior. Anyhow, I would love to see a paragraph explaning what we did back then.]
 \fi
 [SELA SVM]
-\subsection{Preliminary Experimentation Efforts}
-Initially, our experimentation efforts were concentrated on addon survival prediction. On an example of Speedbit addons, we aimed to identify users for whom  in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.
-We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.
-The 3 days threshold, it turns out that the toolbar doesn't survive that well - the number of users for whom the toolbar survived 3 or more days is less than 10 percentage of all users.
-We have considered a user to be a positive example if s/he survived in the system for three or more days (you wrote "more than three days").
-The training very long time and gave no results, trying to run SVM with another kernel did not help either - and every run took a few days to finish.SVMlight classifier on data - it ran for 16 hours and never finished.
-We have spited the dataset to 2/3 training set and 1/3 test set (uniformly at random). In the training set, I took all positive instances and a sample of 1/3 of negative instances (because it runs too slow on the entire training set).
+\subsection{Preliminary Experimentation Efforts: Addon Survival Prediction}
+Initially, our experimentation efforts were concentrated on addon \emph{survival prediction}. On an example of one addon development company, Speedbit, we aimed to identify Web browsers whose ecosystem allowed Speedbit addons to survive for an extended period of time, in contrast to those browsers where Speedbit addons tended to churn immediately. We approached the survival prediction task within the Machine Learning framework of \emph{binary classification} [RON:citation needed]. In binary classification, a prediction model is trained on labeled data of two classes: positive instances and negative instances. We constructed our training data as follows: browsers in which Speedbit addons survived for three or more days were considered positive instances---all other browsers were considered negative instances. We used the popular libSVM tool [RON:citation needed] to train our prediction model.
+%The 3 days threshold, it turns out that the toolbar doesn't survive that well - the number of users for whom the toolbar survived 3 or more days is less than 10 percentage of all users.
+We split our dataset to 2/3 training set and 1/3 test set (uniformly at random). Since we had about 900,000 instances in our dataset, our training set contained about 600,000 instances which was large enough for modern non-parallelized binary classification systems. [RON: here] After a few unsuccessful attempts, we decreased the training set size by taking all positive instances and a random sample of 1/3 of negative instances.
+
 Running training libsvm on the new samples took one hour.
 optimization finished, iter = 41654
 nu = 0.706971
