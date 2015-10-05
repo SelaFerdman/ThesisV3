@@ -82,6 +82,9 @@
 \newtheorem{theorem}{Theorem}[chapter]
 \newcommand{\comment}[1]{}
 
+\newcommand{\edge}[3]{{#1}\buildrel{#2}\over\longrightarrow{#3}}
+\newcommand{\transition}{{\bf M}}
+
 \def\ignore#1{}
 
 \begin{document}
@@ -652,78 +655,7 @@ Figure \ref{fig:sample_graph2} shows another toy graph, demostrating another asp
 
 We will apply random walks in the graph in order to assess similarity, or relatedness, between users and add-ons.  
 
-\chapter{General Approach}
-\label{sec:method}
-In this chapter we will present the algorithms we implemented for this thesis.
-\section{Baseline algorithms}
-We chose to use two algorithms to test our algorithms, a popularity baseline and an pagerank ranking based baseline. The popularity baseline is a simple recommendation technique and the reason that we chose this method was its speed and simplicity. This allowed us to iterate quickly in the early stages of our research. The item similarity baseline is a more complicated algorithm and was used as a more realistic test of the performance the algorithms. Because the largest datasets we worked with contained hundred of thousands of users and tens of millions of items, we had to make sure that the
-baseline algorithms were implemented in a high performance, parallel or distributed
-environment. We chose to use igraph \citep{igraph}, a high-performance, parallel machine learning framework. This allowed us to focus our efforts on the development of our algorithms and not the baseline algorithms.
-\subsection{Popularity}
-The popularity algorithm is one of the simplest one can employ for recommending items, as it simply recommends the most popular items in the dataset to all the users. The popularity of the items is determined by the total number of user for each addon in the dataset, and all the users are presented with the same recommendation list, where the items are ranked according to their popularity. Despite its
-simplicity, the popularity algorithm can perform reasonably well.
-Another advantage for this algorithm is lack of parameters and the fact that due to its simplicity we are able to make recommendations for datasets containing hundreds of thousands of users and tens of millions of items very fast. Both of these factors contributed in making experimentation much easier, an important factor for a baseline algorithm.
-This benefit however comes at a cost for the quality of the recommendations. Since the algorithm performs no personalization in the recommendations made, all users are presented with the same recommendation list.
-\subsection{Prediction based on PageRank scores}
-For each addon we have calculated its PageRank score by running the regular PageRank algorithm over the whole user addon graph. Now, like in \autoref{sec:PPR_addons_method}, when we are predicting the missing add-on, we are looking at the addons ranking list (the ranking is according to PageRank scores) and check the Recall@K. This measure seems to give similar results as the Popularity baseline.
 
-\section{Personalized PageRank addons analysis}
-\label{sec:PPR_addons_method}
-The PageRank that is described in \citep{page1999pagerank} gives a universal score for the nodes in a graph. It is however possible to change the calculations so that the results will reflect someone’s personal preferences. In the PageRank formula the teleportation vector $\vv{u}$ has a great influence on determining the outcome. The biasing of the PageRank by this vector is first suggested in \citep{brin1998can}, and thereafter explored many times (\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}).In this thesis the goal of biasing the PageRank with the teleportation vector is to personalize the user addons of choice results. PageRank exists for any graph and not just the web graph. PageRank on a graph produces an importance score for each node, and this places PageRank amongst a class of network analysis techniques \citep{brandes2005network} known as centrality measures or indices \citep{koschutzki2005centrality}.
-Instead of looking at a “randomsurfer” on the web, the non-web PageRank models a random walk on the graph. The behavior of the walk is the same as the random surfer: with probability $\alpha$ the walk continues along an edge
-of the graph and with probability 1-$\alpha$ the walk jumps to a random node in the graph. Personalized PageRank is an important extension of PageRank model, in which the surfer does not randomly restart browsing anywhere on the web after choosing not to follow a link. Rather, the surfer in this new model restarts at one of only a few pages. If the pages relate to one person, then the resulting PageRank vector is called a personalized PageRank vector. If the pages are topically related, then the vector may be called a topic-specific PageRank vector.
-In \citep{freschi2007protein}, the authors used the Personalized PageRank model, which they call ProteinRank, to predict protein functions. The Personalized PageRank model seems to perfectly apply to our set of problems as well. We are dealing with users and looking for their personal preferences in browsers extensions, we are also interested in Company based addons propagation in users network. All our dataset was transformed to undirected graph, where user nodes are connected to addon nodes according to their relationship in the original dataset, e.g. each user node has an edge connected to addon node if this user has this addon installed in its ecosystem. Since our goal is to determine/predict a missing addon in user ecosystem, the seed nodes for the personalization vector would be the specific user addons, our hypothesis is that a higher the PageRank score suggests a higher relevance of an addon to the specific user. We would run multiple experiments to show the correctness of our hypothesis.
-
-\iffalse
-\subsection{Support Vector machine}
-First we have tried running analysis on our data using SVM. We were trying to classify users that are staying long in user ecosystem and those that churn immediately, lately this would turn to Clash prediction.\\
-We have defined training data as follows - positive examples are the users that have stayed at the system more than three days and others are negative example. We have used a popular libSVM tool to run the analysis.\\
-The training very long time and gave no results, trying to run SVM with another kernel did not help either - and every run took a few days to finish. Then we've decided to find another way to represent our data.
-\subsection{GraphChi}
-\subsection{iGraph}
-\fi
-
-\section{Similarity in graphs using Personalized PageRank}
-\iffalse
-\textcolor{green}{\textit{Einat: 
-This may be a good place to introduce PPR. This algorithm will be used
-in both recommendation and clash prediction experiments.}}\\
-\fi
-Personalized PageRank
-is an extension of the famous PageRank algorithm \cite{page1999pagerank}, both of
-which are based on a random surfer model. To understand Personalized PageRank, we first review the original
-PageRank briefly. A random surfer starts at any node on the
-graph. At each step, with a probability of 1−$\alpha$ the surfer moves to
-a neighboring node randomly, and with a probability of $\alpha$ he teleports to a random node on the graph. This process
-is repeated until the walk converges to a steady-state. The stationary
-probability of the surfer at each node is taken as the score of
-the node. However, this form of score is purely based on the static
-link structure, indicating the overall popularity of each node on the
-graph, without tailoring to a specific query node.\\
-In contrast, Personalized PageRank enables query-sensitive ranking,
-in the sense that we can specify a query node to obtain a “personalized”
-ranking accordingly. It is based on the same random
-surfer model of the original PageRank, except when the surfer teleports,
-he always prefers the query node \textit{q}. Specifically, at each
-step, with probability $\alpha$ the surfer teleports to \textit{q} instead of a random
-node, thus visiting the neighborhood of \textit{q} more frequently.
-Thus, the stationary distribution, called a Personalized PageRank
-Vector (PPV), is biased towards \textit{q} and its neighborhood, which can
-be interpreted as a popularity or relevance metric specific to \textit{q}.
-More generally, a query \textit{q} can comprise multiple nodes on the
-graph, such that in the teleportation the surfer can jump to any
-node in \textit{q}. Fortunately, the computation for a multi-node query is
-no more difficult than for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV a multi-node query is a simple
-linear combination of the individual PPV each node in the
-query.
-\iffalse
-A personalized
-PageRank vector, also known as
-a random-walk with restart (RWR), is the stationary distribution of a random
-walk that, with probability $\alpha$ follows a step of a random walk and with probability (1−$\alpha$) jumps back to a seed node.
-If there are multiple seed nodes, then the choice is usually
-uniformly random. The set of these seeds is called personalized PageRank Vector (PPV).
-\fi
 
 \chapter{The missing addon in User ecosystem}
 \label{chap:user_ecosystem}
@@ -798,7 +730,7 @@ $u$. It is important to note that the rankings are specific to the
 dynamic queries, reflecting the estimated relevancy with respect to
 the query.
 
-AN ISSUE: There are several aspects of this problem. Correlations may
+[EINAT:]AN ISSUE: There are several aspects of this problem. Correlations may
 be due to user's tastes, especially for users who are actively
 involved in the maintancne of their machine. Another factor is
 functionality, where we may expect to find complimentary
@@ -1170,7 +1102,8 @@ of $N=?$ \textcolor{red}{unique?} labeled examples.
 \end{figure}
 
 \textcolor{red}{Give a detailed example of a query?}
-
+Explain that the 1000 were chosen uniformally at random
+also explainx4k
 \textcolor{red}{What else can we say here?.. are the selected users in
   the dataset and corpus multi-national, or geographically focused?
   any other characteristics worth mentioning?}
@@ -1690,13 +1623,13 @@ obj = -196797.924484, rho = 1.994601
 nSV = 40041, nBSV = 39227
 Total nSV = 40041
 Then we've decided to find another way to represent our data.
-\fi
 
 In \autoref{chap:user_ecosystem} our algorithm's viewpoint was set of add-ons of a specific user set of add-ons - we were viewing user add-ons as its ecosystem and predicting a missing addon according to it. Now, we are aiming to investigate symbiotic relations between companies that are producing a variety of add-ons, the algorithm viewpoint is the symbiotic relationships between ecosystems created by add-ons manufactures.
+\fi
 
 \section{Experimental design}
 
-Unlike in \autoref{chap:user_ecosystem}, where all user addons were retrieved organically from the data collected from the users, now we need to identify each of the companies addons from \autoref{table:companies_list}. In general, we would to relate each addon to species, i.e. addons that belong to the same company said to be of the same species. For example, Kaspersky URL Advisor Firefox addon and Kaspersky Protection Chrome extension would relate to Kaspersky species. This turned out to be not a trivial task. Most of the companies from \autoref{table:companies_list}, does not publish anywhere list of their addons. Our first pass to identify the addons species, was to take all the data we have for each addon and look for strings that would contain a company name. That would work since many companies install their addons software under folder containing company name or write the company name in the description, see \autoref{table:addon_desc} for example.
+In Chapter~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analize the behavior of \emph{species}, i.e.~addon distributing companies. In the new setting, we first need to find out which addons belong to which companies. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- we refer to theMoreover, addons bear characteristics of a machine on which they are installed. For example,   now we need to identify each of the companies addons from \autoref{table:companies_list}. In general, we would to relate each addon to species, i.e. addons that belong to the same company said to be of the same species. This turned out to be not a trivial task. Most of the companies from \autoref{table:companies_list}, does not publish anywhere list of their addons. Our first pass to identify the addons species, was to take all the data we have for each addon and look for strings that would contain a company name. That would work since many companies install their addons software under folder containing company name or write the company name in the description, see \autoref{table:addon_desc} for example.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
