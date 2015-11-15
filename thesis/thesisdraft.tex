@@ -171,6 +171,10 @@ issues. Finally, descriptions of the prediction models that we plan to use, and 
 
 [RON: The outline of our findings: In first half of the thesis, we operate on the user level. We use historical data to identify highly probable addons given the collection of addons of a specific user. In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.]
 
+[RON: a paragraph about human factor. After all, we are mostly interested in the user who owns the machine and either installs lots of garbage on it or tries to keep it as clean as possible. Who's is more important here - the user who cares about his/her machine hygiene or the bunch of companies that are trying to push stuff on the user's machine? Who's winning?]
+
+[RON: the term ``computer virus'' has existed for a while - the connection between a hardware system (a computer) with a biological system is quite intuitive. However, we go far beyond this - we're investigating biological _processes_ in an artificial environment, which sounds pretty novel]
+
 \section{Main Contributions}
 \label{sub:contributions}
 The main contributions of this work are the following:
@@ -422,7 +426,7 @@ add-ons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS , and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
+We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
 
 \textcolor{red}{Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
 
@@ -461,21 +465,18 @@ Finally, we note another characteristic of interest of this data.  Since the add
 
 \section{Experimental data}
 
-For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 users \textcolor{red}{are these users unique? probably not} [SELA: This is the number of unique users]and 456,458 addons \textcolor{red}{how come the number of addons is smaller than the number of users?} [SELA: This is the number of unique addons, if 100 users have the same addon, it would be counted once]. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
-[SELA: Number of addons is smaller than number of users since multiple users can have the same addon.]
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 unique users and 456,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \begin{figure}[t]
 \centering
 \begin{small}
 \includegraphics[scale=.9,angle=0]{figures/user_addons_histogram.png}
 \end{small}
-\caption{Number of addons per user distribution}
+\caption{Distribution of number of addons per user}
 \label{fig:user_addons_histogram}
 \end{figure}
 
-In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields descrbing each add-on mention into a bag-of-words. This gives rise to another lexical object type, representing {\it terms}. For examples..
-
-In converting text strings into individual {\it terms}, 167,512 unique terms, in addition to word tokenization, text cleanup and normalization steps were applied. Specifically, we removed some non-ASCII characters, originally added for encryption purposes on the server side prior to storing that data in SQL tables. Likewise,  Windows shortcuts for full paths have been removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings were converted all strings to lower case, since capitzliation is meaningless in this case. \textcolor{red}{How many unique terms did we get?}
+In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each add-on mention into a bag-of-words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
 
 
 \section{Graph representation}
@@ -629,7 +630,7 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} [SELA: We need to think how to visualize - it could be too much details in the figure] illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?};, no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?};, no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
@@ -655,7 +656,31 @@ Figure \ref{fig:sample_graph2} shows another toy graph, demostrating another asp
 
 We will apply random walks in the graph in order to assess similarity, or relatedness, between users and add-ons.  
 
+\subsection{Data statistics}
 
+The experimental dataset corresponds to a graph that consists of 1,331,814 nodes and 18,552,622
+edges. \textcolor{red}{Detail the number of nodes by type in a table}. 
+
+\begin{figure}[t]
+\centering
+\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+\includegraphics[scale=0.49]{figures/zipf_addon.png} \\
+\caption{add-ons} 
+%\label{fig:minlen2noremoveRecall}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+\includegraphics[scale=0.49]{figures/zipf-users.png} \\
+\caption{users}
+%\label{fig:minlen2noremoveMRR}
+\end{subfigure}
+	\centering
+\includegraphics[scale=0.48]{figures/zipf-terms.png} \\
+(c) terms \\
+\caption{Log-scale rank vs. degree plots of add-ons (a), users (b), and terms (c)}
+	\label{fig:minlen2noremove}
+\end{figure}
 
 \chapter{The missing addon in User ecosystem}
 \label{chap:user_ecosystem}
@@ -684,7 +709,7 @@ addressing the following question:
   exist the machine of an individual user--how sussccesully can we
   infer the identity of additional species (add-ons) that exist in
   that environment?}
-[SELA:] We are talking about addons as spices, but what are the users in this environment?
+
 If we can indeed predict with high certainty missing members in a
 local community, then this should verify the existance, as well as
 indicate the strength of such correlations. The merit of the stated
@@ -695,7 +720,7 @@ removed. The task then becomes an instantiation of the {\it link
   prediction} problem, where the goal is to reveal a new association
 of interest ({\it has-add-on}, in this case) between graph nodes.
 
-Link prediction is often manifested in terms of semantic similarity,
+Link prediction is odten manifested in terms of semantic similarity,
 where there exist numerous graph-based similarity measures that may be
 readily utilized for this purpose. We use in this work Personalized
 PageRank (PPR), a random walk based similarity metric in graphs.
@@ -720,7 +745,7 @@ link between $u$ and $a$.
 
 In the rest of this chapter, we will usually refer to the set $A'$ as
 a {\it query}. As in information retrieval, our goal would be to
-assess the relevancy of possible responses to the
+assess the relrevancy of possible responses to the
 query. Specifically, the candidate responses in this case are the
 known {\it add-ons}, which are not known to be associated with the
 user, i.e., $(A-A')$, where this candidate set includes $a$. As
@@ -807,7 +832,7 @@ Webpages.
 The PageRank algorithm described computes universal node importance,
 or `centrality' scores, soley based on the network structure, that is,
 ignoring user preferences. The {\it Personalized PageRank} variant
-\cite{richardson2001intelligent}  biases the random walk model to
+\cite{pagerank,RichardsonNIPS02} biases the random walk model to
 generate rankings that reflect user preferences, represented as a
 distribution of interest over the graph nodes. This bias is modeled by
 a small and natural adaptation of the PageRank random walk
@@ -831,7 +856,7 @@ query. It has been shown that the Personalized PageRank score for a
 target node $z$ and a query node $x$ equals a summation over all of
 the connecting paths between $x$ and $z$ (including cyclic paths, and
 paths that cross $z$ multiple times), where paths are weighted by
-their probability \cite{jeh2003scaling}. In words, the graph walk
+their probability \cite{jehWWW03,fogaras05}. In words, the graph walk
 distributes probability mass from a start distribution over nodes
 through edges in the graph---incidentally accumulating evidence of
 similarity over multiple connecting paths. Due to the reset
@@ -1008,7 +1033,7 @@ i.e., the {\it outdegree} of node $i$. For example, suppose that node
 $i$ is linked to two {\it term} nodes and five {\it user} nodes; then,
 the probability of reaching any of these nodes using the transition
 operation equals ${1\over 7}$. As the transition probability are
-  directly derived based on outdegree, the notion of {\it inverse
+  directly derived based on outgegree, the notion of {\it inverse
     document frequency} is implicitly modeled in the transition
   model. In particular, nodes that are linked to a large number of
   other nodes will pass only a fraction of their probability mass to
@@ -1021,7 +1046,7 @@ In general, it is possible to assign different edge weights according
 to edge types. Recent works have also considered learning a selective
 set of meaningful paths in the graph that link query with target
 nodes. We leave the exploration of these methods of supervised tuning,
-given labeled examples, to future work. [SELA: Cite recent works?]
+given labeled examples, to future work. 
 
 The computed Personalized Pagerank vector assigns scores to all of the
 graph nodes. We consider the graph nodes of type {\it add-on} and rank
@@ -1068,19 +1093,14 @@ random walk similarity metric outperforms classical collaborative
 filtering and content-based recommendation methods.
 
 
-\section{Experimental dataset}
+\section{Experimental methodology}
 
-We have constructed dataset for evaluation purposes. The dataset is
-comprised of queries, for which the answers are known. Each query
-correponds to a randomly selected user, where one of the user's
-add-ons is randomly selected, having the link between the selected
-{\it user} and {\it add-on} node pair artificially disconnected. In
+Given the collected corpus, we derive sets of labeled queries for evaluation purposes.  Each query corresponds to a randomly selected user $u$. We randomly select one of the user's add-ons, $a$, and eliminate it artificially from the user's `profile', having the link between the nodes denoting $u$ and $a$ disconnected in the graph. In
 the experiments, we evaluate the extent to which the missing link can
-be recovered, i.e., whether the disconnected {\it add-on} appears at
-the top ranks of the output ranked list of add-ons. The process for
-generating an individual labeled example is detailed in Figure
-\ref{fig:example-gen}. We repeated this process to generate a dataset
-of $N=?$ \textcolor{red}{unique?} labeled examples.
+be recovered. 
+
+The process of generating an individual labeled example is formally outlined in Figure
+\ref{fig:example-gen}. Naturally, the sampled users are required to have at least two addons installed on their machine--otherwise, the query vector would be left empty, once removing the add-on from the user node for testing purposes. 
 
 \begin{figure}
 \begin{enumerate}[(a)]
@@ -1101,113 +1121,10 @@ of $N=?$ \textcolor{red}{unique?} labeled examples.
 \label{fig:example-gen}
 \end{figure}
 
-\textcolor{red}{Give a detailed example of a query?}
-Explain that the 1000 were chosen uniformally at random
-also explainx4k
-\textcolor{red}{What else can we say here?.. are the selected users in
-  the dataset and corpus multi-national, or geographically focused?
-  any other characteristics worth mentioning?}
+The labeled examples thus consist of queries, which include the addons still associated with {\it user} $u$, and a single known correct response, which is the removed addon $a$.
+Once disconnected from the user node, there should be no selection bias towards the target add-on $a$ compared with the other 200 thousand addon nodes. Assuming that addons are mutually related, the ranking scheme should identify strong association between the removed add-on and the environment of remaining add-ons associated with the same user. Accordingly, we expect to find the missing add-on among the top ranks of the list with high probability. Obviously, the add-ons already associated with the query user are  typically assigned high relevancy scores by query-sensitive algorithms like PPR. Importantly, we remove the query add-ons from the evaluated ranked list. 
 
-\iffalse
-\textcolor{green}{\textit{Einat:Used Personalized PageRank -- which parameters? how were the paramater
-values set?}}
-\fi
-
-
-\section{Experimental setup}
-
-\subsection{Methods}
-
-We use Personalized PageRank to rank relevant {\it add-on} nodes in
-the graph by their structural similarity to the user profile, or {\it
-  query}. The generated rankings using this approach may be affected
-however by design choices applied to the graph represnetation, and the
-random walk scheme, as discussed below. We eveluate several variants,
-experimenting with these different choices.
-
-{\it Representation of add-on path information.} We notice that add-on
-names often include full file-system path information, e.g.,
-`C:/Program Files (x86)/...'. Supposedely, it can be harmful to link
-add-ons to {\it terms} associated with a local path (e.g., `program';
-`files'; `x86') in the graph. Such links may connect add-ons that have
-nothing in common, besides being installed in a similar system
-environment. We test this issue directly by removing common path
-prefixes like C://Program Files (x86). \textcolor{red}{Need this to be
-  a bit more detailed. Were only common prefixes removed? I thought
-  that some heuristic was used. Another basic point to discuss: what was our main motivation for doing so? I think that we also wanted to ignore path info for evaluation purposes. Suppose that we get the same addon in the answer list, which has a different path prefix than in the query. If we kept the path, then it would be considered as incorrect answer, where removing the path should help us identify it as the same add-on. Is that correct? this also brings on the question, do we ignore different vesions in evaluating the retrieval rank?} 
-[SELA: We ended up going with two types of data - with/without paths. The with paths its a raw data -  none modification where made on addons strings. Without paths - we have taken the last name in the path like in C://Program Files (x86)//Babylon//1.2.1.1234//babylon.dll - we took only the babylon.dll]
-
-{\it High-degree nodes.} Several previous works have indicated that
-high-degree nodes in the graph have negative impact on the PPR
-similarity measure (\textcolor{red}{cite the Pizzaman work}) [SELA: Didn't find]. First,
-high graph connectivity leads to increased computational cost. In
-addition, the random walk process exhibit some bias in favor of high
-degree nodes. Removing high degree node should only result in only a
-small approximation error[cite Purnamrita Sarkar], while improving the
-performance and giving equal opportunity for low-degree
-nodes. Following previous works \textcolor{red}{?, can we cite any?},
-we experiment with a graph variant, in which high-degree nodes are
-removed. We set the threshold over a node's out-degree to 500 in this
-work. \textcolor{red}{why did we select 500?}
-
-
-MOVE ABOVE THIS SECTION, OR TO DISCUSSION OF RESULTS: Another issue we had to overcome was
-the same addons, but with different versions. Addons with different
-version usually resulted in slightly different addon name, this
-difference could be at the name itself or in path leading to this
-addon. Splitting the addon nodes into terms should elegantly overcome
-this obstacle, since the addons will differ only slightly because of
-its versions. Thus users having the same addon but with different
-versions will still be strongly connected.
-
-We compare our algorithms against two strong baselines: ranking {\it add-ons} based on popularity, as well as 
-based on PageRank socres. 
-
-{\it Popularity baseline.} This method simply ranks the {\it add-on} items by their popularity, determined by the total number of users associated with each addon in the dataset. Using this approach, the response to all queries is equal and fixed, having the output list ranked according to the popularity criterion. 
-In other words, since the algorithm performs no personalization, all users are presented with the same
-add-on  list. Despite its simplicity, the popularity algorithm can perform reasonably well \textcolor{red}{cite Keren's thesis, or get relevant citation(s) from her thesis}. Another advantage for this algorithm is that it is non-parametric and scalable; item scores may be computed for datasets containing hundreds of thousands of users and tens of millions of items fast by means of database querying. 
-
-{\it PageRank baseline.} For each addon we have calculated
-its PageRank score by running the regular PageRank algorithm over the
-whole graph \textcolor{red}{which graph exactly? with or without terms?}. The PageRank scores assigned to the graph nodes 
-reflect their structural centrality in the graph. 
-
-\subsection{Implementation details}
-
-The experimental dataset corresponds to a graph that consists of 1,331,814 nodes and 18,552,622
-edges. \textcolor{red}{Detail the number of nodes by type in a table}. 
-
-As the generation of query-dependent distributions requires computation of the Personalized PageRank per query, for multiple configurations, we needed to find a fast and memory-efficient implementation
-of Personalized PageRank. We have chosen igraph \citep{igraph} which is a library for creating
-and manipulating graphs.iGraph uses internally ARPACK package which is
-a numerical software library written in FORTRAN 77 for solving large
-scale eigenvalue problems (used also in Mining and Analyzing Social
-Networks book \textcolor{red}{?--cite}). ARPACK uses an implicitly restarted Arnoldi method to
-calculate PageRank. igraph expects as an adjacency list of numeric
-vertices. We have created a unique number for each node and store the
-mapping to an actual node name in a separate file. Since the whole
-graph is loaded into memory, we had to be very careful with memory
-management (every very small leak would cause a serious global memory
-leak). We also had to compile a 64bit version of igraph - since 32 bit
-version failed running - it could not acquire enough memory.
-
-We ran the experiments with teleport probability $\alpha$ =
-0.85.  
-
-\textcolor{red}{What is the similarity baseline? do we still need this paragraph?}[SELA: No, we don't, maybe propose it for future work] 
-The item similarity baseline is a more complicated algorithm and was used as a
-more realistic test of the performance the algorithms. Because the
-largest datasets we worked with contained hundred of thousands of
-users and tens of millions of items, we had to make sure that the
-baseline algorithms were implemented in a high performance, parallel
-or distributed environment. We chose to use igraph \citep{igraph}, a
-high-performance, parallel machine learning framework. This allowed us
-to focus our efforts on the development of our algorithms and not the
-baseline algorithms.
-
-
-
-\subsection{Evaluation methodology}
+\subsection{Evaluation measures}
 
 \iffalse Now, like in \autoref{sec:PPR_addons_method},
 when we are predicting the missing add-on, we are looking at the
@@ -1218,13 +1135,7 @@ Popularity baseline.\fi
 All of the evaluated methods produce a ranked list of add-ons. 
 Concretely, the PPR and PageRank algorithms compute scores for all of the graph nodes.
 It is straight-forward to filter the nodes by their type, and output a ranked list that consists of add-ons only.
-Our goal is to recover the `missing add-on'. Hence, the addons included in the {\it user profile} (the query) are 
-removed from the ranked list. Obviously, due to their direct association with the user, these add-ons are 
-typically assigned high relevancy scores by query-sensitive algorithms like PPR. 
-In contrast, the `removed' add-on has been disconnected in the graph from 
-the target {\it user} node. Its relevancy is estimated based on the indirect paths that connect it in the graph with
-the remaining query add-ons, passing through other {\it user} or {\it term} nodes. That is, once disconnected from the user node, there should be no selection bias towards the target query add-on compared with the other 200 thousand addon
-nodes. Ideally, the ranking scheme will identify strong association between the removed add-on and the environment of remaining add-ons associated with the same user. Accordingly, we expect to find the missing add-on among the top ranks of the list with high probability.
+
 
 \iffalse Since, lets say it is ranked in 8th position, not
 taking into account the ranking position of the original user addons,
@@ -1235,9 +1146,8 @@ ten.\\ \textcolor{green}{\textit{Sela: Example:}}
     validation.. using MAP meausre(?)  (can include a description of
     MAP as an appendix)}} \fi
 
-We use a set of standard information retrieva metrics for the evaluation of the output ranked lists. 
-In our settings, there is a single `correct' answer. The various metrics assess the quality of each algorithm by the extent to which it succeeds to 
-place the relevant node at high ranks on avergae, across all queries. A short description of the evaluation measures follows.
+We use a set of standard information retrieval metrics for the evaluation of the output ranked lists. Note that in our settings, there is a single `correct' answer. The various metrics assess the quality of each algorithm by the extent to which it succeeds to 
+place the relevant node at high ranks on average, across all queries. A short description of the evaluation measures follows.
 
 \paragraph{Recall at k (Recall@k)}
 This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{Sela: the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matte most. 
@@ -1266,37 +1176,154 @@ networks. In our settings, there is a single correct answer per query. It is des
 \label{eq:mrr}
 \end{equation}
 
+\subsection{Statistical validity}
+
+Overall, we generated datasets that include $N=1000$ labeled examples, each sampled from a unique user...
+
+\textcolor{red}{Give a detailed example of a query?}
+Explain that the 1000 were chosen uniformally at random
+also explainx4k
+\textcolor{red}{What else can we say here?.. are the selected users in
+  the dataset and corpus multi-national, or geographically focused?
+  any other characteristics worth mentioning?}
+
+\iffalse
+\textcolor{green}{\textit{Einat:Used Personalized PageRank -- which parameters? how were the paramater
+values set?}}
+\fi
+
+
+\section{Experiments}
+\label{sec:experiments}
+
+We use Personalized PageRank to rank {\it add-on} nodes in
+the graph by their structural similarity to the user profile, or {\it
+  query}. The generated rankings using this approach may be affected
+by design choices concerning the graph structure and the random walk scheme. This section first provides details regarding the implementation of PPR, as well as baseline methods that we compare against. It then discusses several aspects concerning the graph design that are evaluated in this work.
+
+\subsection{Methods}
+\label{sec:methods}
+
+\subsubsection{PPR} In this research, we experiment with a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package, a numerical software library written in FORTRAN 77, for solving large
+scale eigenvalue problems (used also in Mining and Analyzing Social
+Networks book \textcolor{red}{?--cite}). Concretely, ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
+vertices. We have created a unique number for each node and store the
+mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
+management (every very small leak would cause a serious global memory
+leak).\fi We ran the experiment using a standard PC machine with x memory using a a 64bit version of igraph. On average, running a batch of 1,000 queries required only x--y seconds. In the experiments, we set the teleport probability parameter $\alpha$=0.85 following previous works. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability values has negligible effect on the produced rankings.
+
+
+We compare our algorithms against two strong baselines: ranking {\it add-ons} by `popularity', as well as based on their PageRank scores. 
+
+\subsubsection{Popularity baseline} 
+A simple approach for predicting the `missing' add-on would be to rank the {\it add-on} items by their popularity, determined by the total number of users associated with each add-on in the dataset. Using this approach, the response to all queries is equal and fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
+add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution  \textcolor{red}{cite Keren's thesis}. Another advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for datasets containing hundreds of thousands of users and tens of millions of items by means of database querying. 
+
+\subsubsection{PageRank baseline} 
+For each addon we have calculated its PageRank score given the underlying graph. The PageRank scores assigned to the graph nodes 
+reflect their structural centrality in the graph. We are interested in comparing PPR performance with this non-personalized version of the random walk algorithm.
+
+Both baselines were implemented using {\it igraph}. \iffalse were implemented in a high performance, parallel
+or distributed environment. We chose to use igraph \citep{igraph}, a
+high-performance, parallel machine learning framework. \fi
+
+\subsection{Graph design choices}
+\label{design}
+
+There are 
+
+{\it Representation of add-on path information.} Add-on
+names often include full file-system path information, e.g.,
+`C:/Program Files (x86)/...'. Supposedely, it can be harmful to link
+add-ons to common {\it terms} associated with path information (e.g., `program';
+`files'; `x86'). Such links may connect add-ons simply due to being installed in a similar system environment. We therefore remove common path
+prefixes like `C://Program Files (x86)'. \textcolor{red}{Need this to be
+  a bit more detailed. Were only common prefixes removed? I thought
+  that some heuristic was used. Another basic point to discuss: what was our main motivation for doing so? I think that we also wanted to ignore path info for evaluation purposes. Suppose that we get the same addon in the answer list, which has a different path prefix than in the query. If we kept the path, then it would be considered as incorrect answer, where removing the path should help us identify it as the same add-on. Is that correct? this also brings on the question, do we ignore different vesions in evaluating the retrieval rank?} 
+
+{\it High-degree nodes.} Several previous works have indicated that
+high-degree nodes in the graph have negative impact on the PPR
+similarity measure (\textcolor{red}{cite the Pizzaman work}). First,
+high graph connectivity leads to increased computational cost. In
+addition, the random walk process exhibit some bias in favor of high
+degree nodes. Removing high degree node should only result in only a
+small approximation error[cite Purnamrita Sarkar], while improving the
+performance and giving equal opportunity for low-degree
+nodes. Following previous works \textcolor{red}{?, can we cite any?},
+we experiment with a graph variant, in which high-degree nodes are
+removed. We set the threshold over a node's out-degree to 500 in this
+work. \textcolor{red}{why did we select 500?}
+
+As the generation of query-dependent distributions requires computation of the Personalized PageRank per query, for multiple configurations
+
+MOVE ABOVE THIS SECTION, OR TO DISCUSSION OF RESULTS: Another issue we had to overcome was
+the same addons, but with different versions. Addons with different
+version usually resulted in slightly different addon name, this
+difference could be at the name itself or in path leading to this
+addon. Splitting the addon nodes into terms should elegantly overcome
+this obstacle, since the addons will differ only slightly because of
+its versions. Thus users having the same addon but with different
+versions will still be strongly connected.
 
 \section{Results}
 
-Our main goal in the experiments is to assess the extent to which add-ons co-exist in one's environment. 
-Towards this goal, we are interested in tuning the graph design and graph walk parameters so as to obtain an effective structured similarity metric using PPR. (or: In this thesis a great number of experiments were conducted, each
-validating a specific aspect of use ecosystem and trying to maximize
-our prediction accuracy and correctness.) The evaluation of the different components of the system is evaluated using an ablation study, as well as through its comparison against viable baselines.  
+\iffalse
+1) `default' scenario:
 
-\begin{itemize}
-\renewcommand{\labelitemiii}{$\diamond$}
-\item Graph with addons that include full path or only the addon file
-  name - as described in \autoref{sec:datasets}, we have decided to
-  test our method when using only addon filename as node in the graph
-  and when using full addon path as node in the graph.
-\item Removing high degree nodes from the graph or not. While removing
-  high degree node might obviously hurt the popularity baseline
-  performance.
-\item Minimal number of addons user must have for running our
-  prediction method. Clearly, the absolute minimum is two since when
-\end{itemize}
+Use the graph with popular nodes. Compare these variants:
+- Popularity baseline
+- PageRank baseline
+- PPR, users+addons, without paths
+- PPR, users+addons+terms, without paths
+
+Show results for 4X1000. MMR / recall@k.
+
+Main findings: we outperform popularity; also, representation of terms helps.
+
+2) Focus on lower-degree add-ons:
+
+- The scores are approximately correct when high-degree nodes are removed.
+- Reduces computational costs.
+- Low-degree nodes are interesting, but popularity and PR methods only include them at the bottom of the list.
+
+2A) Include analysis of degree distribution: 
+-- show number of nodes by degree, log-scale. (look for example graphs of Zipf's law).
+-- Same, for add-ons.
+-- Same, for terms.
+-- Same, for users. (do not use log-scale if it doesn't make sense, as in this case.)
+
+2B) Use the graph without high-degree nodes. (Re-compute the pop. and PR baselines.)
+- Popularity baseline
+- PageRank baseline
+- PPR, users+addons, without paths
+- PPR, users+addons+terms, without paths
+
+SENSITIVITY:
+
+3) Impact of paths:
+
+What happens if we include the full path?
+
+Detail number of add-ons before and after filtering. 
+
+- Full graph, users+addons+terms
+- High-degree removed, users+addons+terms
+
+- Full graph, users+addons
+- High-degree removed, users+addons
+
+4) Sensitivity to # of add-ons per user: (>=2, >=3, ..)
+
+Can show results of multiple configurations as curves on the same graph.
+\fi
+
+Our main goal in the experiments is to assess the extent to which add-ons co-exist in one's environment. Extensive experiments were conducted, optimizing system design so as to obtain an effective and valid structured similarity metric. In this section, we report the evaluation results of the different components of the system, as well as compare it against viable baselines.  
 
 \paragraph{Main results}
 
 We report experimental results method.For each of the methods we report Recall@10, Recall@50,
 Recall@100 and MRR as described at \autoref{sec:ranking}. 
 
-In all of our experiments, unless stated otherwise, we have picked uniformly at random one
-thousand target users. The selected users were required to have at least two addons installed
-on their computer. This restriction is fundamental, as it is impossible to identify a missing add-on in such cases (the query vector would be left empty, once removing the add-on from the user node for testing purposes.)  
-
-\textcolor{red}{Should describe the configuration used to generate the main results.}
 
 As shown in \autoref{fig:minlen2remove500Recall}, our algorithm has correctly
 predicted a missing addon at top-10 ranking list addons, in
@@ -1307,25 +1334,67 @@ algorithm and the baseline as shown in
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.49\textwidth}
+%\begin{subfigure}[b]{0.49\textwidth}
 	\centering
-\includegraphics[scale=0.49]{figures/minlen2remove500.png}
-\caption{Recall@K}
-\label{fig:minlen2remove500Recall}
-\end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
+	(a) \\
+\includegraphics[scale=0.8]{figures/pop-final.png} \\
+%\caption{Recall@K}
+%\label{fig:minlen2remove500Recall}
+%\end{subfigure}
+%\begin{subfigure}[b]{0.49\textwidth}
 	\centering
-\includegraphics[scale=0.49]{figures/minlen2remove500MRR.png}
-\caption{MRR}
-\label{fig:minlen2remove500MRR}
-\end{subfigure}
+(b) \\
+\includegraphics[scale=0.8]{figures/sans-popular-final.png}
+%\caption{MRR}
+%\label{fig:minlen2remove500MRR}
+%\end{subfigure}
 	\caption{Graph without paths without popular nodes}
 	\label{fig:minlen2remove500}
 \end{figure}
 
+
+\begin{table}[p]
+\centering
+\caption{Standard deviation and Standard error of the Mean}
+\label{table:std_ste}
+\begin{tabular}{llcccc} \hline
+	& & Recall-at-10 & Recall-at-50 & Recall-at-100 & MRR	 \\
+\hline
+\multicolumn{6}{c}{FULL} \\
+\hline
+& POP & 0.243 (0.007) & 0.555 (0.017) & 0.711 (0.012) & 0.104 (0.004) \\
+& PR & 	0.243 (0.007) & 0.559 (0.016) & 0.711 (0.012) & 0.104 (0.004) \\
+& PPR	& \textbf{0.354}	(0.011) & 0.660	(0.009) & 0.801 (0.004) & \textbf{0.151}	(0.006) \\
+\hline
+No terms & POP & 0.240 (0.009) & 0.553 (0.012) & 0.719 (0.007) & 0.101 (0.005) \\
+& PR & 0.240 (0.009) & 0.563 (0.014) & 0.719 (0.007) & 0.101 (0.005) \\
+& PPR	& 0.350	(0.014) & \textbf{0.665}	(0.008) & \textbf{0.809}	(0.014) & 0.146	(0.008) \\
+\hline
+Full path & POP & 0.065 (0.005) & 0.177 (0.010) & 0.224 (0.010) & 0.023 (0.004) \\
+& PR & 0.185 (0.013) & 0.409 (0.016) & 0.538 (0.012) & 0.079 (0.010) \\
+& PPR	& 0.294	(0.017) & 0.592	(0.015) & 0.708	(0.010) & 0.150	(0.008) \\
+\hline
+\multicolumn{6}{c}{SANS POPULAR NODES} \\
+\hline
+ & POP & 	0.006 (0.004) & 0.034 (0.009) & 0.065 (0.009) & 0.004 (0.001) \\
+ & PR	& 0.001	(0.000) & 0.009	(0.009) & 0.022	(0.003) & 0.001	(0.000) \\
+& PPR	& 0.405	(0.007) & 0.491 (0.007) & 0.527	(0.004) & 0.320	(0.005) \\
+\hline
+No terms & POP & 	0.000 (0.000) & 0.000 (0.000) & 0.000 (0.000) & 0.000 (0.000) \\
+& PR & 	0.001 (0.002) & 0.012 (0.007) & 0.027 (0.002) & 0.001 (0.000) \\
+& PPR & 	0.401 (0.027) & 0.483 (0.027) & 0.521 (0.022) & 0.322 (0.027) \\
+\hline
+Full path & POP & 	0.004 (0.003) & 0.019 (0.006) & 0.033 (0.007) & 0.003 (0.001) \\
+& PR & 	0.032 (0.010) & 0.033 (0.010) & 0.034 (0.010) & 0.001 (0.000) \\
+& PPR	& \textbf{0.496}	(0.017) & \textbf{0.575}	(0.022) & \textbf{0.602}	(0.016) & \textbf{0.415}	(0.020) \\
+\hline
+\end{tabular}
+\end{table}
+
+
 \paragraph{Impact of high-degree nodes}
 
-A secondary question addressed concerns the graph structure. We hypothesize that in addons/users ecosystem high degree nodes insert more noise in random walk than they contribute to correct pagerank execution. In our settings, a high degree node typically means corresponds to one of the following phenomena:
+A secondary question addressed concerns the graph structure. We hypothesize that in addons/users ecosystem high degree nodes insert more noise in random walk than they contribute to correct PageRank execution. In our settings, a high degree node typically means corresponds to one of the following phenomena:
 \begin{itemize}
 \renewcommand{\labelitemiii}{$\diamond$}
 \item A highly frequent {\it term} node, which links to many {\it add-ons}. 
@@ -1335,6 +1404,9 @@ Such high-frequency nodes are generally known to be of low value for similarity 
 Notably, we wish that the Personalized PageRank distribution reflect node relevancy to the input
 teleportaion vector, which simulates the user's ecosystem. The impact of high degree nodes may reduce the
 influence of the original seeds.
+
+[SELA: There is a significant improvement when we are removing high degree node and adding paths. When comparing results of graph with/without paths and without popular nodes. In this case the paths greatly improve the results (in contrast to the case when we are not removing high degree nodes - paths don't have any significant impact). Explanation:
+Adding paths to the graph may contain very useful data, like nodes of type 'SKYPE_V1', this node can connect many Skype addons that otherwise would not be connected. On the other hand, adding paths is also adding a noise to the graph. We will run the following experiment. On graph without popular nodes and with paths, we will remove the terms - we hypothesize that this will lead to similar results as in graph without paths.]
 
 SOME OVERLAP HERE, PROCESS. High degree nodes in our graph typically represent a very popular
 addons or a term. We were considering how to treat this kind of nodes,
@@ -1348,13 +1420,23 @@ are treated. Since the stop words has no interest for the prediction
 algorithms it is usually removed. We've observed, see
 \autoref{fig:nodes_degree_dest}, that the nodes degree distribution
 follows Zipf's law distribution \textcolor{red}{Convert the graph into log scale}.
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/nodesDegreeDest.pdf}
-\caption{Nodes degree distribution}
-\label{fig:nodes_degree_dest}
-\end{figure}
 
+
+MOVE/DELETE?
+\begin{itemize}
+\renewcommand{\labelitemiii}{$\diamond$}
+\item Graph with addons that include full path or only the addon file
+  name - as described in \autoref{sec:datasets}, we have decided to
+  test our method when using only addon filename as node in the graph
+  and when using full addon path as node in the graph.
+\item Removing high degree nodes from the graph or not. While removing
+  high degree node might obviously hurt the popularity baseline
+  performance.
+\item Minimal number of addons user must have for running our
+  prediction method. Clearly, the absolute minimum is two since when
+\end{itemize}
+
+\iffalse
 \begin{figure}[t]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
@@ -1372,6 +1454,7 @@ follows Zipf's law distribution \textcolor{red}{Convert the graph into log scale
 \caption{Graph without paths with popular nodes}
 	\label{fig:minlen2noremove}
 \end{figure}
+\fi
 
 In order to check how the inclusion of high degree nodes would influence
 the prediction algorithm, we conducted the same experiment without removing any node
@@ -1400,6 +1483,7 @@ SME & 0.001024 & 0.001502 & 30.003048\\ \hline
 
 As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling for our task.
 
+\iffalse
 \begin{figure}[t]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
@@ -1417,6 +1501,7 @@ As discusses earlier, we include {\it terms} in the graph, so as to model term-b
 \caption{Comparing graph with/without addon paths}
 	\label{fig:with_without_terms}
 \end{figure}
+\fi
 
 As shown in
 \autoref{fig:with_without_terms}, including term nodes improves the prediction.\textcolor{red}{a. Why not show recall@k here? also, need to describe what the figure shows verbally.} Moreover, experiments using a graph variant that included {\it add-ons} and {\it term} nodes only, showed poor performance. We suggest the following explanation to this result. In the graph, add-on nodes are typically connected to a large number of {\it user} nodes, and only to very few {\it term} nodes. To illustrate this, consider some arbitrary add-on with a short description, linking to three {\it term} nodes, and a medium user set neighborhood consisting of 200 {\it user} nodes. 
@@ -1440,6 +1525,7 @@ would have only one node $skype1$. We have also conducted
 system path from addon. The results are shown at
 \autoref{fig:minlen2noremoveWithPaths}.
 
+\iffalse
 \begin{figure}[t]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
@@ -1457,6 +1543,7 @@ system path from addon. The results are shown at
 \caption{Graph with paths with popular nodes}
 	\label{fig:minlen2noremoveWithPaths}
 \end{figure}
+\fi
 
 If we compare the results of the same run, as shown in
 \autoref{fig:with_without_paths_noremove}, we observe that adding
@@ -1472,6 +1559,7 @@ once they are removed, addition information about the user, like it
 paths, contributes to understanding and predicting its ecosystem
 state.
 
+\iffalse
 \begin{figure}[t]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
@@ -1489,7 +1577,7 @@ state.
 \caption{Comparing graph with/without addon paths}
 	\label{fig:with_without_paths}
 \end{figure}
-
+\fi
 
 As we have mentioned earlier, in order for our prediction algorithm to
 run, we require that user has at least two add-ons. At
@@ -1550,13 +1638,13 @@ The opposite effect to coexistence can be observed as well: addons of one compan
 
 Companies that distribute browser addons are engaged in partnerships or compete with each other, such that the Web browser becomes a complex ecosystem similar in its characteristics to the biological environment of the nature. To illustrate this analogy, let us say that addon distributors correspond to biological species. An instance of an addon distributed by company $A$ can be viewed as a subject of species $A$ that coexists in the browser ecosystem with other subjects of the same or different species. Naturally, those subjects can live in symbiosis or in conflict with each other. We observe situations when addons of some companies get installed on a machine together with addons of other companies, which is analogous to a natural migration process when subjects of different species travel together. We also observe clash situations when an addon gets installed on a machine and ``kicks out'' addons of other companies, similarly to a competition phenomenon between different species in the nature. The user (the computer owner) is also playing an important role in the addon ecosystem: some users ``hunt down'' and remove addons that occasionally appear in the computer's browser; other users are more tolerant -- they let addons live in the browser for a long time and do not mind more addons to be added over time.
 
-Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiosis effects are fairly visible to the users (e.g., in product installation processes), many others are hidden (e.g., undisclosed agreements between addon distributors) or implicit (two addons are statistically prone to coexistence). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media \footnote{\url{http://finance.yahoo.com/news/babylon-shares-jump-yahoo-sticks-125203474.html}} [RON:citation needed] [SELA: Done], the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
+Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiosis effects are fairly visible to the users (e.g., an addon is prompted to be installed during an installation processes of another addon or software product), many other effects are hidden (e.g., undisclosed agreements between addon distributors) or implicit (two addons are statistically prone to coexistence). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media\footnote{\url{http://finance.yahoo.com/news/babylon-shares-jump-yahoo-sticks-125203474.html}}, the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
 
 The ability to detect and analyze a clash or symbiosis between addon distributing companies could turn handy for addon owners. 
 A typical company that builds its business around developing and distributing addons (via a webstore, for instance), can benefit from information about a clash between their and someone else's addons, in four different ways.
 First, such a clash may imply that the user prefers someone else's addon over their addon, so there might be a way to compare the two addons and  learn how to improve their value proposition. 
 %Most probably, the user prefers the competitor's addon for a specific reason. In the Web browser ecosystem, identifying one's competitor is not an easy problem --- the clash information can help to solve this problem.
-Second, the clash could mean that a newly installed addon is hostile to other addons in an illegal way, i.e. this is the addon --- and not the user ---- that uninstalls or sabotages another addon. Then, the distributor of the removed addon could report an abuse to the webstore owner.
+Second, the clash could mean that a newly installed addon is hostile to other addons in an illegal way, i.e. it is the addon --- and not the user ---- that uninstalls or sabotages another addon. Then, the distributor of the removed addon could report an abuse to the webstore owner.
 
 Third, an addon developing company can ask a third-party distributing company not to install their addon on a machine that keeps the hostile addon. Since in most cases addon developers are paying distributors per install, this could decrease the developers' costs and improve their profits in a long run.
 Fourth, a clash can occur between addons of seemingly non-competing companies. This can happen when something goes wrong in the distribution process and the problem slips off the company's radar. The addon ecosystem is complex enough to make the distribution monitoring barely possible. If an unintended clash gets detected, the owner of the affected addon can contact the owner of the hostile addon and ask to act.
@@ -1570,9 +1658,9 @@ Another observation we've made, is that company addons tend to collocate togethe
 \section{Experimental setup}
 We chose nineteen companies (see~\autoref{table:companies_list}) among well-known addon distributors. These are ``famous'' companies that are distributing addons and toolbars. Their addons are distributed through the installation process of third-party software products, like Adobe Reader. Most of the time, during the software installation, an opt-out check box is presented to the user per addon to be installed. If the user chooses to uncheck the box, the addon will not get installed. However, many users click through the installation process without reading the small font, and when the process is completed the users discover they installed something they did not intend to. 
 
-Anti-virus and anti-malware software aim to prevent unintentional addon installation. For example, in 2013, Avast Anti Virus published a list of top ten companies that were distributing their addons via third-party software installations \footnote{\url{https://blog.avast.com/2013/03/20/avast-browser-cleanup-at-work/}}. Surprisingly, the list published by Avast in 2015 is very similar to their 2013 list --- many of these companies are in our list as well~\autoref{table:companies_list}. Back in 2013, Avast identified over 3,300,000 different browser extensions for three major browsers. They also noticed that ``A lot of toolbars are available in different variants. These variations affect mostly the name''. Some anti-virus companies are not only fighting unintentional addon installations but also distributing their addons and toolbars in a similar way. For example, AVG Anti Virus company distributes an AVG Security Toolbar which is detected by Avast Anti Virus as malware. 
+Anti-virus and anti-malware software aim to prevent unintentional addon installation. For example, in 2013, Avast Anti Virus published a list of top ten companies that were distributing their addons via third-party software installations \footnote{\url{https://blog.avast.com/2013/03/20/avast-browser-cleanup-at-work/}}. Surprisingly, the list published by Avast in 2015 is very similar to their 2013 list --- many of these companies are in our list as well~(\autoref{table:companies_list}). Back in 2013, Avast identified over 3,300,000 different browser extensions for three major browsers. They also noticed that ``A lot of toolbars are available in different variants. These variations affect mostly the name''. Some anti-virus companies are not only fighting unintentional addon installations but also distributing their addons and toolbars in a similar way. For example, AVG Anti Virus company distributes an AVG Security Toolbar which is detected by Avast Anti Virus as malware. 
 
-In Avast recent blog post from July 9th 2015, they describe the addon ecosystem of a user's Web browser. Avast mention that one of the major characteristics of the ecosystem is that ``The addons fight against each other'' \footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
+In Avast recent blog post from July 9th 2015, they describe the addon ecosystem of a user's Web browser. They mention that one of the major characteristics of the ecosystem is that ``the addons fight against each other'' \footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
 Based on Avast statistics on forced removals of competing toolbars, some companies from our list are among the top ten offenders. For example, Conduit performed more than 13,000,000 removals of their competitors' toolbars, ASK removed 11,000,000 toolbars and other companies were not far behind. Interestingly, Avast itself uses the same practice \footnote{\url{http://techdows.com/2012/11/avast-comes-bundled-with-google-toolbar.html}}: ``Avast is contradicting itself. Their latest product offers a built-in feature to rid your browser of toolbars, while offering a toolbar when installing their software.''
 
 
@@ -1610,11 +1698,11 @@ Zugo               & Search Toolbar              & Advertisement company        
 \iffalse
 At first, we have tried to classify add-ons clash with Support Vector machine, but we saw no signal and the SVM could not converge. [Need much more info here - RON, UPDATE: did we actually use SVM for predicting clash? I think we used SVM to predict an addon survival which is mainly affected by the user behavior. Anyhow, I would love to see a paragraph explaning what we did back then.]
 \fi
-[SELA SVM]
+
 \subsection{Preliminary Experimentation Efforts: Addon Survival Prediction}
 Initially, our experimentation efforts were concentrated on addon \emph{survival prediction}. On an example of one addon development company, Speedbit, we aimed to identify Web browsers whose ecosystem allowed Speedbit addons to survive for an extended period of time, in contrast to those browsers where Speedbit addons tended to get uninstalled quickly. We approached the survival prediction task within the Machine Learning framework of \emph{binary classification} [RON:citation needed]. In binary classification, a prediction model is trained on labeled data of two classes: positive instances and negative instances. We constructed our training data as follows: browsers in which Speedbit addons survived for three or more days were considered positive instances---all other browsers were considered negative instances. We used the popular libSVM tool [RON:citation needed] to train our prediction model.
 %The 3 days threshold, it turns out that the toolbar doesn't survive that well - the number of users for whom the toolbar survived 3 or more days is less than 10 percentage of all users.
-We split our dataset to 2/3 training set and 1/3 test set (uniformly at random). Since we had about 900,000 instances in our dataset, our training set consisted of about 600,000 instances. This training set turned out to be too large for modern non-parallelized binary classification systems. After a few unsuccessful attempts to train the model on the entire training set, we decreased its size by taking all positive instances and a random sample of 1/3 of negative instances.
+We split our dataset to $2/3$ training set and $1/3$ test set (uniformly at random). Since we had about 900,000 instances in our dataset, our training set consisted of about 600,000 instances. This training set turned out to be too large for modern non-parallelized binary classification systems. After a few unsuccessful attempts to train the model on the entire training set, we decreased its size by taking all positive instances and a random sample of 1/3 of negative instances.
 
 \iffalse
 Running training libsvm on the new samples took one hour.
@@ -1630,23 +1718,31 @@ In \autoref{chap:user_ecosystem} our algorithm's viewpoint was set of add-ons of
 
 \section{Experimental design}
 
-In Chapter~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analize the behavior of \emph{species}, i.e.~addon distributing companies. In the new setting, we first need to find out which addons belong to which companies. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- we refer to theMoreover, addons bear characteristics of a machine on which they are installed. For example,   now we need to identify each of the companies addons from \autoref{table:companies_list}. In general, we would to relate each addon to species, i.e. addons that belong to the same company said to be of the same species. This turned out to be not a trivial task. Most of the companies from \autoref{table:companies_list}, does not publish anywhere list of their addons. Our first pass to identify the addons species, was to take all the data we have for each addon and look for strings that would contain a company name. That would work since many companies install their addons software under folder containing company name or write the company name in the description, see \autoref{table:addon_desc} for example.
+In ~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analyze the behavior of \emph{species}, i.e.~addon developing companies. In the new setting, we first need to reveal which addons belong to which companies. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- instead, we are concerned with mapping addon names to company names. Also, it is important to mention that addons bear characteristics of a machine on which they are installed. For example, the file-system path of an addon on a specific machine may or may not be unique among all addons we observe in this study: a user can choose to install an addon at a non-standard location in his/her machine's file system, or stick to a default location instead.
+
+As discussed in Section~\ref{sec:methods}, an addon is represented in our system by three data attributes: the addon's name, the full file-system path of its installation, and a textual description. Each one (or any two but not all three) of the attributes may be empty. To infer which addon belongs to which company, we first apply a simple heuristic of detecting the company name within the three attributes of an addon. The rationale behind this is that the default path of an addon package installation often contains the company's name. If a user does not choose to change the default option, the company name will be detected in the addon's path. In addition, the name and the description fields may contain the company name as well, see \autoref{table:addon_desc} for an example.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
 \begin{table}[h]
 \centering
-\caption{Company name contained in path or description example}
+\caption{An example of a company's name contained in an addon's path or description}
 \label{table:addon_desc}
 \begin{tabular}{@{}|l|l|@{}}
 \toprule
-Addon located in a folder containing company name & C:\textbackslash{Program Files (x86)}\textbackslash{Kaspersky Lab}\\ & \textbackslash{Kaspersky Internet Security 2012}\textbackslash{avp.dll} \\ \midrule
-Extension containing company name in description & Kaspersky Protection extension \\ \bottomrule
+Addon installed in a folder containing the company name & C:\textbackslash{Program Files (x86)}\textbackslash{Kaspersky Lab}\\ & \textbackslash{Kaspersky Internet Security 2012}\textbackslash{avp.dll} \\ \midrule
+Addon description containing the company name & Kaspersky Protection extension \\ \bottomrule
 \end{tabular}
 \end{table}
 
-After we have completed the above procedure, we've observed that there are add-ons related to the companies from \autoref{table:companies_list}, but do not contain company name neither in file system path nor in its description. For example, an addon $tbbaby.dll$ doesn't contain company name in any of its attributes, but is related to Babylon\footnote{\url{http://www.shouldiremoveit.com/Babylon-English-Toolbar-31094-program.aspx}}. 
-We propose the following procedure, see algorithm \autoref{alg:find_addon_species}, for identifying this kind of addons, as the teleportation vector we provide the previously found addons that are related to the specific company.
+After applying the company name search heuristic, we realized that representations of many addons that belong to companies from our list~\autoref{table:companies_list} do not in fact contain the company name. For example, an addon $tbbaby.dll$ doesn't contain company name in any of its attributes, but does belong to Babylon\footnote{\url{http://www.shouldiremoveit.com/Babylon-English-Toolbar-31094-program.aspx}}. 
+We propose the following procedure, see algorithm \autoref{alg:find_addon_species}, for mapping this kind of addons to their owners. 
+
+In Chapter~\autoref{chap:user_ecosystem}, we applied a Personalized PageRank (PPR) based algorithm for identifying a missing addon in a browser of a specific user. We proposed a method that took the entire set of the user's addons as a query input to PPR and produced the output of a ranked list of all addons in the system. We hypothesized that the missing addon would end up among the top addons in the ranked list. Our hypothesis was proved correct.
+
+We apply a similar method here, for mapping addons to their manufacturer companies. As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the not personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically changed their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company. 
+
+We perform the procedure described above iteratively: after we discover addons that belong to a company, we add them to the query and rerun the PPR with the extended query. We stop the process once there are no more addons that dramatically change its rank. It turned out that two iterations were enough for the process to converge. Using this process, we found 24 [SELA: Recheck the number] addons that ``popped up'' in the PPR ranked lists of companies from~\autoref{table:companies_list}. In a manual check of these 24 addons, we saw 100\% precision: there was not one single addon we checked that did not after all belong to the company in the query. 
 
 \begin{algorithm}[!t]
 \caption{Finding addon relation to Company}
@@ -1663,13 +1759,14 @@ We propose the following procedure, see algorithm \autoref{alg:find_addon_specie
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-An example for an addon that has drastically changed its score, is an addon named tbmyba.dll, the addon's $PR_gscore$ was 1200, and the $PPR_gscore$ turned to be 15 when using seed nodes related to Babylon, and indeed we found that this addon is related to Babylon\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}.
 
-For every add-on that was detected as suspected by the algorithm \autoref{alg:find_addon_species}, we've performed manual check to which company it belongs. This procedure has identified many $unknown$ addons and correctly related to the manufacture company. This outcome presents an interesting phenomena, there is some kind of community between addon of the same species, and this community is discover by Personalized PageRank weight propagation from already known community members.
+An example for an addon that drastically changed its score is the addon named \emph{tbmyba.dll}, the addon's $PR_gscore$ was 1200, and the $PPR_gscore$ turned to be 15 when using seed nodes related to Babylon. Indeed, we found that this addon belongs to Babylon\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}.
 
-Now that we have ascribed each addon to its species, we are able to analyze the relations between the addon species in World Wide Web ecosystem.
+The success of this process reveals an interesting phenomenon: it turns out that there is a ``community'' of addons of the same species, and this community can be discovered via the Personalized PageRank weight propagation that starts with already known community members. One possible explanation for this phenomenon would be that it is a common practice for a company to offer a few of its addons for installation at the same time. For example, while Babylon is installing an Internet Explorer addon, it might also install a Chrome extension. Even if we manage to map the Internet Explorer addon to Babylon using the simple name matching procedure, the Chrome extension might not contain any attribute that would qualify it as related to Babylon. Still, our algorithm would discover it in a similar way it discovered a missing addon for a specific user. 
+Another explanation may come from the \emph{collaborative filtering} theory: users who have many addons in common might also have different addons of the same company --- such addons will therefore be located in a close proximity of each other in the PageRank graph.
 
-We have executed the following algorithm \autoref{alg:collect_addon_data} to collect all the necessary data of each addon and the companies.
+Now that we linked addons with their species (that is, their manufacturer companies), we are ready to analyze relations between the addon species in World Wide Web ecosystem. The following algorithm~\autoref{alg:collect_addon_data} summarizes our methodology. 
+For each company from our list, we construct the PPR query to contain all the company's addons. The PPR output is the ranked list of all addons in the graph. Our goal is to find out addons of which companies ``pop up'' in the PPR as compared to non-personalized PageRank. If we identify a company whose addons are universally improving their rank in the PPR of another company, we may conclude that the two companies are engaged in a partnership. Using the ecological language, we call it \emph{symbiosis}. We also expect addons of some companies to ``drop down'' the PPR ranked list, in comparison to the regular PR ranked list. We can suggest that two companies \emph{clash} if many addons of one company drop down in the PPR of another company.
 
 \begin{algorithm}[!t]
 \caption{Collecting data for each add-on}
@@ -1681,7 +1778,7 @@ We have executed the following algorithm \autoref{alg:collect_addon_data} to col
 \STATE Define personalization vector $v$, with seed nodes as all addons $\in COMP\ $
 \STATE Execute Personalized PageRank
 \STATE Rank all addons according to the PPR score
-\STATE Store the results
+\STATE Store the results [RON: I guess we need something more sufficient than storing the results]
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -1689,7 +1786,34 @@ We have executed the following algorithm \autoref{alg:collect_addon_data} to col
 \section{Analysis}
 \subsection{Symbiotic Relationships}
 \label{sec:symb_relations}
-The regular PageRank score that each addon describes an ecosystem where non of the species are biased. This viewpoint allows us to assume what is the original species distribution when no other species is helping or disturbing the other. The total PageRank scores for each company is shown in \autoref{table:pagerank_scores}.
+
+Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
+
+When all addons of a particular company comprise the PPR query, it would be natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
+
+Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $C_i$ that is involved in a symbiotic relationship with the query company $C_q$. Our goal is to reveal such a relationship based on the $C_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $C_i$, we could make a conclusion about the probability of a symbiotic relationship between $C_i$ and $C_q$.
+
+There are two factors that affect the significance of the addon's rank change:
+\begin{enumerate}
+\item \textbf{Length of the leap.} Obviously enough, the longer is the addon's leap from the original rank (in non-personalized PR) to the new rank (in PPR), the more significant the rank change is.
+\item \textbf{The (final) PPR rank.} The length of the leap is not the only significance measure. Intuitively, if an addon jumps from rank 10,000 to rank 1000, such a jump is less significant than if the addon jumped from rank 100 to rank 10. The explanation is simple: an addon at a rank 10,000 was most probably not important, and a big change in its rank would not make it significantly more important. In contrast, an addon that moved to the 10th place cannot be ignored.
+\end{enumerate}
+
+We are interested in the change of rank of the company, as aggregated over the set of its addons' ranks. In a search for a formula that would aggregate the behavior of all the company's addons, we make the following observation: if an addon is rare (i.e.~installed on just a few browsers), then the change in its rank --- even a significant one --- might have little effect on the behavior of the company in whole. For example, if an addon moves from rank 10,000 to rank 10, but is installed on 10 browsers only, its effect on the aggregated rank of the company would be less significant than, say, a change in rank from 100 to 50 of an addon that is installed on 10,000 browsers.
+
+The potential complexity of addon rank aggregation over the three parameters listed above (length of the leap. the final rank, and the addon frequency) makes us search for simplification. Since an addon's rank is determined by the order of all addons when sorted over their PR (or PPR) \emph{scores}, we observe that an addon score is a better measure of the addon's importance than its rank. For example, if an addon's score was 5 in the non-personalized PR, and got increased to 10 in PPR, while there were no other addons with scores as high as 5, then the rank of the addon would not change, so the significance of the score change would be completely ignored when taking into account addon ranks only. In addition, the change in the addon's rank is affected by the change of other addons' ranks, while the change of the addon's score can be taken independently from the other addons' score change. Therefore, we decide to focus on addon PR scores rather then on ranks. Now, there are only two parameters that need to be taken into account for measuring a company's ``importance'': the PR (or PPR) scores of its addons, and their frequencies in the dataset.
+
+We estimate the ``importance'' of company $C$ by its \emph{expected} PR score, which is the weighted sum of PR scores of the company's addons. Let us denote $s_i$ the PR score of addon $a_i$ that belongs to $C$. The expected score $S_C$ (of the company $C$) will then be:
+$$
+S_C = \sum_{a_i \in C} p_i s_i
+$$
+where $p_i$ is the probability of drawing addon $a_i$ out of all $C$'s addons. Specifically, we define $p_i = freq(a_i) / freq(C)$, where $freq(a_i)$ is the frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed; $freq(C)$ is the sum of all its addons' frequencies.
+
+%After running the PPR with all addons of a company $C_q$ in the query, we first remove $C_q$'s addons from the ranked list in order to make a clean experiment: depending on the number of addons $C_q$ is maintaining --- and their original PR ranks --- their PPR ranks can significantly affect the change in ranks of other addons. We want to eliminate this influence and focus on the rank change of the other companies' addons. That is why we remove $C_q$'s addons both from the PPR ranked list and from the original PR ranked list.
+
+%We examine the top 100 addons (after removing $C_q$'s addons), and compare their ranks to their original PR rank. For each company other than $C_q$, we [RON:Here] only addons that have more than 100 users, only nodes that belong to the companies of interest, 
+
+%Add the formula that describes relative jump. Expected score
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
@@ -1722,11 +1846,15 @@ Zone Alarm     & 3597     & 0.10790              & 0.01541                \\ \bo
 \end{tabular}
 \end{table}  
 
-While looking to relate add-ons to companies, we've observed that there are add-ons of certain companies that improve their ranking position not only when the PPR vector contains their company's nodes but also when it contains some other company nodes. This led us to hypothesize that there might be symbiotic relations between some companies.
-A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability (1-$\alpha$) jumps back to a seed node. When there are multiple seed nodes, then the choice is uniformly random. Thus, nodes close by the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks \citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
-Eventually, we are aggregating the total PageRank score of all company addons and comparing between companies based on this score.
-In this way, we believe that we have found a real symbiotic relations between some companies,see \autoref{fig:symbiotic_pagerank}.
-In \autoref{fig:incredi_sym_blekko}, we have indicated that there is a symbiotic relationship between Incredimail company and Blekko company, this observation has reference in reality\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual, Blekko also benefits from this symbiosis, as well as Incredimail. The same relationship were indicated for Babylon and Conduit companies, \autoref{fig:babylon_sym_conduit}, and again there are more than one we source indicating the same. For example, Babylon addon named tbmyba.dll is also indicated as Conduit Toolbar component\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}. Actually, Conduit is known as Toolbar manufacture for other companies.
+\iffalse
+A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
+\fi
+
+As described above, we aggregate PageRank scores of all company addons and compare between companies based on the aggregated score. For exach company $C_q$ in the PPR query, we rank all the other companies of our interest according the the company's aggregated PPR score. We also maintain the ranked list of companies sorted by their aggregated (non-personalized) PR scores. For each $C_q$, we compare the two ranked lists of companies. If a company $C_i$ ``pops up'' closer to the top of the $C_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $C_i$ and $C_q$ are in a symbiotic relationship. See~\autoref{fig:symbiotic_pagerank} for the summary of our results.
+
+\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
+
+The same relationship is detected for Babylon and Conduit, see \autoref{fig:babylon_sym_conduit}, and again there is more than one online resource indicating the same. For example, Babylon addon named \emph{tbmyba.dll} is a Conduit Toolbar component\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}. In fact, Conduit is known as a Toolbar manufacturer for other companies.
 
 \begin{figure}[h]
 \centering
@@ -1753,8 +1881,9 @@ In \autoref{fig:incredi_sym_blekko}, we have indicated that there is a symbiotic
 \label{fig:blekko_sym_incredi}
 \end{figure}
 
+[RON: how is the following related to our results?]
 
-It is known that some company addons are getting to a user machine when they are "bundled" with add-ons of other companies. For example, the Ask Toolbars are integrated with the Java download\footnote{\url{https://java.com/en/download/faq/ask_toolbar.xml}}. During the installation of Java, users are presented with an option of downloading an Ask Toolbar, see \autoref{fig:ask_offer}.
+It is well known that some company addons are getting to a user machine through "bundling" with addons of other companies. We see evidence of this in our results. For example, Ask Toolbars are integrated with Java downloads\footnote{\url{https://java.com/en/download/faq/ask_toolbar.xml}}. During the installation of Java, users are presented with an option of downloading an Ask Toolbar, see \autoref{fig:ask_offer}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.8,angle=0]{figures/ask_offer.png}
@@ -1766,7 +1895,7 @@ It is known that some company addons are getting to a user machine when they are
 \subsection{Clash Relationships}
 \label{sec:clash_relations}
 
-In \autoref{sec:symb_relations}, we have investigated symbiotic relationships between addon species, i.e. when one species benefit from another. Here, we will look for the opposite kind of relationship, it can be referred Parasitism, i.e. where one species benefits and causes harm to the other species, but we are referring to this relation as a clash between two (or more) species. The idea that lays in the way of of identifying clash relation is very similar to the way described in \autoref{sec:symb_relations}, again we are looking at the aggregated company scores, but this time we are looking for a company which score is getting lower when other company is present. In \autoref{fig:clash_pagerank}, you can see two examples for this relationship. The \autoref{fig:avira_clash_imesh} shows that when AntiVirus company Avira is present in ecosystem it causes an iMesh company to perform worth than in regular ecosystem. The same is shown in \autoref{fig:conduit_clash_hotspot}, between Conduit and Hotspot Shield company.
+In \autoref{sec:symb_relations}, we investigated symbiotic relationships between addon species, i.e. when one species benefit from another. Here, we will look for the opposite type of relationship. We can call it \emph{clash}, i.e. where one species benefits and causes harm to the other species, but we are referring to this relation as a clash between two (or more) species. The idea that lays in the way of of identifying clash relation is very similar to the way described in \autoref{sec:symb_relations}, again we are looking at the aggregated company scores, but this time we are looking for a company which score is getting lower when other company is present. In \autoref{fig:clash_pagerank}, you can see two examples for this relationship. The \autoref{fig:avira_clash_imesh} shows that when AntiVirus company Avira is present in ecosystem it causes an iMesh company to perform worth than in regular ecosystem. The same is shown in \autoref{fig:conduit_clash_hotspot}, between Conduit and Hotspot Shield company.
 
 \begin{figure}[h]
 \centering
