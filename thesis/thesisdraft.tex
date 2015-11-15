@@ -629,7 +629,7 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?};, no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} [SELA: We need to think how to visualize - it could be too much details in the figure] illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?};, no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
@@ -684,7 +684,7 @@ addressing the following question:
   exist the machine of an individual user--how sussccesully can we
   infer the identity of additional species (add-ons) that exist in
   that environment?}
-
+[SELA:] We are talking about addons as spices, but what are the users in this environment?
 If we can indeed predict with high certainty missing members in a
 local community, then this should verify the existance, as well as
 indicate the strength of such correlations. The merit of the stated
@@ -695,7 +695,7 @@ removed. The task then becomes an instantiation of the {\it link
   prediction} problem, where the goal is to reveal a new association
 of interest ({\it has-add-on}, in this case) between graph nodes.
 
-Link prediction is odten manifested in terms of semantic similarity,
+Link prediction is often manifested in terms of semantic similarity,
 where there exist numerous graph-based similarity measures that may be
 readily utilized for this purpose. We use in this work Personalized
 PageRank (PPR), a random walk based similarity metric in graphs.
@@ -720,7 +720,7 @@ link between $u$ and $a$.
 
 In the rest of this chapter, we will usually refer to the set $A'$ as
 a {\it query}. As in information retrieval, our goal would be to
-assess the relrevancy of possible responses to the
+assess the relevancy of possible responses to the
 query. Specifically, the candidate responses in this case are the
 known {\it add-ons}, which are not known to be associated with the
 user, i.e., $(A-A')$, where this candidate set includes $a$. As
@@ -807,7 +807,7 @@ Webpages.
 The PageRank algorithm described computes universal node importance,
 or `centrality' scores, soley based on the network structure, that is,
 ignoring user preferences. The {\it Personalized PageRank} variant
-\cite{pagerank,RichardsonNIPS02} biases the random walk model to
+\cite{richardson2001intelligent}  biases the random walk model to
 generate rankings that reflect user preferences, represented as a
 distribution of interest over the graph nodes. This bias is modeled by
 a small and natural adaptation of the PageRank random walk
@@ -831,7 +831,7 @@ query. It has been shown that the Personalized PageRank score for a
 target node $z$ and a query node $x$ equals a summation over all of
 the connecting paths between $x$ and $z$ (including cyclic paths, and
 paths that cross $z$ multiple times), where paths are weighted by
-their probability \cite{jehWWW03,fogaras05}. In words, the graph walk
+their probability \cite{jeh2003scaling}. In words, the graph walk
 distributes probability mass from a start distribution over nodes
 through edges in the graph---incidentally accumulating evidence of
 similarity over multiple connecting paths. Due to the reset
@@ -1008,7 +1008,7 @@ i.e., the {\it outdegree} of node $i$. For example, suppose that node
 $i$ is linked to two {\it term} nodes and five {\it user} nodes; then,
 the probability of reaching any of these nodes using the transition
 operation equals ${1\over 7}$. As the transition probability are
-  directly derived based on outgegree, the notion of {\it inverse
+  directly derived based on outdegree, the notion of {\it inverse
     document frequency} is implicitly modeled in the transition
   model. In particular, nodes that are linked to a large number of
   other nodes will pass only a fraction of their probability mass to
@@ -1021,7 +1021,7 @@ In general, it is possible to assign different edge weights according
 to edge types. Recent works have also considered learning a selective
 set of meaningful paths in the graph that link query with target
 nodes. We leave the exploration of these methods of supervised tuning,
-given labeled examples, to future work. 
+given labeled examples, to future work. [SELA: Cite recent works?]
 
 The computed Personalized Pagerank vector assigns scores to all of the
 graph nodes. We consider the graph nodes of type {\it add-on} and rank
@@ -1135,10 +1135,11 @@ environment. We test this issue directly by removing common path
 prefixes like C://Program Files (x86). \textcolor{red}{Need this to be
   a bit more detailed. Were only common prefixes removed? I thought
   that some heuristic was used. Another basic point to discuss: what was our main motivation for doing so? I think that we also wanted to ignore path info for evaluation purposes. Suppose that we get the same addon in the answer list, which has a different path prefix than in the query. If we kept the path, then it would be considered as incorrect answer, where removing the path should help us identify it as the same add-on. Is that correct? this also brings on the question, do we ignore different vesions in evaluating the retrieval rank?} 
+[SELA: We ended up going with two types of data - with/without paths. The with paths its a raw data -  none modification where made on addons strings. Without paths - we have taken the last name in the path like in C://Program Files (x86)//Babylon//1.2.1.1234//babylon.dll - we took only the babylon.dll]
 
 {\it High-degree nodes.} Several previous works have indicated that
 high-degree nodes in the graph have negative impact on the PPR
-similarity measure (\textcolor{red}{cite the Pizzaman work}). First,
+similarity measure (\textcolor{red}{cite the Pizzaman work}) [SELA: Didn't find]. First,
 high graph connectivity leads to increased computational cost. In
 addition, the random walk process exhibit some bias in favor of high
 degree nodes. Removing high degree node should only result in only a
@@ -1193,7 +1194,7 @@ version failed running - it could not acquire enough memory.
 We ran the experiments with teleport probability $\alpha$ =
 0.85.  
 
-\textcolor{red}{What is the similarity baseline? do we still need this paragraph?} 
+\textcolor{red}{What is the similarity baseline? do we still need this paragraph?}[SELA: No, we don't, maybe propose it for future work] 
 The item similarity baseline is a more complicated algorithm and was used as a
 more realistic test of the performance the algorithms. Because the
 largest datasets we worked with contained hundred of thousands of
