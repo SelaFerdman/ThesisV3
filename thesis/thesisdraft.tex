@@ -683,7 +683,7 @@ edges. \textcolor{red}{Detail the number of nodes by type in a table}.
 \end{figure}
 
 \chapter{The missing addon in User ecosystem}
-\label{chap:user_ecosystem}
+\label{fig:zipf}
 \iffalse
 \textcolor{green}{\textit{Einat: Start by introducing the problem, why it is interesting..}}\\
 \fi
@@ -1230,40 +1230,23 @@ high-performance, parallel machine learning framework. \fi
 \subsection{Graph design choices}
 \label{design}
 
-There are 
+The proposed graph schema is simple and natural in the sense that it directly represents the relational structure of its source information. We discuss in this section a set of considerations involved in fine tuning of the graph design. The impact of the design options detailed below is evaluated empirically.  
 
-{\it Representation of add-on path information.} Add-on
-names often include full file-system path information, e.g.,
-`C:/Program Files (x86)/...'. Supposedely, it can be harmful to link
-add-ons to common {\it terms} associated with path information (e.g., `program';
-`files'; `x86'). Such links may connect add-ons simply due to being installed in a similar system environment. We therefore remove common path
-prefixes like `C://Program Files (x86)'. \textcolor{red}{Need this to be
-  a bit more detailed. Were only common prefixes removed? I thought
-  that some heuristic was used. Another basic point to discuss: what was our main motivation for doing so? I think that we also wanted to ignore path info for evaluation purposes. Suppose that we get the same addon in the answer list, which has a different path prefix than in the query. If we kept the path, then it would be considered as incorrect answer, where removing the path should help us identify it as the same add-on. Is that correct? this also brings on the question, do we ignore different vesions in evaluating the retrieval rank?} 
+\subsubsection{Pruning of high-degree nodes} 
 
-{\it High-degree nodes.} Several previous works have indicated that
-high-degree nodes in the graph have negative impact on the PPR
-similarity measure (\textcolor{red}{cite the Pizzaman work}). First,
-high graph connectivity leads to increased computational cost. In
-addition, the random walk process exhibit some bias in favor of high
-degree nodes. Removing high degree node should only result in only a
-small approximation error[cite Purnamrita Sarkar], while improving the
-performance and giving equal opportunity for low-degree
-nodes. Following previous works \textcolor{red}{?, can we cite any?},
+Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure (\textcolor{red}{cite the Pizzaman work}). First, high density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. Removing such high degree nodes should only result in only a small approximation error [cite Purnamrita Sarkar], while improving performance by increasing the `visibility' of lower-degree
+nodes. Following previous works \textcolor{red}{can we cite any?},
 we experiment with a graph variant, in which high-degree nodes are
 removed. We set the threshold over a node's out-degree to 500 in this
-work. \textcolor{red}{why did we select 500?}
+work. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it add-ons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries include {\it add-ons} that may be less trivial to predict. One may find special interest in this configuration for the purpose of recommending {\it add-ons} as the recommendation of highly popular and possibly familiar {\it add-ons} may be less beneficial for some users. 
 
-As the generation of query-dependent distributions requires computation of the Personalized PageRank per query, for multiple configurations
+\subsubsection{Specificity of path information} 
 
-MOVE ABOVE THIS SECTION, OR TO DISCUSSION OF RESULTS: Another issue we had to overcome was
-the same addons, but with different versions. Addons with different
-version usually resulted in slightly different addon name, this
-difference could be at the name itself or in path leading to this
-addon. Splitting the addon nodes into terms should elegantly overcome
-this obstacle, since the addons will differ only slightly because of
-its versions. Thus users having the same addon but with different
-versions will still be strongly connected.
+Add-on names often include full file-system path information, e.g., `C:/Program Files (x86)/...'. We remove path prefixes (like `C://Program Files (x86)') in our main experiments for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically.
+
+\subsubsection{Term modeling}
+
+The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix?} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the user\s eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
 
 \section{Results}
 
@@ -1852,7 +1835,13 @@ A personalized PageRank vector is the stationary distribution of a random walk t
 
 As described above, we aggregate PageRank scores of all company addons and compare between companies based on the aggregated score. For exach company $C_q$ in the PPR query, we rank all the other companies of our interest according the the company's aggregated PPR score. We also maintain the ranked list of companies sorted by their aggregated (non-personalized) PR scores. For each $C_q$, we compare the two ranked lists of companies. If a company $C_i$ ``pops up'' closer to the top of the $C_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $C_i$ and $C_q$ are in a symbiotic relationship. See~\autoref{fig:symbiotic_pagerank} for the summary of our results.
 
-\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
+%\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
+
+IncrediMail (Perion) and Conduit
+
+Avtiviruses bring other antiviruses down
+
+Zugo, SearchToolbar and SweetIM going together
 
 The same relationship is detected for Babylon and Conduit, see \autoref{fig:babylon_sym_conduit}, and again there is more than one online resource indicating the same. For example, Babylon addon named \emph{tbmyba.dll} is a Conduit Toolbar component\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}. In fact, Conduit is known as a Toolbar manufacturer for other companies.
 
