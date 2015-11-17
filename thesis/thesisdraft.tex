@@ -1246,7 +1246,7 @@ Add-on names often include full file-system path information, e.g., `C:/Program 
 
 \subsubsection{Term modeling}
 
-The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix?} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the user\s eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
+The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix?} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
 
 \section{Results}
 
@@ -1772,6 +1772,36 @@ For each company from our list, we construct the PPR query to contain all the co
 
 Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
 
+[SELA:]
+One may say that sampling an addons co-occurrence would suggest a symbiosis between addons manufactures, but surprisingly or not, addons co-occurrence does not infer addons symbiotic relations and we have even found that some of the addons that are highly co-occur actually are competitive to each other. We have used the Jaccard index for measuring the co-occurrence, as in (Egghe \& Rousseau, 1990; Glänzel, 2001; Hamers et al.,1989; Leydesdorff \& Zaal, 1988; Luukkonen et al., 1993; Michelet, 1988; Wagner \& Leydesdorff, 2005). The full matrix of Jaccard indexes is described in \autoref{fig:jaccard_matrix}. An example of high co-occurrence according to Jaccard index is between Ask Toolabr, AVG, Google Toolbar and Babylon, but all of these companies were distributing its own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. While other companies like Incredimail and Conduit, which are known for cooperation between them, Conduit eventually acquired Incredimail \footnote{\url{http://techcrunch.com/2013/09/16/conduit-worth-1-4bn-acquires-email-startup-perion-worth-153m/}}, does not co-occur highly.
+By performing the personalized PageRank analysis we discover the truly symbiosis relations between companies and its brands.
+In \autoref{fig:incredimail_sym_conduit}, we show the expected PageRank scores that IncrediMail company gather given the Conduit company and without it. As the \autoref{fig:incredimail_sym_conduit} shows, IncrediMail clearly benefits from the users with Conduit.
+On the other hand, testing the relation between Babylon and ASK (known revivals in the toolbar field), clearly shows that Babylon does not benefit from being installed with ASK Toolbar, see \autoref{fig:babylon_nosym_ask}. It is interesting to note, that our technique has revealed a relation contemporary to the co-occurrence between two companies.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/JaccardMatrix.png}
+\caption{All companies Jaccard index}
+\label{fig:jaccard_matrix}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/incredi_sym_conduit.png}
+\caption{IncrediMail symbiotic relation with Conduit}
+\label{fig:incredimail_sym_conduit}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/babylon_nosym_ask.png}
+\caption{Babylon non-symbiotic relation with ASK Toolbar}
+\label{fig:incredimail_sym_conduit}
+\end{figure}
+
+
+
+
 When all addons of a particular company comprise the PPR query, it would be natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
 
 Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $C_i$ that is involved in a symbiotic relationship with the query company $C_q$. Our goal is to reveal such a relationship based on the $C_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $C_i$, we could make a conclusion about the probability of a symbiotic relationship between $C_i$ and $C_q$.
@@ -1798,36 +1828,36 @@ where $p_i$ is the probability of drawing addon $a_i$ out of all $C$'s addons. S
 
 %Add the formula that describes relative jump. Expected score
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-\begin{table}[h]
+\begin{table}[]
 \centering
 \caption{PageRank scores}
 \label{table:pagerank_scores}
-\begin{tabular}{@{}llll@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllll@{}}
 \toprule
-Company name   & \#addons & PageRank score & Expected PageRank score \\ \midrule
-ASK            & 229038   & 8.79139              & 0.97682                \\
-AVG            & 131337   & 8.50985              & 0.38681                \\
-Avira          & 10624    & 0.45046              & 0.15015                \\
-Babylon        & 191386   & 23.22184             & 1.10580                \\
-Blekko         & 14381    & 0.43715              & 0.06245                \\
-Conduit        & 21671    & 0.51959              & 0.07423                \\
-Google         & 187455   & 13.40115             & 1.11676                \\
-iMesh          & 23954    & 7.05849              & 0.64168                \\
-Incredimail    & 76198    & 5.79210              & 0.48268                \\
-Hotspot Shield & 54675    & 2.00773              & 0.28682                \\
-Kaspersky      & 47793    & 2.65493              & 0.53099                \\
-Montiera       & 809      & 0.01752              & 0.01752                \\
-Norton         & 53826    & 3.22903              & 0.40363                \\
-Zugo           & 5169     & 0.23296              & 0.02912                \\
-Softonic       & 29410    & 0.82528              & 0.05158                \\
-SpeedBit       & 484676   & 59.02209             & 2.81058                \\
-SweetIM        & 84871    & 2.49227              & 0.49845                \\
-Trend Micro    & 10325    & 0.56126              & 0.05102                \\
-Zone Alarm     & 3597     & 0.10790              & 0.01541                \\ \bottomrule
+ & \textbf{\#addons} & \textbf{PageRank score} & \textbf{Expected PageRank score} &  \\ \midrule
+\textbf{ASK} & 229038 & 8.79139 & 3.930655827 &  \\
+\textbf{AVG} & 131337 & 8.50985 & 1.458013998 &  \\
+\textbf{Avira} & 10624 & 0.45046 & 0.165028673 &  \\
+\textbf{Babylon} & 191386 & 23.22184 & 9.064855902 &  \\
+\textbf{Blekko} & 14381 & 0.43715 & 0.147602568 &  \\
+\textbf{Conduit} & 21671 & 0.51959 & 0.188175047 &  \\
+\textbf{Google} & 187455 & 13.40115 & 3.327125475 &  \\
+\textbf{Imesh} & 23954 & 7.05849 & 1.439130402 &  \\
+\textbf{IncrediMail} & 76198 & 5.7921 & 2.375531006 &  \\
+\textbf{Hotspot} & 54675 & 2.00773 & 1.053817694 &  \\
+\textbf{Kaspersky} & 47793 & 2.65493 & 0.849401341 &  \\
+\textbf{Montiera} & 809 & 0.01752 & 0.017516 &  \\
+\textbf{Norton} & 53826 & 3.22903 & 1.078813495 &  \\
+\textbf{Searchtoolbar} & 5169 & 0.23296 & 0.043609128 &  \\
+\textbf{Softonic} & 29410 & 0.82528 & 0.274080246 &  \\
+\textbf{SspeedBit} & 484676 & 59.02209 & 7.540780048 &  \\
+\textbf{SweetIM} & 84871 & 2.49227 & 1.445297894 &  \\
+\textbf{TrendMicro} & 10325 & 0.56126 & 0.155437633 &  \\
+\textbf{ZoneAlarm} & 3597 & 0.1079 & 0.030242981 &  \\ \bottomrule
 \end{tabular}
-\end{table}  
+}
+\end{table}
 
 \iffalse
 A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
@@ -1849,9 +1879,9 @@ The same relationship is detected for Babylon and Conduit, see \autoref{fig:baby
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
-\includegraphics[scale=0.49]{figures/babylon_sym_conduit.png}
-\caption{Babylon symbiotic relationship with Conduit}
-\label{fig:babylon_sym_conduit}
+\includegraphics[scale=0.49]{figures/incredi_sym_conduit.png}
+\caption{Incredimail symbiotic relationship with Conduit}
+\label{fig:incredi_sym_conduit}
 \end{subfigure}
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
