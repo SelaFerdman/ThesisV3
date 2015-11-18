@@ -1301,31 +1301,9 @@ Detail number of add-ons before and after filtering.
 Can show results of multiple configurations as curves on the same graph.
 \fi
 
-\paragraph{Main results}
+\subsubsection{Main results}
 
 Figure~\ref{fig:main} shows recall-at-k performance using PPR, comparing it against ranking-by-popularity and PageRank rankings. Full results, including standard deviation figures and MRR results are detailed in Table~\ref{tab:full}. 
-
-\begin{figure}[t]
-\centering
-%\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/pop-final.png} \\
-(a) \\
-%\caption{Recall@K}
-%\label{fig:minlen2remove500Recall}
-%\end{subfigure}
-%\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/sans-popular-final.png} \\
-(b) \\
-%\caption{MRR}
-%\label{fig:minlen2remove500MRR}
-%\end{subfigure}
-	\caption{Main results: recall at top ranks for the full graph (a), and a graph excluding the most popular add-ons (b)}
-	\label{fig:main}
-\end{figure}
-
-
 \begin{table}[p]
 \centering
 \caption{Standard deviation and Standard error of the Mean}
@@ -1364,6 +1342,26 @@ Full path & POP & 	0.004 (0.003) & 0.019 (0.006) & 0.033 (0.007) & 0.003 (0.001)
 \end{tabular}
 \end{table}
 
+\begin{figure}[h]
+\centering
+%\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/pop-final.png} \\
+(a) \\
+%\caption{Recall@K}
+%\label{fig:minlen2remove500Recall}
+%\end{subfigure}
+%\begin{subfigure}[b]{0.49\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/sans-popular-final.png} \\
+(b) \\
+%\caption{MRR}
+%\label{fig:minlen2remove500MRR}
+%\end{subfigure}
+	\caption{Main results: recall at top ranks for the full graph (a), and a graph excluding the most popular add-ons (b)}
+	\label{fig:main}
+\end{figure}
+
 Let us first consider the general scenario, in which the underlying graph contains all of the {\it add-ons}, including the most prevalent ones. As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable performance to the alternative methods. Recall-at-rank-10 using PPR is as high as .354, reaching recall of .660 and .801 at the top 50 and top 100 ranks, respectively. Compared with the non-personalized popularity-based ranking, recall-at-10 results improve at a high rate of 45.7\% using PPR (.354 vs. .243). Improvement rates at rank-50 and rank-100 measure 18.9\% and 12.7\%, respectively. These results indicate that PPR excels at recovering the missing add-on in general, as well as at distinguishing it from other add-ons as highly relevant. Interestingly, performance using the popularity- and PageRank-based rankings is nearly identical. This result is not very surprising as the most popular {\it add-ons} are likely to be prominent in terms of graph centrality. 
 
 We further evaluated a graph variant, in which highly-connected add-ons have been removed (see Sec.~\ref{sec:design}). This scenario is more challenging, as the queried dis-associated {\it add-ons} are necessarily not of high-frequency. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular add-ons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This again indicates that popular nodes occupy the top ranks, pushing relevant but less popular answer nodes to lower positions of the ranked list.  
@@ -1381,24 +1379,9 @@ We were interested in investigating the reasons for the low impact of {\it term}
 
 SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS?
 
-Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-on} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with path information removed (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
+Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-ons} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved if path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with no path information (e.g., recall-at-10 measured at .478). We therefore conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
 
-CONTINUE HERE
-
-The performance of the popularity-based approach, however, plummets in this setting (recall-at-rank-10 diminished by 73.3\% from .243 to .0065). PageRank's performance is affected to a lesser extent (recall-at-rank-10 reduced by 23.9\% from .243 to .185). 
-
-addons paths hurts the performance, this can support our claim that
-high degree nodes, which obviously added when adding addons paths,
-disturb the PPR weight propagation from the real missing addons
-nodes. Interestingly, adding addons paths but removing high degree
-nodes improves the performance of our algorithm, see
-\autoref{fig:with_without_paths_remove500}. These two experiments,
-shown in \autoref{fig:with_without_paths}, support our claim that high
-degree nodes should be removed to improve prediction quality. Since,
-once they are removed, addition information about the user, like it
-paths, contributes to understanding and predicting its ecosystem
-state.
-
+As shown in Table ~\ref{tab:full}, the performance of the popularity-based approach plummets in this setting (recall-at-rank-10 diminished by 73.3\% from .243 to .0065). PageRank's performance is affected to a lesser extent (recall-at-rank-10 reduced by 23.9\% from .243 to .185). These two non-personalized baselines simply assess node prominence--splitting add-ons by path therefore provides these algorithms with less useful statistics; in the lack of personalisation, they cannot model sub-clusters in the populations, as described above.
 
 \iffalse
 \begin{figure}[t]
@@ -1463,7 +1446,9 @@ state.
 \end{figure}
 \fi
 
-As we have mentioned earlier, in order for our prediction algorithm to
+\subsubsection{Sensitivity to population size}
+
+MODIFY THIS. As we have mentioned earlier, in order for our prediction algorithm to
 run, we require that user has at least two add-ons. At
 \autoref{fig:addonsNumberGraph},we are showing the affect number of
 addons that user have pre-installed on the algorithm accuracy. The
@@ -1475,7 +1460,7 @@ i.e. receives its PageRank score, mainly from other users that have a
 similar ecosystem - that the lesser addons user has the more unique
 its ecosystem.
 
-\begin{figure}[p]
+\begin{figure}[t]
 \centering
 \includegraphics[scale=1,angle=0]{figures/addonsNumberGraph.png}
 \caption{Effect of addon number on prediction accuracy}
@@ -1483,7 +1468,7 @@ its ecosystem.
 \end{figure}
 
 
-
+\iffalse
 We have also verified that user nodes are crucial for the prediction
 algorithm, as shown in \autoref{fig:nouserNoremove}.
 
@@ -1493,7 +1478,7 @@ algorithm, as shown in \autoref{fig:nouserNoremove}.
 \caption{Effect of user nodes on prediction accuracy}
 \label{fig:nouserNoremove}
 \end{figure}
-
+\fi
 
 \section{Discussion}
 Our prediction algorithm performs best on full graph when highly
@@ -1681,7 +1666,7 @@ For each company from our list, we construct the PPR query to contain all the co
 
 Generally speaking, there may be multiple ways to detect symbiosis between addon manufacturing companies. One could suggest a simple way for detecting a symbiotic relationship which would be based on computing co-occurrence frequencies of addons on users' machines. If many addons of company $C_i$ are installed on the same machines where addons of company $C_j$ are installed, we may conclude that the two companies live in symbiosis with each other. To validate this hypothesis, we set up a simple experiment. For each pair of companies from our list (\autoref{table:companies_list}), we computed Jaccard index~\citep{jaccard1912distribution} which is the measure of overlap of two sets. We denote $\mathbf{M}_i$ the set of machines on which addons of company $C_i$ are installed. Analogously, we denote $\mathbf{M}_j$ the set of machines on which addons of company $C_j$ are installed. Jaccard index is then defined as:
 $$
-Jaccard(C_i, C_j) = \frac{\|\mathbf{M}_i \cap \mathbf{M}_j\|}{\|\mathbf{M}_i\| + \|\mathbf{M}_j\| - \|\mathbf{M}_i \cap \mathbf{M}_j\|},
+Jaccard(C_i, C_j) = \frac{|\mathbf{M}_i \cap \mathbf{M}_j|}{|\mathbf{M}_i| + |\mathbf{M}_j| - |\mathbf{M}_i \cap \mathbf{M}_j|},
 $$
 where the absolute value symbol means the cardinality of a set.
 
@@ -1692,9 +1677,9 @@ where the absolute value symbol means the cardinality of a set.
 \label{fig:jaccard_matrix}
 \end{figure}
 
-The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}. As we can see, some pairs of addon manufacturing companies have quite a significant co-occurrence, comprising of up to 24\% machines on which the two companies' addons are installed (taken as a union). The results are counter-intuitive though. [RON: Here]
+The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}. As we can see, some pairs of addon manufacturing companies have quite a significant co-occurrence, comprising of up to 24\% machines on which the two companies' addons are installed (when taken as a union). Qualitatively, the results appear mostly counter-intuitive though. An example of high co-occurrence according to Jaccard index is between Ask Toolbar, AVG, Google Toolbar, and Babylon --- all those companies were distributing their own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. Moreover, other companies such as Incredimail and Conduit, which are known for cooperation between them\footnote{Conduit eventually acquired Incredimail, see \url{http://goo.gl/4dybI6}}, do not heavily co-occur.
 
-Addon co-occurrence does not infer addons symbiotic relations and we have even found that some of the addons that are highly co-occur actually are competitive to each other. We have used the Jaccard index for measuring the co-occurrence, as in \citep{jaccard1912distribution}.  An example of high co-occurrence according to Jaccard index is between Ask Toolabr, AVG, Google Toolbar and Babylon, but all of these companies were distributing its own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. While other companies like Incredimail and Conduit, which are known for cooperation between them, Conduit eventually acquired Incredimail \footnote{\url{http://goo.gl/4dybI6}}, does not co-occur highly.
+[RON: explanation]
 
 Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
 
