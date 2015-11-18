@@ -432,7 +432,7 @@ We experiment in this study with large-scale authentic data.  The data includes 
 
 {\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
 
-{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values}[SELA: All the examples with all fields non empty are with less relevant companies, should we show it anyway?] includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
+{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values[SELA: All the examples with all fields non empty are with less relevant companies, should we show it anyway?]} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
 \item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
@@ -449,8 +449,8 @@ We experiment in this study with large-scale authentic data.  The data includes 
 \label{fig:db_addons_snapshot}
 \end{figure}
 
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figure \ref{fig:addons_versioning_snapshot} \textcolor{red}{also here: use examples that include non-empty description values} illustrates the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.  \textcolor{red}{Say a bit more about the data: is there any add-on attribute that is always populated? path perhaps? how often is the add-on name or description left empty?}
-[SELA: Typically in Internet Explorer there is a path attribute, in Mozilla Firefox and Google Chrome browsers there is a name attribute. But in most cases one of the attributes is empty.]
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figure \ref{fig:addons_versioning_snapshot} \textcolor{red}{also here: use examples that include non-empty description values} illustrates the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.  \textcolor{red}{Say a bit more about the data: is there any add-on attribute that is always populated? path perhaps? how often is the add-on name or description left empty?
+[SELA: Typically in Internet Explorer there is a path attribute, in Mozilla Firefox and Google Chrome browsers there is a name attribute. But in most cases one of the attributes is empty.]}
 
 \begin{figure}[t]
 \centering
@@ -639,7 +639,7 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-". \textcolor{red}{Did you apply stemming?};, no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
@@ -692,7 +692,7 @@ edges. \textcolor{red}{Detail the number of nodes by type in a table}.
 \end{figure}
 
 \chapter{The missing addon in User ecosystem}
-\label{fig:zipf}
+\label{chap:user_ecosystem}
 \iffalse
 \textcolor{green}{\textit{Einat: Start by introducing the problem, why it is interesting..}}\\
 \fi
@@ -1183,12 +1183,13 @@ networks. In our settings, there is a single correct answer per query. It is des
 \subsection{Statistical validity}
 
 Overall, we generated datasets that include $N=1000$ labeled examples, each sampled from a unique user...
-For example, we uniformly at randomd choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar_32.dll. Each addon is represented by a node in our graph, as well as the user. After discovering all user addons, we randomly choose one addon to remove. Lets say we choose the googletoolbar_32.dll addon. The remaining four addons are the query vector for the personalized PageRank. After executing the PPR and removing from the ranking list the nodes of the query vector, we look for the removed addon rank. If it is ranked in top 10, this rank will contribute to Recall@10.
+For example, we uniformly at random choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Each addon is represented by a node in our graph, as well as the user. After discovering all user addons, we randomly choose one addon to remove. Lets say we choose the googletoolbar\_32.dll addon. The remaining four addons are the query vector for the personalized PageRank. After executing the PPR and removing from the ranking list the nodes of the query vector, we look for the removed addon rank. If it is ranked in top 10, this rank will contribute to Recall@10.
 The corpus contains multi-national users from all around the globe.
-\textcolor{red}{Give a detailed example of a query?}
+For most of the experiments we have generated four datasets with $N=1000$ labeled examples, checked its standard error and calculated average scores.
+\textcolor{red}{Give a detailed example of a query?
 Explain that the 1000 were chosen uniformally at random
 also explainx4k
-\textcolor{red}{What else can we say here?.. are the selected users in
+What else can we say here?.. are the selected users in
   the dataset and corpus multi-national, or geographically focused?
   any other characteristics worth mentioning?}
 
@@ -1384,7 +1385,7 @@ We were interested in investigating the reasons for the low impact of {\it term}
 
 \subsubsection{Sensitivity to path information}
 
-SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS? No, we break into terms according to slash, backslash or space.
+\textcolor{red}{SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS? No, we break into terms according to slash, backslash or space.}
 
 Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-on} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with path information removed (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
 
@@ -1614,8 +1615,9 @@ In \autoref{chap:user_ecosystem} our algorithm's viewpoint was set of add-ons of
 \fi
 
 \section{Experimental design}
+\label{sec:experiment_des}
 
-In ~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analyze the behavior of \emph{species}, i.e.~addon developing companies. In the new setting, we first need to reveal which addons belong to which companies. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- instead, we are concerned with mapping addon names to company names. Also, it is important to mention that addons bear characteristics of a machine on which they are installed. For example, the file-system path of an addon on a specific machine may or may not be unique among all addons we observe in this study: a user can choose to install an addon at a non-standard location in his/her machine's file system, or stick to a default location instead.
+In~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analyze the behavior of \emph{species}, i.e.~addon developing companies. In the new setting, we first need to reveal which addons belong to which companies. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- instead, we are concerned with mapping addon names to company names. Also, it is important to mention that addons bear characteristics of a machine on which they are installed. For example, the file-system path of an addon on a specific machine may or may not be unique among all addons we observe in this study: a user can choose to install an addon at a non-standard location in his/her machine's file system, or stick to a default location instead.
 
 As discussed in Section~\ref{sec:methods}, an addon is represented in our system by three data attributes: the addon's name, the full file-system path of its installation, and a textual description. Each one (or any two but not all three) of the attributes may be empty. To infer which addon belongs to which company, we first apply a simple heuristic of detecting the company name within the three attributes of an addon. The rationale behind this is that the default path of an addon package installation often contains the company's name. If a user does not choose to change the default option, the company name will be detected in the addon's path. In addition, the name and the description fields may contain the company name as well, see \autoref{table:addon_desc} for an example.
 
@@ -1675,7 +1677,12 @@ For each company from our list, we construct the PPR query to contain all the co
 \STATE Define personalization vector $v$, with seed nodes as all addons $\in COMP\ $
 \STATE Execute Personalized PageRank
 \STATE Rank all addons according to the PPR score
-\STATE Store the results [RON: I guess we need something more sufficient than storing the results]
+\FOR{company $d\in COMP\ $ (except for company C - the one with seed nodes)}
+\STATE Sum all expected PPR scores -> gives ePPR scores sum
+\STATE Compare with previous expected sum of PR scores
+\STATE If there is a significant drop -> clash
+\STATE If there is a significant increase -> symbiosis
+\ENDFOR
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -1683,6 +1690,9 @@ For each company from our list, we construct the PPR query to contain all the co
 \section{Analysis}
 \subsection{Symbiotic Relationships}
 \label{sec:symb_relations}
+
+\subsubsection{Addon Co-occurrence}
+\label{subsub:co_occurrence}
 
 Generally speaking, there may be multiple ways to detect symbiosis between addon manufacturing companies. One could suggest a simple way for detecting a symbiotic relationship which would be based on computing co-occurrence frequencies of addons on users' machines. If many addons of company $C_i$ are installed on the same machines where addons of company $C_j$ are installed, we may conclude that the two companies live in symbiosis with each other. To validate this hypothesis, we set up a simple experiment. For each pair of companies from our list (\autoref{table:companies_list}), we computed Jaccard index~\citep{jaccard1912distribution} which is the measure of overlap of two sets. We denote $\mathbf{M}_i$ the set of machines on which addons of company $C_i$ are installed. Analogously, we denote $\mathbf{M}_j$ the set of machines on which addons of company $C_j$ are installed. Jaccard index is then defined as:
 $$
@@ -1697,19 +1707,17 @@ where the absolute value symbol means the cardinality of a set.
 \label{fig:jaccard_matrix}
 \end{figure}
 
-The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}. As we can see, some pairs of addon manufacturing companies have quite a significant co-occurrence, comprising of up to 24\% machines on which the two companies' addons are installed (taken as a union). The results are counter-intuitive though. [RON: Here]
+The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}. As we can see, some pairs of addon manufacturing companies have quite a significant co-occurrence, comprising of up to 24\% machines on which the two companies' addons are installed (taken as a union). 
 
-Addon co-occurrence does not infer addons symbiotic relations and we have even found that some of the addons that are highly co-occur actually are competitive to each other. We have used the Jaccard index for measuring the co-occurrence, as in \citep{jaccard1912distribution}.  An example of high co-occurrence according to Jaccard index is between Ask Toolabr, AVG, Google Toolbar and Babylon, but all of these companies were distributing its own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. While other companies like Incredimail and Conduit, which are known for cooperation between them, Conduit eventually acquired Incredimail \footnote{\url{http://goo.gl/4dybI6}}, does not co-occur highly.
+Somewhat counter-intuitively, the most significant co-occurrences do not appear corresponding to known collaborations between addon distributors. Even more counter-intuitively, some significant co-occurrences correspond to known competitions between addon distributors. An example is Ask.com, AVG, Google, and Babylon, all of which heavily co-occurring in our dataset. The four companies are distributing their own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. On the other hand, some companies such as IncrediMail and Conduit, which are known for cooperation between them\footnote{Conduit eventually acquired IncrediMail, see~\url{http://goo.gl/4dybI6}.}, do not co-occur heavily.
 
-Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
+A possible explanation for heavy co-occurrence of competing toolbars is actually in the intensity of the competition: major toolbar manufacturers are all working hard on ``sneaking in'' as many machines as possible. They all have very strong distribution mechanisms that allow a constant increase in their market penetration. While their toolbars get installed on many machines, they do not necessarily ``kick out'' toolbars of their competitors. Moreover, a direct clash is pretty rare because of enormous resources it would require given the size and significance of competing companies, and potential legal implications. Therefore, multiple toolbars get installed on the same machine, which is mostly the function of the user's tolerance: some users do not care / are not aware of / do not know how to prevent multiple toolbar installations. This leads to high co-occurrence of toolbars on some machines, but does not in the end indicate any collaboration between the toolbar distributors.
 
-[SELA:]
+To summarize, addon co-occurrence computation does not appear to be the correct way to reveal symbiotic relationships between addon distributors.
 
-By performing the personalized PageRank analysis we discover the truly symbiosis relations between companies and its brands.
-In \autoref{fig:incredi_sym_conduit}, we show the expected PageRank scores that IncrediMail company gather given the Conduit company and without it. As the \autoref{fig:incredi_sym_conduit} shows, IncrediMail clearly benefits from the users with Conduit.
-On the other hand, testing the relation between Babylon and ASK (known revivals in the toolbar field), clearly shows that Babylon does not benefit from being installed with ASK Toolbar, see \autoref{fig:babylon_nosym_ask}. It is interesting to note, that our technique has revealed a relation contrary to the co-occurrence between two companies.
-More symbiotic relations is shown in \autoref{fig:symbiotic_2}. The \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield benefits from Conduit, and indeed a simple web search shows there is a strong relation between the two \footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a curious relationship between an anti virus company (Avira) and addons distributor ASK, looking at other anti virus companies relation with addons distributors, we see that usually the distributor scores suffer from anti virus companies, see \autoref{fig:ask_clash_trend}, but in \autoref{fig:ask_sym_avira} we observer that ASK toolbar benefits from Avira. The explanation lays in Avira's official web page, where they are saying "..Avira choose to include the Ask.com’s toolbar in Service Pack 2...", \footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
+\subsubsection{Personalized PageRank}
 
+Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use Personalized PageRank as the main mechanism to detect company symbiosis in the Web browser ecosystem. Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
 
 \iffalse
 \begin{figure}[h]
@@ -1825,17 +1833,24 @@ where $p_i$ is the probability of drawing addon $a_i$ out of all $C$'s addons. S
 A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
 \fi
 
-As described above, we aggregate PageRank scores of all company addons and compare between companies based on the aggregated score. For each company $C_q$ in the PPR query, we rank all the other companies of our interest according the the company's aggregated PPR score. We also maintain the ranked list of companies sorted by their aggregated (non-personalized) PR scores. For each $C_q$, we compare the two ranked lists of companies. If a company $C_i$ ``pops up'' closer to the top of the $C_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $C_i$ and $C_q$ are in a symbiotic relationship. See~\autoref{fig:symbiotic_pagerank} for the summary of our results.
+As described above, we aggregate PageRank scores of all company addons and compare between companies based on the aggregated score. For each company $C_q$ in the PPR query, we rank all the other companies of our interest according the the company's aggregated PPR score. We also maintain the ranked list of companies sorted by their aggregated (non-personalized) PR scores. For each $C_q$, we compare the two ranked lists of companies. If a company $C_i$ ``pops up'' closer to the top of the $C_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $C_i$ and $C_q$ are in a symbiotic relationship. 
+
+%[SELA:]
+
+The personalized PageRank analysis appears very successful in revealing truly symbiotic relations between companies.
+In~\autoref{fig:incredi_sym_conduit}, we show the expected PageRank score of IncrediMail in Conduit's PPR and in non-personalized PageRank. As the \autoref{fig:incredi_sym_conduit} shows, IncrediMail clearly benefits from Conduit. As we mentioned in~\autoref{subsub:co_occurrence}
+On the other hand, testing the relation between Babylon and ASK (known revivals in the toolbar field), clearly shows that Babylon does not benefit from being installed with ASK Toolbar, see \autoref{fig:babylon_nosym_ask}. It is interesting to note, that our technique has revealed a relation contrary to the co-occurrence between two companies.
+More symbiotic relations is shown in \autoref{fig:symbiotic_2}. The \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield benefits from Conduit, and indeed a simple web search shows there is a strong relation between the two \footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a curious relationship between an anti virus company (Avira) and addons distributor ASK, looking at other anti virus companies relation with addons distributors, we see that usually the distributor scores suffer from anti virus companies, see \autoref{fig:ask_clash_trend}, but in \autoref{fig:ask_sym_avira} we observer that ASK toolbar benefits from Avira. The explanation lays in Avira's official web page, where they are saying "..Avira choose to include the Ask.com’s toolbar in Service Pack 2...", \footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
 
 %\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
 
-IncrediMail (Perion) and Conduit
+%IncrediMail (Perion) and Conduit
 
-Avtiviruses bring other antiviruses down
+%Avtiviruses bring other antiviruses down
 
-Zugo, SearchToolbar and SweetIM going together
+%Zugo, SearchToolbar and SweetIM going together
 
-The same relationship is detected for Babylon and Conduit, see \autoref{fig:babylon_sym_conduit}, and again there is more than one online resource indicating the same. For example, Babylon addon named \emph{tbmyba.dll} is a Conduit Toolbar component\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}. In fact, Conduit is known as a Toolbar manufacturer for other companies.
+%The same relationship is detected for Babylon and Conduit, see \autoref{fig:babylon_sym_conduit}, and again there is more than one online resource indicating the same. For example, Babylon addon named \emph{tbmyba.dll} is a Conduit Toolbar component\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}. In fact, Conduit is known as a Toolbar manufacturer for other companies.
 
 
 \subsection{Clash Relationships}
