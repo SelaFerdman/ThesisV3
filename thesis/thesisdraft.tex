@@ -117,7 +117,7 @@
 \\ [10mm]University of Haifa
 \\ [1mm]Faculty of Social Sciences
 \\ [1mm]Department of Computer Sciences
-\\ [3mm]March, 2015
+\\ [3mm]November, 2015
 \\ [8mm] Approved by:
 $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace}$
    \bigspace    Date:$\underline{\bigspace\bigspace}$
@@ -480,7 +480,7 @@ In order to enable assessment of textual similarity for record co-reference purp
 
 
 \section{Graph representation}
-
+\label{sec:graph_representation}
 \begin{table}[t]
 \begin{center}
 \begin{small}
@@ -1071,7 +1071,7 @@ mainly:
   on users' machines with multiple input add-ons will be prioritized
   in the rankings. 
 \item {\it term-based similarity}: As demonstrated before
-  (Sec. \textcolor{red}{x}), the name and descriptions of add-on
+  (Sec. \autoref{sec:graph_representation}), the name and descriptions of add-on
   instances are varied. In particular, the same add-on may include
   different version numbers. The representation graph links each {\it
     add-on} node with the {\it terms} that it contains. Thus,
@@ -1150,19 +1150,14 @@ We use a set of standard information retrieval metrics for the evaluation of the
 place the relevant node at high ranks on average, across all queries. A short description of the evaluation measures follows.
 
 \paragraph{Recall at k (Recall@k)}
-This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{Sela: the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matte most. 
+This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{Sela: the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
 For recommendation systems, users usually will only view several top ranked candidates. Therefore
 whether the correct addon exists in the top ranked candidates is
 important, and Recall@k is designed for measuring this. \textcolor{red}{Need to discuss how to introduce the missing add-on problem alongside a recommendation application.}
 \begin{equation}
- Recall = \frac{number \, of \, relevant \, documents \, retrieved}{number \, of \, relevant \, documents}
+ Recall@k = \frac{1}{N} \times \displaystyle\sum\limits_{k=1}^{N} (Recall \, at \, rank \, of \, k^{th} \, relevant \, addon)
 \label{eq:rec-at-k}
 \end{equation}
-\iffalse
-\begin{displaymath}
- Precision = \frac{number \, of \, relevant \, documents \, retrieved}{number \, of \, retrieved \, documents}
-\end{displaymath}
-\fi
 
 
 \paragraph{Mean Reciprocal Rank (MRR)}
@@ -1206,7 +1201,7 @@ by design choices concerning the graph structure and the random walk scheme. Thi
 
 \subsubsection{PPR} In this research, we experiment with a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package, a numerical software library written in FORTRAN 77, for solving large
 scale eigenvalue problems (used also in Mining and Analyzing Social
-Networks book \textcolor{red}{?--cite}). Concretely, ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
+Networks book \citep{ting2004minig}). Concretely, ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
 vertices. We have created a unique number for each node and store the
 mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
 management (every very small leak would cause a serious global memory
@@ -1234,16 +1229,16 @@ The proposed graph schema is simple and natural in the sense that it directly re
 
 \subsubsection{Pruning of high-degree nodes} 
 
-Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure (\textcolor{red}{cite the Pizzaman work}). First, high density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. Removing such high degree nodes should only result in only a small approximation error [cite Purnamrita Sarkar], while improving performance by increasing the `visibility' of lower-degree nodes. MERGE WITH: Such high-frequency nodes are generally known to be of low value for similarity assessment. In the graph walk schema, this implies that the probability mass assigned to such nodes would be distributed among a large variety of neighboring nodes in the random walk process, having little impact on the final rankings. At the same time, such nodes are likely to receive a large number of contributions from their neighbors. The output list is likely therefore to be biased towards popular nodes. Ideally, the score distribution produced by Personalized PageRank should reflect node relevancy to the input teleportation vector, which simulates the user's ecosystem. The impact of high degree nodes may reduce the influence of the original seeds.
+Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. First, high density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. Removing such high degree nodes should only result in only a small approximation error [cite Purnamrita Sarkar], while improving performance by increasing the `visibility' of lower-degree nodes. MERGE WITH: Such high-frequency nodes are generally known to be of low value for similarity assessment. In the graph walk schema, this implies that the probability mass assigned to such nodes would be distributed among a large variety of neighboring nodes in the random walk process, having little impact on the final rankings. At the same time, such nodes are likely to receive a large number of contributions from their neighbors. The output list is likely therefore to be biased towards popular nodes. Ideally, the score distribution produced by Personalized PageRank should reflect node relevancy to the input teleportation vector, which simulates the user's ecosystem. The impact of high degree nodes may reduce the influence of the original seeds.
 
-Following previous works \textcolor{red}{can we cite any?},
+Following previous works, as in \citep{sarkar2010fast},
 we experiment with a graph variant, in which high-degree nodes are
 removed. We set the threshold over a node's out-degree to 500 in this
 work. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it add-ons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries include {\it add-ons} that may be less trivial to predict. One may find special interest in this configuration for the purpose of recommending {\it add-ons} as the recommendation of highly popular and possibly familiar {\it add-ons} may be less beneficial for some users. 
 
 \subsubsection{Term modeling}
 
-The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix?} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
+The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix? SELA: We did not check.} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
 
 \subsubsection{Specificity of path information} 
 
@@ -1379,7 +1374,7 @@ We were interested in investigating the reasons for the low impact of {\it term}
 
 \subsubsection{Sensitivity to path information}
 
-SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS?
+SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS? No, we break into terms according to slash, backslash or space.
 
 Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-on} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with path information removed (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
 
