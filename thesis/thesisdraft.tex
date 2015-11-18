@@ -1150,7 +1150,7 @@ We use a set of standard information retrieval metrics for the evaluation of the
 place the relevant node at high ranks on average, across all queries. A short description of the evaluation measures follows.
 
 \paragraph{Recall at k (Recall@k)}
-This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{Sela: the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
+This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{SELA: DONE? the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
 For recommendation systems, users usually will only view several top ranked candidates. Therefore
 whether the correct addon exists in the top ranked candidates is
 important, and Recall@k is designed for measuring this. \textcolor{red}{Need to discuss how to introduce the missing add-on problem alongside a recommendation application.}
@@ -1174,7 +1174,8 @@ networks. In our settings, there is a single correct answer per query. It is des
 \subsection{Statistical validity}
 
 Overall, we generated datasets that include $N=1000$ labeled examples, each sampled from a unique user...
-
+For example, we uniformly at randomd choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar_32.dll. Each addon is represented by a node in our graph, as well as the user. After discovering all user addons, we randomly choose one addon to remove. Lets say we choose the googletoolbar_32.dll addon. The remaining four addons are the query vector for the personalized PageRank. After executing the PPR and removing from the ranking list the nodes of the query vector, we look for the removed addon rank. If it is ranked in top 10, this rank will contribute to Recall@10.
+The corpus contains multi-national users from all around the globe.
 \textcolor{red}{Give a detailed example of a query?}
 Explain that the 1000 were chosen uniformally at random
 also explainx4k
@@ -1212,7 +1213,7 @@ We compare our algorithms against two strong baselines: ranking {\it add-ons} by
 
 \subsubsection{Popularity baseline} 
 A simple approach for predicting the `missing' add-on would be to rank the {\it add-on} items by their popularity, determined by the total number of users associated with each add-on in the dataset. Using this approach, the response to all queries is equal and fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
-add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution  \textcolor{red}{cite Keren's thesis}. Another advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for datasets containing hundreds of thousands of users and tens of millions of items by means of database querying. 
+add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution  \textcolor{red}{cite Keren's thesis, SELA: What to cite?}. Another advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for datasets containing hundreds of thousands of users and tens of millions of items by means of database querying. 
 
 \subsubsection{PageRank baseline} 
 For each addon we have calculated its PageRank score given the underlying graph. The PageRank scores assigned to the graph nodes 
