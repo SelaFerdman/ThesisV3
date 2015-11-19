@@ -428,11 +428,11 @@ same addon.}}
 
 We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
 
-\textcolor{red}{Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
+\textcolor{red}{SELA: Add ERD of DB.Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
 
 {\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
 
-{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values[SELA: All the examples with all fields non empty are with less relevant companies, should we show it anyway?]} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
+{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values[SELA: Add an example with non empty description .All the examples with all fields non empty are with less relevant companies, should we show it anyway?]} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
 \item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
@@ -729,7 +729,7 @@ removed. The task then becomes an instantiation of the {\it link
   prediction} problem, where the goal is to reveal a new association
 of interest ({\it has-add-on}, in this case) between graph nodes.
 
-Link prediction is odten manifested in terms of semantic similarity,
+Link prediction is often manifested in terms of semantic similarity,
 where there exist numerous graph-based similarity measures that may be
 readily utilized for this purpose. We use in this work Personalized
 PageRank (PPR), a random walk based similarity metric in graphs.
@@ -785,7 +785,7 @@ scores based on the link structure of the graph. In this paper, we use
 the rankings of Personalized PageRank, as a criteria for recommending
 an addon. Taking a specific set of user addons as PPR input query, a
 ranking over all the other addon nodes can be leveraged for the
-detection of missing addon in user ecosystem.\\
+detection of missing addon in user ecosystem.
 
 \subsection{Personalized PageRank}
 \label{sec:PPR_addons_method}
@@ -840,8 +840,8 @@ Webpages.
 
 The PageRank algorithm described computes universal node importance,
 or `centrality' scores, soley based on the network structure, that is,
-ignoring user preferences. The {\it Personalized PageRank} variant
-\cite{pagerank,RichardsonNIPS02} biases the random walk model to
+ignoring user preferences. The {\it Personalized PageRank} variant, as in
+\citep{richardson2001intelligent}, biases the random walk model to
 generate rankings that reflect user preferences, represented as a
 distribution of interest over the graph nodes. This bias is modeled by
 a small and natural adaptation of the PageRank random walk
@@ -865,7 +865,7 @@ query. It has been shown that the Personalized PageRank score for a
 target node $z$ and a query node $x$ equals a summation over all of
 the connecting paths between $x$ and $z$ (including cyclic paths, and
 paths that cross $z$ multiple times), where paths are weighted by
-their probability \cite{jehWWW03,fogaras05}. In words, the graph walk
+their probability \citep{jeh2003scaling},\citep{fogaras2004towards}. In words, the graph walk
 distributes probability mass from a start distribution over nodes
 through edges in the graph---incidentally accumulating evidence of
 similarity over multiple connecting paths. Due to the reset
@@ -952,7 +952,7 @@ Personalized PageRank is an extension of the famous PageRank algorithm
 \cite{page1999pagerank}, both of which are based on a random surfer
 model. To understand Personalized PageRank, we first review the
 original PageRank briefly. A random surfer starts at any node on the
-graph. At each step, with a probability of 1−$\alpha$ the surfer moves
+graph. At each step, with a probability of 1\−$\alpha$ the surfer moves
 to a neighboring node randomly, and with a probability of $\alpha$ he
 teleports to a random node on the graph. This process is repeated
 until the walk converges to a steady-state. The stationary probability
@@ -1054,7 +1054,7 @@ operation equals ${1\over 7}$. As the transition probability are
 In general, it is possible to assign different edge weights according
 to edge types. Recent works have also considered learning a selective
 set of meaningful paths in the graph that link query with target
-nodes. We leave the exploration of these methods of supervised tuning,
+nodes.\textcolor{red}{[SELA: Cite Einat?]} We leave the exploration of these methods of supervised tuning,
 given labeled examples, to future work. 
 
 The computed Personalized Pagerank vector assigns scores to all of the
@@ -1131,7 +1131,7 @@ The process of generating an individual labeled example is formally outlined in 
 \end{figure}
 
 The labeled examples thus consist of queries, which include the addons still associated with {\it user} $u$, and a single known correct response, which is the removed addon $a$.
-Once disconnected from the user node, there should be no selection bias towards the target add-on $a$ compared with the other 200 thousand addon nodes. Assuming that addons are mutually related, the ranking scheme should identify strong association between the removed add-on and the environment of remaining add-ons associated with the same user. Accordingly, we expect to find the missing add-on among the top ranks of the list with high probability. Obviously, the add-ons already associated with the query user are  typically assigned high relevancy scores by query-sensitive algorithms like PPR. Importantly, we remove the query add-ons from the evaluated ranked list. 
+Once disconnected from the user node, there should be no selection bias towards the target add-on $a$ compared with the other addon nodes. Assuming that addons are mutually related, the ranking scheme should identify strong association between the removed add-on and the environment of remaining add-ons associated with the same user. Accordingly, we expect to find the missing add-on among the top ranks of the list with high probability. Obviously, the add-ons already associated with the query user are  typically assigned high relevancy scores by query-sensitive algorithms like PPR. Importantly, we remove the query add-ons from the evaluated ranked list. 
 
 \subsection{Evaluation measures}
 
@@ -1639,7 +1639,9 @@ We propose the following procedure, see algorithm \autoref{alg:find_addon_specie
 
 In Chapter~\autoref{chap:user_ecosystem}, we applied a Personalized PageRank (PPR) based algorithm for identifying a missing addon in a browser of a specific user. We proposed a method that took the entire set of the user's addons as a query input to PPR and produced the output of a ranked list of all addons in the system. We hypothesized that the missing addon would end up among the top addons in the ranked list. Our hypothesis was proved correct.
 
-We apply a similar method here, for mapping addons to their manufacturer companies. As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the not personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically changed their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company. 
+We apply a similar method here, for mapping addons to their manufacturer companies. As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the not personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically changed their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company.
+
+[RON: Sela, please write here which graph we're using]
 
 We perform the procedure described above iteratively: after we discover addons that belong to a company, we add them to the query and rerun the PPR with the extended query. We stop the process once there are no more addons that dramatically change its rank. It turned out that two iterations were enough for the process to converge. Using this process, we found 24 [SELA: Recheck the number] addons that ``popped up'' in the PPR ranked lists of companies from~\autoref{table:companies_list}. In a manual check of these 24 addons, we saw 100\% precision: there was not one single addon we checked that did not after all belong to the company in the query. 
 
@@ -1838,9 +1840,11 @@ As described above, we aggregate PageRank scores of all company addons and compa
 %[SELA:]
 
 The personalized PageRank analysis appears very successful in revealing truly symbiotic relations between companies.
-In~\autoref{fig:incredi_sym_conduit}, we show the expected PageRank score of IncrediMail in Conduit's PPR and in non-personalized PageRank. As the \autoref{fig:incredi_sym_conduit} shows, IncrediMail clearly benefits from Conduit. As we mentioned in~\autoref{subsub:co_occurrence}
-On the other hand, testing the relation between Babylon and ASK (known revivals in the toolbar field), clearly shows that Babylon does not benefit from being installed with ASK Toolbar, see \autoref{fig:babylon_nosym_ask}. It is interesting to note, that our technique has revealed a relation contrary to the co-occurrence between two companies.
-More symbiotic relations is shown in \autoref{fig:symbiotic_2}. The \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield benefits from Conduit, and indeed a simple web search shows there is a strong relation between the two \footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a curious relationship between an anti virus company (Avira) and addons distributor ASK, looking at other anti virus companies relation with addons distributors, we see that usually the distributor scores suffer from anti virus companies, see \autoref{fig:ask_clash_trend}, but in \autoref{fig:ask_sym_avira} we observer that ASK toolbar benefits from Avira. The explanation lays in Avira's official web page, where they are saying "..Avira choose to include the Ask.com’s toolbar in Service Pack 2...", \footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
+In~\autoref{fig:incredi_sym_conduit}, we show the expected PageRank score of IncrediMail in Conduit's PPR and in non-personalized PageRank. As  \autoref{fig:incredi_sym_conduit} shows, IncrediMail's score increases significantly when PageRank is personalized around Conduit. We see that as the personalized PageRank prioritizes Conduit, it ``drags up'' IncrediMail. This implies that there is a close semantic relationship between Conduit and IncrediMail: as we mentioned in~\autoref{subsub:co_occurrence}, Conduit ended up merging with IncrediMail (which is now called Perion) in 2014. 
+
+Personalized PageRank provides insights on a relation between Babylon and ASK (which are known revivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no semantic relationship between the two companies. 
+
+More symbiotic relations is shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield benefits from Conduit, and this relationship can be verified in the Web, as it is discussed in online media\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. The explanation can be found on Avira's official web site, which states that ``\dots Avira choose to include the Ask.com’s toolbar in Service Pack 2 \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
 
 %\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
 
