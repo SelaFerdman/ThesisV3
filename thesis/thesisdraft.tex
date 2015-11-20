@@ -29,7 +29,6 @@
 \usepackage{url}
 \usepackage{wrapfig}
 \usepackage{lscape}
-
 \usepackage{epstopdf}
 
 %\usepackage{txfonts}
@@ -719,7 +718,7 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} \textcolor{red}{It would be good to include another add-on in the figure, or at least, a more interesting add-on, which also inlcudes a name and description} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
@@ -748,7 +747,25 @@ We will apply random walks in the graph in order to assess similarity, or relate
 \subsection{Data statistics}
 
 The experimental dataset corresponds to a graph that consists of 1,331,814 nodes and 18,552,622
-edges. \textcolor{red}{Detail the number of nodes by type in a table}. 
+edges. The node and edges types are described at \autoref{tab:node_types}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Type}                                                                & \textbf{Number} \\ \hline
+all nodes                                                                    & 1331814         \\ \hline
+user nodes                                                                   & 907844          \\ \hline
+addon nodes                                                                  & 256458          \\ \hline
+term nodes                                                                   & 167512          \\ \hline
+high degree nodes (\textgreater500)                                          & 2430            \\ \hline
+all edges                                                                    & 18552622        \\ \hline
+\begin{tabular}[c]{@{}l@{}}user-addon edge\\   (bi-directional)\end{tabular} & 17612159        \\ \hline
+\begin{tabular}[c]{@{}l@{}}addon-term edge\\   (bi-directional)\end{tabular} & 940463          \\ \hline
+\end{tabular}
+\caption{Nodes and Edges}
+\label{tab:node_types}
+\end{table}
 
 \begin{figure}[t]
 \centering
