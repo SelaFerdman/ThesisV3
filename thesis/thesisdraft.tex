@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{shadow}
+\usepackage{rotating}
 \usepackage{tablefootnote}
 \usepackage{tabto}
 \usepackage{tikz}
@@ -28,7 +29,7 @@
 \usepackage{url}
 \usepackage{wrapfig}
 \usepackage{lscape}
-\usepackage{rotating}
+
 \usepackage{epstopdf}
 
 %\usepackage{txfonts}
@@ -436,7 +437,7 @@ We experiment in this study with large-scale authentic data.  The data includes 
 
 {\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
 
-{\it Addon.} The installed add-ons are listed per user. Figure \ref{fig:db_addons_snapshot} \textcolor{red}{replace with an example that has non-empty Description values[SELA: Add an example with non empty description .All the examples with all fields non empty are with less relevant companies, should we show it anyway?]} includes the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
+{\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
 \item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
@@ -453,8 +454,16 @@ We experiment in this study with large-scale authentic data.  The data includes 
 \label{fig:db_addons_snapshot}
 \end{figure}
 
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figure \ref{fig:addons_versioning_snapshot} \textcolor{red}{also here: use examples that include non-empty description values} illustrates the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.  \textcolor{red}{Say a bit more about the data: is there any add-on attribute that is always populated? path perhaps? how often is the add-on name or description left empty?
-[SELA: Typically in Internet Explorer there is a path attribute, in Mozilla Firefox and Google Chrome browsers there is a name attribute. But in most cases one of the attributes is empty.]}
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot_desc.png}
+\end{small}
+\caption{Another example of SQL table}
+\label{fig:db_addons_snapshot_desc}
+\end{figure}
+
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
 
 \begin{figure}[t]
 \centering
@@ -463,6 +472,15 @@ The field values correspond to raw information extracted from the users' machine
 \end{small}
 \caption{An example SQL table with different versions for same addons}
 \label{fig:addons_versioning_snapshot}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot_desc.png}
+\end{small}
+\caption{Another example SQL table with different versions for same addons}
+\label{fig:addons_versioning_snapshot_desc}
 \end{figure}
 
 Finally, we note another characteristic of interest of this data.  Since the add-ons lists per user are updated on a daily basis, it is straightforward to derive add-on changes (installation and removal) over time. However, there is no tracking of user actions or other programs actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, by hostile/protecting program. 
@@ -1190,6 +1208,7 @@ Overall, we generated datasets that include $N=1000$ labeled examples, each samp
 For example, we uniformly at random choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Each addon is represented by a node in our graph, as well as the user. After discovering all user addons, we randomly choose one addon to remove. Lets say we choose the googletoolbar\_32.dll addon. The remaining four addons are the query vector for the personalized PageRank. After executing the PPR and removing from the ranking list the nodes of the query vector, we look for the removed addon rank. If it is ranked in top 10, this rank will contribute to Recall@10.
 The corpus contains multi-national users from all around the globe.
 For most of the experiments we have generated four datasets with $N=1000$ labeled examples, checked its standard error and calculated average scores.
+\iffalse
 \textcolor{red}{Give a detailed example of a query?
 Explain that the 1000 were chosen uniformally at random
 also explainx4k
@@ -1197,7 +1216,7 @@ What else can we say here?.. are the selected users in
   the dataset and corpus multi-national, or geographically focused?
   any other characteristics worth mentioning?}
 
-\iffalse
+
 \textcolor{green}{\textit{Einat:Used Personalized PageRank -- which parameters? how were the paramater
 values set?}}
 \fi
@@ -1253,7 +1272,7 @@ work. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\i
 
 \subsubsection{Term modeling}
 
-The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. \textcolor{red}{does this help also when the version number is in the suffix? SELA: We did not check.} On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
+The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
 
 \subsubsection{Specificity of path information} 
 
@@ -1389,8 +1408,6 @@ Table~\ref{tab:full} shows the results of all methods using the same underlying 
 We were interested in investigating the reasons for the low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it add-on} and {\it term} nodes; ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it add-on} nodes are typically connected to a large number of {\it user} nodes, but only to very few {\it term} nodes. To illustrate this, consider some arbitrary add-on with a short description, linking to three {\it term} nodes, and a medium user set neighborhood, consisting of about 200 {\it user} nodes. Since the random walk propagates uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes to increase their traversal probability may remedy this situation. We leave this for future work.
 
 \subsubsection{Sensitivity to path information}
-
-\textcolor{red}{SELA: ARE ADD-ON NAMES LIKE SKYPE\_V1 BROKEN INTO TWO TERMS? No, we break into terms according to slash, backslash or space.}
 
 Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-on} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with path information removed (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
 
@@ -1650,7 +1667,7 @@ As in ~\autoref{chap:user_ecosystem}, we are applying the PPR based algorithm on
 
 We apply a similar method here, for mapping addons to their manufacturer companies. As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the not personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically changed their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company.
 
-We perform the procedure described above iteratively: after we discover addons that belong to a company, we add them to the query and rerun the PPR with the extended query. We stop the process once there are no more addons that dramatically change its rank. It turned out that two iterations were enough for the process to converge. Using this process, we found 24 [SELA: Recheck the number] addons that ``popped up'' in the PPR ranked lists of companies from~\autoref{table:companies_list}. In a manual check of these 24 addons, we saw 100\% precision: there was not one single addon we checked that did not after all belong to the company in the query. 
+We perform the procedure described above iteratively: after we discover addons that belong to a company, we add them to the query and rerun the PPR with the extended query. We stop the process once there are no more addons that dramatically change its rank. It turned out that two iterations were enough for the process to converge. Using this process, we found 24 addons that ``popped up'' in the PPR ranked lists of companies from~\autoref{table:companies_list}. In a manual check of these 24 addons, we saw 100\% precision: there was not one single addon we checked that did not after all belong to the company in the query. 
 
 \begin{algorithm}[!t]
 \caption{Finding addon relation to Company}
@@ -1721,6 +1738,7 @@ The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}.
 Somewhat counter-intuitively, the most significant co-occurrences do not appear corresponding to known collaborations between addon distributors. Even more counter-intuitively, some significant co-occurrences correspond to known competitions between addon distributors. An example is Ask.com, AVG, Google, and Babylon, all of which heavily co-occurring in our dataset. The four companies are distributing their own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. On the other hand, some companies such as IncrediMail and Conduit, which are known for cooperation between them\footnote{Conduit eventually acquired IncrediMail, see~\url{http://goo.gl/4dybI6}.}, do not co-occur heavily.
 These observations was made at year 2013, since then some things in this domain has changed, e.g. Babylon has ceased to exist and Google stopped distributing its own toolbar and switched to its own browser, but most other players in this domain exist and there have been added other companies as well, as stated in \footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
 
+[SELA: Added above]
 [RON: Sela, please add a few words about the date of this observation (2013)]
 
 A possible explanation for heavy co-occurrence of competing toolbars is actually in the intensity of the competition: major toolbar manufacturers are all working hard on ``sneaking in'' as many machines as possible. They all have very strong distribution mechanisms that allow a constant increase in their market penetration. While their toolbars get installed on many machines, they do not necessarily ``kick out'' toolbars of their competitors. Moreover, a direct clash is pretty rare because of enormous resources it would require given the size and significance of competing companies, and potential legal implications. Therefore, multiple toolbars get installed on the same machine, which is mostly the function of the user's tolerance: some users do not care / are not aware of / do not know how to prevent multiple toolbar installations. This leads to high co-occurrence of toolbars on some machines, but does not in the end indicate any collaboration between the toolbar distributors.
