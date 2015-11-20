@@ -1226,20 +1226,11 @@ Concretely, the PPR and PageRank algorithms compute scores for all of the graph 
 It is straight-forward to filter the nodes by their type, and output a ranked list that consists of add-ons only.
 
 
-\iffalse Since, lets say it is ranked in 8th position, not
-taking into account the ranking position of the original user addons,
-then we could recommend to user top ten scored addons and with high
-probability user will find a usefull addon between this
-ten.\\ \textcolor{green}{\textit{Sela: Example:}}
-\textcolor{green}{\textit{Einat:How was evaluation conducted? cross
-    validation.. using MAP meausre(?)  (can include a description of
-    MAP as an appendix)}} \fi
-
 We use a set of standard information retrieval metrics for the evaluation of the output ranked lists. Note that in our settings, there is a single `correct' answer. The various metrics assess the quality of each algorithm by the extent to which it succeeds to 
 place the relevant node at high ranks on average, across all queries. A short description of the evaluation measures follows.
 
 \paragraph{Recall at k (Recall@k)}
-This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{SELA: DONE? the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
+This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{SELA: NOT DONE the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
 For recommendation systems, users usually will only view several top ranked candidates. Therefore
 whether the correct addon exists in the top ranked candidates is
 important, and Recall@k is designed for measuring this. \textcolor{red}{Need to discuss how to introduce the missing add-on problem alongside a recommendation application.}
@@ -1720,7 +1711,7 @@ We propose the following procedure, see algorithm \autoref{alg:find_addon_specie
 In ~\autoref{chap:user_ecosystem}, we applied a Personalized PageRank (PPR) based algorithm for identifying a missing addon in a browser of a specific user. We proposed a method that took the entire set of the user's addons as a query input to PPR and produced the output of a ranked list of all addons in the system. We hypothesized that the missing addon would end up among the top addons in the ranked list. Our hypothesis was proved correct.
 
 [RON: Sela, please write here which graph we're using]
-[SELA: All these experiments were conducted on graph with user, addon and term nodes. The addons nodes are without paths]
+[SELA: Added below]
 As in ~\autoref{chap:user_ecosystem}, we are applying the PPR based algorithm on graph with user, addon and term nodes. An individual user nodes is linked to its set of addon nodes, the addon nodes are linked to it corresponding user and term nodes.As described in \autoref{sec:design}, we experimented with a few types of graphs, these graphs varied by existence of high degree nodes, using the term modeling and using addons path information. For out current task we have applied our method on the graph as described in \autoref{sec:user_main_results}, i.e. graph with all addons (without removing the high degree addons) and term nodes, we have also removed the addons path nodes from the graph. All the following approached were executed on a graph as formulated above.
 
 We apply a similar method here, for mapping addons to their manufacturer companies. As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the not personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically changed their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company.
@@ -2005,7 +1996,7 @@ In \autoref{sec:symb_relations}, we investigated symbiotic relationships between
 
 A fairly straightforward validation for these results comes from the fact that there is a known competition between antivirus companies: in most cases, two antivirus software products can not coexist on the same computer, so when one product gets installed the other has to stop working and often gets uninstalled. Thus, using our terminology, antivirus companies stay in a clash relationship. And indeed, as shown in \autoref{fig:clash_av}, our algorithm detects antivirus companies clashing.
 
-Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMail clashes with both Google Toolbars and Babylon. These three companies indeed competed (back in 2013) over toolbar installation on users machines. {RON: didn't we have some other clashes? between smaller companies? We need to have at least one insight that we cannot validate in the Web.]
+Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMail clashes with both Google Toolbars and Babylon. These three companies indeed competed (back in 2013) over toolbar installation on users machines. [RON: didn't we have some other clashes? between smaller companies? We need to have at least one insight that we cannot validate in the Web.]
 
 [SELA: Added clash between ASK toolbar and iMesh \autoref{fig:ask_clash_imesh}]
 
