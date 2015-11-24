@@ -1631,43 +1631,6 @@ Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use
 \end{figure}
 \fi
 
-\begin{figure}[h]
-\centering
-\begin{subfigure}[b]{0.8\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/incredi_sym_conduit.png}
-\caption{IncrediMail symbiotic relation with Conduit}
-\label{fig:incredi_sym_conduit}
-\end{subfigure}
-\begin{subfigure}[b]{0.8\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/babylon_nosym_ask.png}
-\caption{Babylon non-symbiotic relation with ASK Toolbar}
-\label{fig:babylon_nosym_ask}
-\end{subfigure}
-\caption{Relationship between companies}
-	\label{fig:symbiotic_pagerank}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\begin{subfigure}[b]{0.8\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/hotspot_sym_conduit.png}
-\caption{Hotspot symbiotic relation with Conduit}
-\label{fig:hotspot_sym_conduit}
-\end{subfigure}
-\begin{subfigure}[b]{0.8\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/ask_sym_avira.png}
-\caption{ASK Toolbar symbiotic relation with Avira}
-\label{fig:ask_sym_avira}
-\end{subfigure}
-\caption{Symbiotic relations between companies}
-	\label{fig:symbiotic_2}
-\end{figure}
-
-
 When all addons of a particular company comprise the PPR query, it is natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
 
 Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $c_i$ that is involved in a symbiotic relationship with the query company $c_q$. Our goal is to reveal such a relationship based on the $c_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $c_i$, we could make a conclusion about the probability of a symbiotic relationship between $c_i$ and $c_q$.
@@ -1737,7 +1700,7 @@ We aggregate PageRank scores of all addons of a company into the expected score 
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
-    \caption{Ratios of Expected PPR and expected PR of companies}
+    \caption{Ratios of Expected PPR and expected PR scores of companies}
     \label{fig:RatioMatrix}
 \end{figure}
 
@@ -1747,9 +1710,47 @@ Our methodology appears very successful in revealing truly symbiotic relations b
 
 In~\autoref{fig:incredi_sym_conduit}, we show the expected score of IncrediMail in Conduit's PPR and its expected score in non-personalized PageRank. We can see that IncrediMail's score increases significantly when PageRank is personalized around Conduit: as the personalized PageRank prioritizes Conduit, it also ``drags up'' IncrediMail. This implies that there is a close semantic relationship between Conduit and IncrediMail: as we mentioned in~\autoref{subsub:co_occurrence}, Conduit ended up merging with IncrediMail (which is now called Perion) in 2014. 
 
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.8\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/incredi_sym_conduit.png}
+\caption{IncrediMail symbiotic relation with Conduit}
+\label{fig:incredi_sym_conduit}
+\end{subfigure}
+\begin{subfigure}[b]{0.8\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/babylon_nosym_ask.png}
+\caption{Babylon non-symbiotic relation with ASK Toolbar}
+\label{fig:babylon_nosym_ask}
+\end{subfigure}
+\caption{Relationship between companies}
+	\label{fig:symbiotic_pagerank}
+\end{figure}
+
 Personalized PageRank provides insights on a relation between Babylon and ASK (which are known revivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no semantic relationship between the two companies. 
 
-More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web, as it is discussed in online media\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
+More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.8\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/hotspot_sym_conduit.png}
+\caption{Hotspot symbiotic relation with Conduit}
+\label{fig:hotspot_sym_conduit}
+\end{subfigure}
+\begin{subfigure}[b]{0.8\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/ask_sym_avira.png}
+\caption{ASK Toolbar symbiotic relation with Avira}
+\label{fig:ask_sym_avira}
+\end{subfigure}
+\caption{Symbiotic relations between companies}
+	\label{fig:symbiotic_2}
+\end{figure}
+
+The most interesting symbiotic relationships are those that cannot be validated in the Web. For example, SearchToolbar appears symbiotic with a few companies, with the highest PPR to PR score ratios for Softonic and SweetIM. SearchToolbar is being manufactured by Zugo which is a small private company whose partnership agreements are not publicly disclosed. However, our results show that the existence of such agreements is quite apparent.
 
 %\autoref{fig:incredi_sym_blekko} illustrates a symbiosis between Incredimail and Blekko. This discovery has an online reference\footnote{\url{http://www.im-infected.com/hijacker/blekko-search.html}}. As shown in \autoref{fig:blekko_sym_incredi}, this relationship is mutual: Blekko also benefits from this symbiosis, as well as Incredimail. 
 
