@@ -297,7 +297,9 @@ correspond to the possible rating values. Both the structure of the
 network and the conditional probabilities were learned from the
 data. Another interesting methodology of adapting the user profile in
 a dynamic and automatic way is presented in \citep{marin2013dynamic}.
-\section{Random walks and PageRank}
+
+\section{PageRank}
+\label{sec:pagerank_related}
 PageRank was originally proposed by Brin and Page \citep{page1999pagerank} as a ranking system
 for Web pages. Over the last decade, PageRank has gained importance in a wide range of applications and domains, ever since it first proved to be  effective in determining node importance in large graphs (and was a pioneering idea behind Google's search engine). Page and Brin considered PageRank as a model of user behaviour.
 \noindent
@@ -318,46 +320,30 @@ The exact computation of PageRank vectors requires solving a linear system, and 
 local computations around the neighborhood of the PageRank seed vector.
 
 \section{Personalized PageRank}
+Personalized PageRank is an extension of the PageRank algorithm \cite{page1999pagerank}, described in \autoref{sec:pagerank_related}, both of which are based on a random surfer model. At PageRank random surfer starts at any node on the graph. At each step, with a probability of 1−$\alpha$ the surfer moves to a neighboring node randomly, and with a probability of $\alpha$ he teleports to a random node on the graph. This process is repeated until the walk converges to a steady-state. The stationary probability of the surfer at each node is taken as the score of the node. However, this form of score is purely based on the static link structure, indicating the overall popularity of each node on the graph, without tailoring to a specific query node.\\
+In contrast, Personalized PageRank enables query-sensitive ranking,
+in the sense that we can specify a query node to obtain a \textit{personalized}
+ranking accordingly. It is based on the same random surfer model of the original PageRank, except when the surfer teleports, he always prefers the query node \textit{q}. Specifically, at each step, with probability $\alpha$ the surfer teleports to \textit{q} instead of a random node, thus visiting the neighborhood of \textit{q} more frequently. Thus, the stationary distribution, called a Personalized PageRank Vector (PPV), is biased towards \textit{q} and its neighborhood, which can be interpreted as a popularity or relevance metric specific to \textit{q}.
+More generally, a query \textit{q} can comprise multiple nodes on the
+graph, such that in the teleportation the surfer can jump to any node in \textit{q}. Fortunately, the computation for a multi-node query is no more difficult than for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV a multi-node query is a simple linear combination of the individual PPV each node in the query.
+
+The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, it is biased to give more relevance to a given set of nodes ~\cite{haveliwala2003topic}. In our particular case, these 
+nodes are the addons of specific user, that is, the 
+members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
+				\label{eq:pr}
+			\end{equation}
+the PageRank equation is adapted as follows to compute the Personalized PageRank ~(\ref{eq:ppr}):
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
+				\label{eq:ppr}
+			\end{equation}
+
 
 \section{Link Prediction in Graphs}
-
-\section{Similarity in graphs using Personalized PageRank}
-Personalized PageRank
-is an extension of the famous PageRank algorithm \cite{page1999pagerank}, both of
-which are based on a random surfer model. To understand Personalized PageRank, we first review the original
-PageRank briefly. A random surfer starts at any node on the
-graph. At each step, with a probability of 1−$\alpha$ the surfer moves to
-a neighboring node randomly, and with a probability of $\alpha$ he teleports to a random node on the graph. This process
-is repeated until the walk converges to a steady-state. The stationary
-probability of the surfer at each node is taken as the score of
-the node. However, this form of score is purely based on the static
-link structure, indicating the overall popularity of each node on the
-graph, without tailoring to a specific query node.\\
-In contrast, Personalized PageRank enables query-sensitive ranking,
-in the sense that we can specify a query node to obtain a “personalized”
-ranking accordingly. It is based on the same random
-surfer model of the original PageRank, except when the surfer teleports,
-he always prefers the query node \textit{q}. Specifically, at each
-step, with probability $\alpha$ the surfer teleports to \textit{q} instead of a random
-node, thus visiting the neighborhood of \textit{q} more frequently.
-Thus, the stationary distribution, called a Personalized PageRank
-Vector (PPV), is biased towards \textit{q} and its neighborhood, which can
-be interpreted as a popularity or relevance metric specific to \textit{q}.
-More generally, a query \textit{q} can comprise multiple nodes on the
-graph, such that in the teleportation the surfer can jump to any
-node in \textit{q}. Fortunately, the computation for a multi-node query is
-no more difficult than for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV a multi-node query is a simple
-linear combination of the individual PPV each node in the
-query.\\
-In our case, we think that this biased version of PageRank could be applied as a recommender system for recommending a user addon to specific user given its addons ecosystem.
-\iffalse
-A personalized
-PageRank vector, also known as
-a random-walk with restart (RWR), is the stationary distribution of a random
-walk that, with probability $\alpha$ follows a step of a random walk and with probability (1−$\alpha$) jumps back to a seed node.
-If there are multiple seed nodes, then the choice is usually
-uniformly random. The set of these seeds is called personalized PageRank Vector (PPV).
-\fi
 
 \section{Clustering}
 
@@ -814,48 +800,21 @@ all edges                                                                    & 1
 \textcolor{green}{\textit{Einat: Start by introducing the problem, why it is interesting..}}\\
 \fi
 
-As described in the previous chapter, we consider authentic user-addon
-associations represented as a graph.  The graph includes typed nodes
-denoting {\it user}, {\it addon} and {\it term} entities. Structured
-relations, between {\it users} and the {\it addons} that exist on
-their machines, are represented by bi-directional graph edges. We
-treat the graph as a sample of the add-ons eco-system. Thus, we expect
-to observe phenomena such as species (add-on) co-existance patterns in
-this eco-system; supposedely, complimentary add-ons, or add-ons
-installed by ally parties, will be found in the same machines;
-likewise, rivlary species will not co-exist in the same environments
-(machines).
+As described in Chapter~\ref{sec:datasets}, we consider authentic user-addon
+associations represented as a graph. The graph includes typed nodes
+denoting {\it user}, {\it addon} and {\it term} entities, where structured
+relations are represented by bi-directional graph edges. In the graph, we expect to observe eco-systems in the form of addons (species) co-existence patterns. 
+Supposedly, complimentary addons, or addons installed by ally parties, will be found in the same machines; likewise, rivalry species will not co-exist on one's computing environment. In this chapter, our focus is on alliances that underlie addon distributions, manifested as positive correlations between addons
+installed on a user's machines. Concretely, we address the following question:
 
-In this chapter, our focus is on alliances that underlie add-on
-distributions, manifested as postive correlations between add-ons
-installed on the users' machines. Concretely, we are interesting in
-addressing the following question:
+{\it Given partial information about the addon population at the machine of an individual user--how successfully can we infer the identity of additional species (add-ons) that exist in that environment?}
 
-{\it Given partial information about the population of add-ons that
-  exist the machine of an individual user--how sussccesully can we
-  infer the identity of additional species (add-ons) that exist in
-  that environment?}
+To the extent that we can predict with high certainty members of a local community, this will support our claim that addon populations are indeed eco-systems and indicate the strength of this phenomena. The merit of the stated
+question is that it can be evaluated empirically. We report a
+set of link prediction experiments, where the association between random {\it users} and {\it addons} is artificially disconnected, and the `missing links' are then automatically recovered using information about remaining {\it addon} members at the user's environment. Link prediction is manifested in terms of semantic similarity in the graph. To this end, we apply the Personalized
+PageRank (PPR) algorithm, a well-studied, scalable, random walk based similarity metric. Using PPR, the thousands of known {\it addons} are ranked by their structured relatedness to the user's environment. We show that the produced rankings included the `missing' addons among the top ranked items, outperforming significantly plausible methods that do not use information about the species that exist in the explored environment, such as ranking addons by their popularity. \iffalse Notably, link prediction is often used a proxy to the task of item {\it recommendation}. \fi
 
-If we can indeed predict with high certainty missing members in a
-local community, then this should verify the existance, as well as
-indicate the strength of such correlations. The merit of the stated
-question is that it can be readily evaluated empirically. We report a
-set of experiments, where the link between a random {\it user} and one
-of the {\it add-ons} associated with this user is artificially
-removed. The task then becomes an instantiation of the {\it link
-  prediction} problem, where the goal is to reveal a new association
-of interest ({\it has-add-on}, in this case) between graph nodes.
-
-Link prediction is often manifested in terms of semantic similarity,
-where there exist numerous graph-based similarity measures that may be
-readily utilized for this purpose. We use in this work Personalized
-PageRank (PPR), a random walk based similarity metric in graphs.
-
-Below, we first formulize the task, and describe how PPR is used to
-tackle this task. We then turn to describing our experimental dataset
-and setup, and discuss our results. This chapter ends with a
-discussion of our main findings.
-
+In what follows, we first formalize the task and describe how it is addressed using PPR. We then describe the set of experiments conducted, considering multiple evaluation settings and design choices. The chapter concludes with a discussion of our findings.
 
 \section{Task definition}
 \label{sec:task}
@@ -863,58 +822,17 @@ discussion of our main findings.
 Let us denote the graph nodes $G$ as a union of $U,A,T$, the sets of
 {\it users}, {\it add-ons} and {\it terms}, respectively. We view this
 graph as a global ecosystem. An individual user $u\in U$ is linked in
-the graph to its set of add-ons $A_i$. Let us remove a single item $a$
-from $A_i$. User $u$ would be then associated with the modified {\it
-  add-on} set $A'=(A-A_i)$. Our goal is then to predict the identify
-of {\it add-on} $a$ that has been removed, thus predicting the missing
-link between $u$ and $a$.
+the graph to its set of add-ons $A(u)$. Let us remove a single item $a_i$
+from $A(u)$. User $u$ would be then be associated with a reduced {\it
+  addon} set $A(u)'=A(u)-a_i$. We wish to evaluate the extent to which the missing link between $u$ and $a_i$ can be recovered based on the remaining information about the user's environment $A(u)'$ and $G$.
 
-In the rest of this chapter, we will usually refer to the set $A'$ as
-a {\it query}. As in information retrieval, our goal would be to
-assess the relrevancy of possible responses to the
-query. Specifically, the candidate responses in this case are the
-known {\it add-ons}, which are not known to be associated with the
-user, i.e., $(A-A')$, where this candidate set includes $a$. As
-described below, we use a ranking approach, where the candidate {\it
-  add-ons} are ranked by their estimated relatedness to the user node
-$u$. It is important to note that the rankings are specific to the
-dynamic queries, reflecting the estimated relevancy with respect to
-the query.
-
-[EINAT:]AN ISSUE: There are several aspects of this problem. Correlations may
-be due to user's tastes, especially for users who are actively
-involved in the maintancne of their machine. Another factor is
-functionality, where we may expect to find complimentary
-add-ons. Finally, there may be positive correlations due to
-manipulations in the automatic installations, reflecting business
-alliances. A limitation of this study is that we have no evidence
-whatsoever about the specific factors that led some add-on to be
-installed on one's machine. WE DO NOT MODEL THESE FACTORS
-SEPARATELY. Perhaps say that these different types of co-existance are
-also exhibited in biological eco-systems?
+In the rest of this chapter, we will often refer to known set of user {\addons}, $A(u)'$, as a {\it query}. Using information retrieval terminology, our goal is to assess the relevancy of possible responses to the query. Specifically, the candidate responses in this case are all {\it addons} that are not known to be associated with the user, i.e., $(A-A(u)')$, where this candidate set includes the target response $a$. As described below, the evaluated methods generate rankings the candidate {\it addons}. Accordingly, performance is evaluated with respect to the rank of the `missing' {\it addon} $a_i$ across multiple instantiated queries. 
 
 \section{Approach}
 \label{sec:method}
 
-We employ a well-studied graph ranking algorithm, Personalized
-PageRank \citep{page1999pagerank}, to compute query-specific relevancy
-scores based on the link structure of the graph. In this paper, we use
-the rankings of Personalized PageRank, as a criteria for recommending
-an addon. Taking a specific set of user addons as PPR input query, a
-ranking over all the other addon nodes can be leveraged for the
-detection of missing addon in user ecosystem.
-
-\subsection{Personalized PageRank}
-\label{sec:PPR_addons_method}
-
-The well-known (non-personalized) PageRank algorithm measures the
-relative importance of web pages, as reflected by their centrality in
-the graph structure of the Web \citep{page1999pagerank}. The algorithm
-models the bahavior of a random surfer, who at any given time, chooses
-between two possible actions: following a hyperlink on the current
-Webpage to a related Webpage, or ``re-setting'', jumping randomly to
-one of the pages on the Web. Formally, the distribution over the graph
-nodes at time $d$ can be computed iteratively, as follows:
+We employ Personalized PageRank \citep{page1999pagerank} to compute query-specific relevancy scores based on the link structure of the graph. This algorithm models the behavior of a random surfer, who at any given time, chooses
+between two possible actions: following a hyperlink to another Webpage, or ``re-setting'', by jumping randomly to one of the pages on the Web. The probability distribution for finding the surfer at any of the graph nodes at time $d$ is computed iteratively, as follows:
 \begin{equation}
 V_{d+1} = (1-\alpha) [{1 \over N}]_{1 \times N} + \alpha \transition V_d
 \label{eq:pagerank}
@@ -923,17 +841,16 @@ V_{d+1} = (1-\alpha) [{1 \over N}]_{1 \times N} + \alpha \transition V_d
 \[
 \transition = dL + (1-d)[{1 \over N}]_{N \times N}
 \]
-\fi where the total number of nodes (pages) is $N$, and $\transition$
+\fi where the total number of nodes (Webpages) is $N$, and $\transition$
 is a transition matrix, modeling the probability that the surfer moves
 to page $j$ from page $i$ following a hyperlink. The probability that
-the surfer chooses to follow some hyperlink is $\alpha$, and the
-probability of re-setting the walk is ($1-\alpha$) .
-
+the surfer chooses to proceed by following some hyperlink is $\alpha$, and the
+probability of the alternative action, re-setting the walk, is ($1-\alpha$) .
 \iffalse
 $\transition$ distributes a node's probability uniformly among the pages it links
 to, i.e.
 \begin{equation}
-\transition_{ij} = \left\{
+\transition_{ij} = \left}
 \begin{array}{lll}
 {1 \over |ch(i)|} & \mbox{if there is an edge from $i$ to $j$} \\ 0 &
 \mbox{otherwise}
@@ -944,58 +861,30 @@ to, i.e.
 where $ch(i)$ is the set of nodes that have an outgoing link from $i$
 (the children of $i$).
 \fi 
-
-Due to the reset operation, the random walk process is guaranteed to
-converge to a unique stationary distribution $V^*$ (i.e., $V_d$
-converges to $V^*$). The {\it PageRank score} of node $j$, $p_j$, is
-defined as its probability in the stationary state $V^*$, giving a
-measure of document centrality in the network. In general, a node is
+Due to the reset operation, the random walk distribution $V_d$ is guaranteed to
+converge to a unique stationary distribution $V^*$. The {\it PageRank score} of node $j$ is defined as its probability in the stationary state $V^*$, giving a measure of document centrality in the network. In general, a node is
 assigned a high PageRank score if the sum of the ranks of its
 backlinks is high, that is, if it is linked to by other important
 Webpages.
 
 
 The PageRank algorithm described computes universal node importance,
-or `centrality' scores, soley based on the network structure, that is,
+or `centrality' scores, solely based on the network structure, that is,
 ignoring user preferences. The {\it Personalized PageRank} variant, as in
 \citep{richardson2001intelligent}, biases the random walk model to
-generate rankings that reflect user preferences, represented as a
-distribution of interest over the graph nodes. This bias is modeled by
-a small and natural adaptation of the PageRank random walk
-formula--instead of assuming that the user is equally interested in,
-and would reset to, any graph node uniformly, it is assumed that only
-a subset of the graph nodes are of interest to the user, and the reset
-operation is accordingly directed to those nodes . The enhanced random
-walk scheme is defined as follows:
+generate rankings that reflect user preferences. This bias is modeled by
+a small and natural adaptation of the PageRank random walk formula--instead of assuming that the user would reset to any graph node uniformly, reflecting equal interest in all Webpages, it is assumed that only a subset of the graph nodes are of interest to the user. The reset operation is accordingly directed to those nodes, having the random walk scheme modified as follows:
 \begin{equation}
 V_{d+1} = (1-\alpha) V_u + \alpha \transition V_d
 \label{eq:ppr}
 \end{equation}
-where $V_u$ denotes a distribution of interest over the graph nodes,
-e.g., nodes that are known to be of interest to user $u$.  The
-Personalized PageRank scores are derived from the corresponding
-stationary state distribution. 
+Here, $V_u$ denotes a distribution of interest over the graph nodes,
+e.g., nodes that are known to be of interest to user $u$. In general, $V_u$ corresponds to a {\it query} modeled as a distribution over the graph node. The
+Personalized PageRank scores, derived from the corresponding stationary state distribution, reflect structural similarity, or relevancy, of the graph nodes with respect to the query. 
 
-The generated Personalized PageRank scores reflect structural
-similarity, or relevancy, of the graph nodes with respect to the
-query. It has been shown that the Personalized PageRank score for a
-target node $z$ and a query node $x$ equals a summation over all of
-the connecting paths between $x$ and $z$ (including cyclic paths, and
-paths that cross $z$ multiple times), where paths are weighted by
-their probability \citep{jeh2003scaling},\citep{fogaras2004towards}. In words, the graph walk
-distributes probability mass from a start distribution over nodes
-through edges in the graph---incidentally accumulating evidence of
-similarity over multiple connecting paths. Due to the reset
-probability $(1- \alpha)$, the paths between $x$ and a destination
-node $z$ are weighted exponentially lower as their length
-increases. This implies that graph nodes that are connected to the
-query nodes over shorter connecting paths, as well as over multiple
-connecting paths, are considered more important.
-
-Computationally, the genration of PPR scores is expensive compared
-with PageRank scores, since node relevancy is evaluated with respect
-to a given query. Fortunately, the computation for a multi-node query
-is no more difficult than for a single-node query due to the
+It has been shown that the Personalized PageRank score for a target node $z$ and a query node $x$ equals a summation over all of the connecting paths between $x$ and $z$ (including cyclic paths, and paths that cross $z$ multiple times), where paths are weighted by their probability \citep{jeh2003scaling},\citep{fogaras2004towards}. In words, the graph walk
+distributes probability mass from the start distribution over nodes through edges in the graph---incidentally accumulating evidence of similarity over multiple connecting paths. Due to the reset probability $(1- \alpha)$, the paths between $x$ and a destination node $z$ are weighted exponentially lower as their length
+increases. This implies that graph nodes that are connected to the query nodes over shorter connecting paths, as well as over multiple connecting paths, are considered more important with respect to $V_u$. Fortunately, the computation for a multi-node query is no more difficult than for a single-node query due to the
 \textit{Linearity Theorem} \citep{jeh2003scaling}, as the Personalized
 PageRank vector for a multi-node query is a simple linear combination
 of the individual PPV for each node in the query.
@@ -1034,7 +923,7 @@ provide another mechanism for affecting the probability flow in the
 graph.
 \fi
 
-As mentioned before, the algorithms of PageRank and Personalized
+RELATED?: As mentioned before, the algorithms of PageRank and Personalized
 PageRank algorithm have been designed so as to improve Web page
 rankings. The Personalized Pagerank variant was first suggested in
 \citep{brin1998can}, and shortly after, has been explored to
@@ -1045,7 +934,7 @@ importance scores, and this places PageRank amongst a class of network
 analysis techniques \citep{brandes2005network} known as centrality
 measures or indices \citep{koschutzki2005centrality}. Similarly,
 Personalized PageRank is a general similarity measure in graphs, used
-in multiple domains. For example, iIn \citep{freschi2007protein}, the
+in multiple domains. For example, in \citep{freschi2007protein}, the
 authors used the Personalized PageRank model, which they call
 ProteinRank, to predict protein functions.
 
@@ -1103,10 +992,6 @@ multiple seed nodes, then the choice is usually uniformly random. The
 set of these seeds is called personalized PageRank Vector (PPV).  
 \fi
 
-In this thesis, we apply the Personalized PageRank model to our graph
-repreesnting the add-oneco-system, as described in detail in the next
-section. 
-
 \iffalse 
 with users and looking for their personal
 preferences in browsers extensions, we are also interested in Company
@@ -1138,50 +1023,23 @@ another way to represent our data.
 \subsection{iGraph}
 \fi
 
-\subsection{Applying PPR to find the missing add-on}
+\subsection{Applying PPR for finding the missing add-on}
 
-We address the task of add-on list completion in terms of structural
-similarity in the graph. The question that we wish to answer is `given
+CONTINUE HERE. In this research, the question that we wish to answer is `given
 a set of {\it add-ons}, which are known to co-exist on the machine of
 some user, what other {\it add-ons} are most likely to be linked to
 that user?'. This question is addressed by means of structural
-similarity in the graph.
-
-Formally, we assign $V_u$ to be uniform over $A'$, that is, the re-set
-probability to each of the nodes representing {\it add-on} $a\in A'$
-is set to ${1 \over \mid A' \mid}$, and is zero otherwise.
-
-The transition matrix $\transition$ assign equal importance to all of
-the graph edges. In words, the transition probability from node $i$ to
+similarity in the graph. Formally, we assign $V_u$ to be uniform over $A(u)'$, that is, the re-set probability to each of the nodes representing {\it add-on} $a\in A'$ is set to ${1 \over \mid A' \mid}$, and is zero otherwise. The constructed transition matrix $\transition$ assign equal importance to all of
+the graph edges. That is, the transition probability from node $i$ to
 a linked node $j$ is defined as: $_{ij}={1 \over \mid N_i \mid}$,
-where $N_i$ is the set of nodes linked over an outgoing edge from $i$,
-i.e., the {\it outdegree} of node $i$. For example, suppose that node
-$i$ is linked to two {\it term} nodes and five {\it user} nodes; then,
-the probability of reaching any of these nodes using the transition
-operation equals ${1\over 7}$. As the transition probability are
-  directly derived based on outgegree, the notion of {\it inverse
-    document frequency} is implicitly modeled in the transition
-  model. In particular, nodes that are linked to a large number of
-  other nodes will pass only a fraction of their probability mass to
-  connected nodes; indeed, highly frequent entities (e.g., the {\it
-    term} `version'), for which the inverse frequency is low, are less
-  meaningful. In contrast, nodes linked to a limited number of
-  neighbors, carry high information value. 
-
-In general, it is possible to assign different edge weights according
-to edge types. Recent works have also considered learning a selective
-set of meaningful paths in the graph that link query with target
-nodes.\textcolor{red}{[SELA: Cite Einat?]} We leave the exploration of these methods of supervised tuning,
-given labeled examples, to future work. 
+where $N_i$ is the set of nodes linked over an outgoing edge from $i$. For example, suppose that node $i$ is linked to two {\it term} nodes and five {\it user} nodes; then, the probability of reaching any of these nodes using the transition operation equals ${1\over 7}$. In general, it is possible to assign varying edge weights, either using parametric weights according to edge types, or deriving such weights from local edge properties. Recent works have also considered learning a selective set of meaningful paths in the graph that link query with target nodes.\textcolor{red}{[SELA: Cite Einat?]} We leave the exploration of learned random walk measures to future work. 
 
 The computed Personalized Pagerank vector assigns scores to all of the
 graph nodes. We consider the graph nodes of type {\it add-on} and rank
 them by their score. It is conjectured that the `missing add-on' will
 be included among the top-ranked items in the list, due to high
 structural coherence with the input set of add-ons observed in the
-user's environment.
-
-More concretely, we expect relatedness to flow over multiple path
+user's environment. We expect relatedness to flow over multiple path
 types, reflecting various types of structural similarity in the graph,
 mainly:
 \begin{itemize}
@@ -1635,6 +1493,17 @@ experiment shown in \autoref{fig:nouserNoremove}., graph without user
 nodes are almost not possible for recommender to find a missing addon
 node.
 
+[EINAT:]AN ISSUE: There are several aspects of this problem. Correlations may
+be due to user's tastes, especially for users who are actively
+involved in the maintancne of their machine. Another factor is
+functionality, where we may expect to find complimentary
+add-ons. Finally, there may be positive correlations due to
+manipulations in the automatic installations, reflecting business
+alliances. A limitation of this study is that we have no evidence
+whatsoever about the specific factors that led some add-on to be
+installed on one's machine. WE DO NOT MODEL THESE FACTORS
+SEPARATELY. Perhaps say that these different types of co-existance are
+also exhibited in biological eco-systems?
 
 \chapter{PPR-based analysis of addon coexistence}
 \label{chap:Symbiosis}
@@ -1755,7 +1624,7 @@ We propose the following procedure, see algorithm \autoref{alg:find_addon_specie
 In ~\autoref{chap:user_ecosystem}, we applied a Personalized PageRank (PPR) based algorithm for identifying a missing addon in a browser of a specific user. We proposed a method that took the entire set of the user's addons as a query input to PPR and produced the output of a ranked list of all addons in the system. We hypothesized that the missing addon would end up among the top addons in the ranked list. Our hypothesis was proved correct.
 
 We apply a similar method here, for mapping addons to their manufacturer companies. 
-As in ~\autoref{chap:user_ecosystem}, we are applying the PPR based algorithm on a graph with user, addon, and term nodes. An individual user's node is linked to the set of nodes each one corresponding to an addon installed on the user's machine. The addon nodes are linked to their corresponding user and term nodes. As described in~\autoref{sec:design}, we experimented with a few versions of the graph, where our design choices were the existence or absence of high-degree nodes, the usage of term nodes and of addon full path information. In this chapter, we experiment with the graph as described in \autoref{sec:user_main_results}, i.e.~the graph with all addons (without removing the high-degree addons or term nodes), however we do remove the addon file-system paths\footnote{Addon paths are instrumental for mapping addons to companies using the simple heuristic described above, however, for the PPR purposes, addon paths turn out to be too noisy to deal with, and thus removed.}. We never change the graph setting over the course of this chapter.
+As in ~\autoref{chap:user_ecosystem}, we are applying the PPR based algorithm on a graph with user, addon, and term nodes. An individual user's node is linked to the set of nodes each one corresponding to an addon installed on the user's machine. The addon nodes are linked to their corresponding user and term nodes. As described in~\autoref{sec:design}, we experimented with a few versions of the graph, where our design choices were the existence or absence of high-degree nodes, the usage of term nodes and of addon full path information. In this chapter, we experiment with the graph as described in \autoref{sec:user_main_results}, i.e.~the graph with all addons (without removing the high-degree addons or term nodes), however we do remove the addon file-system paths\footnote{Addon paths are instrumental for mapping addons to companies using the simple heuristic described above, however, for the PPR purposes, addon paths turn out to be too noisy to deal with, and are thus removed.}. We never change the graph setting over the course of this chapter.
 
 As a query for the PPR algorithm, instead of the set of addons existing in a user's browser, we now provide a set of addons that are known to belong to a company. We hypothesise that an addon that belongs to that company, and is not in the query, would ``pop-up'' in the ranked list. By ``popping-up'' we mean that the addon would be ranked closer to the top of the list, relatively to its original rank in the (non-personalized) PageRank. First, we run the non-personalized PageRank on the entire graph, and use the rank of each addon as the baseline position. For each company, we then run the Personalized PageRank and identify addons that drastically change their position in the ranked list. For example, if an addon was at a rank of 15 in the non-personalized PageRank and moved to the rank of 14 in the PPR, we do not take it into account as its rank did not dramatically change. In contrast, if an addon was at a rank of 100 in the non-personalized PageRank and moved to the rank of 10 in the PPR, we consider it as a candidate to manual examination. For each addon that ``popped-up'' in the ranked list of a specific company's PPR, we manually validate that the addon actually belongs to the company.
 
@@ -1795,9 +1664,9 @@ For each company from our list, we construct the PPR query to contain all the co
 \STATE Define personalization vector $v$, with seed nodes as all addons $\in COMP\ $
 \STATE Execute Personalized PageRank
 \STATE Rank all addons according to the PPR score
-\FOR{company $d\in COMP\ $ (except for company C - the one with seed nodes)}
-\STATE Sum all expected PPR scores $\Rightarrow$ gives ePPR scores sum
-\STATE Compare with previous expected sum of PR scores
+\FOR\{company $d\in COMP \setminus \{c\} $\}
+\STATE Computer expected PPR score 
+\STATE Compare with expected PR score
 \STATE If there is a significant drop $\Rightarrow$ clash
 \STATE If there is a significant increase $\Rightarrow$ symbiosis
 \ENDFOR
@@ -1812,9 +1681,9 @@ For each company from our list, we construct the PPR query to contain all the co
 \subsubsection{Addon Co-occurrence}
 \label{subsub:co_occurrence}
 
-Generally speaking, there may be multiple ways to detect symbiosis between addon manufacturing companies. One could suggest a simple way for detecting a symbiotic relationship which would be based on computing co-occurrence frequencies of addons on users' machines. If many addons of company $C_i$ are installed on the same machines where addons of company $C_j$ are installed, we may conclude that the two companies live in symbiosis with each other. To validate this hypothesis, we set up a simple experiment. For each pair of companies from our list (\autoref{table:companies_list}), we computed Jaccard index~\citep{jaccard1912distribution} which is the measure of overlap of two sets. We denote $\mathbf{M}_i$ the set of machines on which addons of company $C_i$ are installed. Analogously, we denote $\mathbf{M}_j$ the set of machines on which addons of company $C_j$ are installed. Jaccard index is then defined as:
+Generally speaking, there may be multiple ways to detect symbiosis between addon manufacturing companies. One could suggest a simple way for detecting a symbiotic relationship which would be based on computing co-occurrence frequencies of addons on users' machines. If many addons of company $c_i$ are installed on the same machines where addons of company $c_j$ are installed, we may conclude that the two companies live in symbiosis with each other. To validate this hypothesis, we set up a simple experiment. For each pair of companies from our list (\autoref{table:companies_list}), we computed Jaccard index~\citep{jaccard1912distribution} which is the measure of overlap of two sets. We denote $\mathbf{M}_i$ the set of machines on which addons of company $c_i$ are installed. Analogously, we denote $\mathbf{M}_j$ the set of machines on which addons of company $c_j$ are installed. Jaccard index is then defined as:
 $$
-Jaccard(C_i, C_j) = \frac{\|\mathbf{M}_i \cap \mathbf{M}_j\|}{\|\mathbf{M}_i\| + \|\mathbf{M}_j\| - \|\mathbf{M}_i \cap \mathbf{M}_j\|},
+Jaccard(c_i, c_j) = \frac{|\mathbf{M}_i \cap \mathbf{M}_j|}{|\mathbf{M}_i| + |\mathbf{M}_j| - |\mathbf{M}_i \cap \mathbf{M}_j|},
 $$
 where the absolute value symbol means the cardinality of a set.
 
@@ -1827,11 +1696,7 @@ where the absolute value symbol means the cardinality of a set.
 
 The full matrix of Jaccard indexes is presented in~\autoref{fig:jaccard_matrix}. As we can see, some pairs of addon manufacturing companies have quite a significant co-occurrence, comprising of up to 24\% machines on which the two companies' addons are installed (taken as a union). 
 
-Somewhat counter-intuitively, the most significant co-occurrences do not appear corresponding to known collaborations between addon distributors. Even more counter-intuitively, some significant co-occurrences correspond to known competitions between addon distributors. An example is Ask.com, AVG, Google, and Babylon, all of which heavily co-occurring in our dataset. The four companies are distributing their own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. On the other hand, some companies such as IncrediMail and Conduit, which are known for cooperation between them\footnote{Conduit eventually acquired IncrediMail, see~\url{http://goo.gl/4dybI6}.}, do not co-occur heavily.
-These observations was made at year 2013, since then some things in this domain has changed, e.g. Babylon has ceased to exist and Google stopped distributing its own toolbar and switched to its own browser, but most other players in this domain exist and there have been added other companies as well, as stated in \footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
-
-[SELA: Added above]
-[RON: Sela, please add a few words about the date of this observation (2013)]
+Somewhat counter-intuitively, the most significant co-occurrences do not appear corresponding to known collaborations between addon distributors. Even more counter-intuitively, some significant co-occurrences correspond to known competitions between addon distributors. An example is ASK, AVG, Google, and Babylon, all of which heavily co-occurring in our dataset. The four companies are distributing their own toolbars, thus competing with each other \footnote{\url{http://www.thewindowsclub.com/uninstall-babylon-yahoo-google-bing-toolbar}}. Moreover, some companies such as IncrediMail and Conduit, which are known for cooperation between them\footnote{Conduit eventually acquired IncrediMail, see~\url{http://goo.gl/4dybI6}.}, do not co-occur heavily.\footnote{These observations are correct for 2013 when our data was collected. Since then, the addon ecosystem has undergone many changes, e.g. Babylon shut down and Google stopped distributing its own toolbar. Still, most of the other players in the domain exist and there are some other new companies as well, see \url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
 
 A possible explanation for heavy co-occurrence of competing toolbars is actually in the intensity of the competition: major toolbar manufacturers are all working hard on ``sneaking in'' as many machines as possible. They all have very strong distribution mechanisms that allow a constant increase in their market penetration. While their toolbars get installed on many machines, they do not necessarily ``kick out'' toolbars of their competitors. Moreover, a direct clash is pretty rare because of enormous resources it would require given the size and significance of competing companies, and potential legal implications. Therefore, multiple toolbars get installed on the same machine, which is mostly the function of the user's tolerance: some users do not care / are not aware of / do not know how to prevent multiple toolbar installations. This leads to high co-occurrence of toolbars on some machines, but does not in the end indicate any collaboration between the toolbar distributors.
 
@@ -1839,7 +1704,7 @@ To summarize, addon co-occurrence computation does not appear to be the correct 
 
 \subsubsection{Personalized PageRank}
 
-Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use Personalized PageRank as the main mechanism to detect company symbiosis in the Web browser ecosystem. Addon ranking obtained by the ordinary (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such a adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
+Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use Personalized PageRank as the main mechanism to detect company symbiosis in the Web browser ecosystem. Addon ranking obtained by the standard (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such an adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
 
 \iffalse
 \begin{figure}[h]
@@ -1894,25 +1759,25 @@ Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use
 \end{figure}
 
 
-When all addons of a particular company comprise the PPR query, it would be natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
+When all addons of a particular company comprise the PPR query, it is natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
 
-Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $C_i$ that is involved in a symbiotic relationship with the query company $C_q$. Our goal is to reveal such a relationship based on the $C_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $C_i$, we could make a conclusion about the probability of a symbiotic relationship between $C_i$ and $C_q$.
+Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $c_i$ that is involved in a symbiotic relationship with the query company $c_q$. Our goal is to reveal such a relationship based on the $c_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $c_i$, we could make a conclusion about the probability of a symbiotic relationship between $c_i$ and $c_q$.
 
 There are two factors that affect the significance of the addon's rank change:
 \begin{enumerate}
 \item \textbf{Length of the leap.} Obviously enough, the longer is the addon's leap from the original rank (in non-personalized PR) to the new rank (in PPR), the more significant the rank change is.
-\item \textbf{The (final) PPR rank.} The length of the leap is not the only significance measure. Intuitively, if an addon jumps from rank 10,000 to rank 1000, such a jump is less significant than if the addon jumped from rank 100 to rank 10. The explanation is simple: an addon at a rank 10,000 was most probably not important, and a big change in its rank would not make it significantly more important. In contrast, an addon that moved to the 10th place cannot be ignored.
+\item \textbf{The (final) PPR rank.} The length of the leap is not the only significance measure. Intuitively, if an addon jumps from rank 10,000 to rank 1000, such a jump is less significant than if the addon jumps from rank 100 to rank 10. The explanation is simple: an addon at a rank 10,000 was most probably not important, and a big change in its rank would not make it significantly more important. In contrast, an addon that moved to the 10th place cannot be ignored.
 \end{enumerate}
 
 We are interested in the change of rank of the company, as aggregated over the set of its addons' ranks. In a search for a formula that would aggregate the behavior of all the company's addons, we make the following observation: if an addon is rare (i.e.~installed on just a few browsers), then the change in its rank --- even a significant one --- might have little effect on the behavior of the company in whole. For example, if an addon moves from rank 10,000 to rank 10, but is installed on 10 browsers only, its effect on the aggregated rank of the company would be less significant than, say, a change in rank from 100 to 50 of an addon that is installed on 10,000 browsers.
 
-The potential complexity of addon rank aggregation over the three parameters listed above (length of the leap. the final rank, and the addon frequency) makes us search for simplification. Since an addon's rank is determined by the order of all addons when sorted over their PR (or PPR) \emph{scores}, we observe that an addon score is a better measure of the addon's importance than its rank. For example, if an addon's score was 5 in the non-personalized PR, and got increased to 10 in PPR, while there were no other addons with scores as high as 5, then the rank of the addon would not change, so the significance of the score change would be completely ignored when taking into account addon ranks only. In addition, the change in the addon's rank is affected by the change of other addons' ranks, while the change of the addon's score can be taken independently from the other addons' score change. Therefore, we decide to focus on addon PR scores rather then on ranks. Now, there are only two parameters that need to be taken into account for measuring a company's ``importance'': the PR (or PPR) scores of its addons, and their frequencies in the dataset.
+The potential complexity of addon rank aggregation over the three parameters listed above (length of the leap, the final rank, and the addon frequency) makes us search for simplification. Since an addon's rank is determined by the order of all addons when sorted over their PR (or PPR) \emph{scores}, we observe that an addon score is a better measure of the addon's importance than its rank. For example, if an addon's score was 5 in the non-personalized PR, and got increased to 10 in PPR, while there were no other addons with scores as high as 5, then the rank of the addon would not change, so the significance of the score change would be completely ignored when taking into account addon ranks only. In addition, the change in the addon's rank is affected by the change of other addons' ranks, while the change of the addon's score can be taken independently from the other addons' score change. Therefore, we decide to focus on addon PR scores rather then on ranks. Now, there are only two parameters that need to be taken into account for measuring a company's ``importance'': the PR (or PPR) scores of its addons, and their frequencies in the dataset.
 
-We estimate the ``importance'' of company $C$ by its \emph{expected} PR score, which is the weighted sum of PR scores of the company's addons. Let us denote $s_i$ the PR score of addon $a_i$ that belongs to $C$. The expected score $S_C$ (of the company $C$) will then be:
+We estimate the ``importance'' of company $c$ by its \emph{expected} PR score, which is the weighted sum of PR scores of the company's addons. Let us denote $s_i$ the PR score of addon $a_i$ that belongs to the set $\mathbf{A}_c$ of all addons of $c$. The expected score $S_c$ (of the company $c$) will then be:
 $$
-S_C = \sum_{a_i \in C} p_i s_i
+S_c = \sum_{a_i \in \mathbf{A}_c} p_i s_i
 $$
-where $p_i$ is the probability of drawing addon $a_i$ out of all $C$'s addons. Specifically, we define $p_i = freq(a_i) / freq(C)$, where $freq(a_i)$ is the frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed; $freq(C)$ is the sum of all its addons' frequencies.
+where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Specifically, we define $p_i = freq(a_i) / freq(\mathbf{A}_c)$, where $freq(a_i)$ is the frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed; $freq(\mathbf{A}_c)$ is the sum of frequencies of all $c$'s addons.
 
 %After running the PPR with all addons of a company $C_q$ in the query, we first remove $C_q$'s addons from the ranked list in order to make a clean experiment: depending on the number of addons $C_q$ is maintaining --- and their original PR ranks --- their PPR ranks can significantly affect the change in ranks of other addons. We want to eliminate this influence and focus on the rank change of the other companies' addons. That is why we remove $C_q$'s addons both from the PPR ranked list and from the original PR ranked list.
 
@@ -1924,40 +1789,38 @@ where $p_i$ is the probability of drawing addon $a_i$ out of all $C$'s addons. S
 \centering
 \caption{PageRank scores}
 \label{table:pagerank_scores}
-\resizebox{\textwidth}{!}{%
+%\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
- & \textbf{\#addons} & \textbf{PageRank score} & \textbf{Expected PageRank score} &  \\ \midrule
-\textbf{ASK} & 229038 & 8.79139 & 3.930655827 &  \\
-\textbf{AVG} & 131337 & 8.50985 & 1.458013998 &  \\
-\textbf{Avira} & 10624 & 0.45046 & 0.165028673 &  \\
-\textbf{Babylon} & 191386 & 23.22184 & 9.064855902 &  \\
-\textbf{Blekko} & 14381 & 0.43715 & 0.147602568 &  \\
-\textbf{Conduit} & 21671 & 0.51959 & 0.188175047 &  \\
-\textbf{Google} & 187455 & 13.40115 & 3.327125475 &  \\
-\textbf{Imesh} & 23954 & 7.05849 & 1.439130402 &  \\
-\textbf{IncrediMail} & 76198 & 5.7921 & 2.375531006 &  \\
-\textbf{Hotspot} & 54675 & 2.00773 & 1.053817694 &  \\
-\textbf{Kaspersky} & 47793 & 2.65493 & 0.849401341 &  \\
-\textbf{Montiera} & 809 & 0.01752 & 0.017516 &  \\
-\textbf{Norton} & 53826 & 3.22903 & 1.078813495 &  \\
-\textbf{Searchtoolbar} & 5169 & 0.23296 & 0.043609128 &  \\
-\textbf{Softonic} & 29410 & 0.82528 & 0.274080246 &  \\
-\textbf{SspeedBit} & 484676 & 59.02209 & 7.540780048 &  \\
-\textbf{SweetIM} & 84871 & 2.49227 & 1.445297894 &  \\
-\textbf{TrendMicro} & 10325 & 0.56126 & 0.155437633 &  \\
-\textbf{ZoneAlarm} & 3597 & 0.1079 & 0.030242981 &  \\ \bottomrule
+ & \textbf{\#addons} &  \textbf{Expected PageRank score} &  \\ \midrule
+\textbf{ASK} & 229038 & 3.930655827 \\
+\textbf{AVG} & 131337 & 1.458013998 \\
+\textbf{Avira} & 10624 & 0.165028673 \\
+\textbf{Babylon} & 191386 & 9.064855902 \\
+\textbf{Blekko} & 14381 & 0.147602568 \\
+\textbf{Conduit} & 21671 & 0.188175047 \\
+\textbf{Google} & 187455 & 3.327125475 \\
+\textbf{iMesh} & 23954 & 1.439130402 \\
+\textbf{IncrediMail} & 76198 & 2.375531006 \\
+\textbf{Hotspot} & 54675 & 1.053817694 \\
+\textbf{Kaspersky} & 47793 & 0.849401341 \\
+\textbf{Montiera} & 809 & 0.017516 \\
+\textbf{Norton} & 53826 & 1.078813495 \\
+\textbf{Searchtoolbar} & 5169 & 0.043609128 \\
+\textbf{Softonic} & 29410 & 0.274080246 \\
+\textbf{SspeedBit} & 484676 & 7.540780048 \\
+\textbf{SweetIM} & 84871 & 1.445297894 \\
+\textbf{TrendMicro} & 10325 & 0.155437633 \\
+\textbf{ZoneAlarm} & 3597 & 0.030242981 \\ \hline
 \end{tabular}
-}
+%}
 \end{table}
 
 \iffalse
 A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
 \fi
 
-As described above, we aggregate PageRank scores of all company addons and compare between companies based on the aggregated score. For each company $C_q$ in the PPR query, we rank all the other companies of our interest according the the company's aggregated PPR score. We also maintain the ranked list of companies sorted by their aggregated (non-personalized) PR scores. For each $C_q$, we compare the two ranked lists of companies. If a company $C_i$ ``pops up'' closer to the top of the $C_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $C_i$ and $C_q$ are in a symbiotic relationship. 
-
-%[SELA:]
+We aggregate PageRank scores of all addons of a company into the expected score and compare companies based on the expected score. For each company $c_q$ in the PPR query, we construct a ranked list of all other companies according to their expected PPR scores. In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
 
 The personalized PageRank analysis appears very successful in revealing truly symbiotic relations between companies.
 In~\autoref{fig:incredi_sym_conduit}, we show the expected PageRank score of IncrediMail in Conduit's PPR and in non-personalized PageRank. As  \autoref{fig:incredi_sym_conduit} shows, IncrediMail's score increases significantly when PageRank is personalized around Conduit. We see that as the personalized PageRank prioritizes Conduit, it ``drags up'' IncrediMail. This implies that there is a close semantic relationship between Conduit and IncrediMail: as we mentioned in~\autoref{subsub:co_occurrence}, Conduit ended up merging with IncrediMail (which is now called Perion) in 2014. 
@@ -2057,7 +1920,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
-    \caption{Expected PPR and PR ratio between the companies}
+    \caption{Ratios of Expected PPR and expected PR of companies}
     \label{fig:RatioMatrix}
 \end{figure}
 
