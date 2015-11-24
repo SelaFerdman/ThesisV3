@@ -342,8 +342,37 @@ the PageRank equation is adapted as follows to compute the Personalized PageRank
 				\label{eq:ppr}
 			\end{equation}
 
+Personalized PageRank is used in a wide variety of applications, \citep{lee2011random} adopt PPR algorithm for ranking entities according to a given query that is represented as a set of entities in the graph and infer a multidimensional recommendation. Personalized PageRank has been used both for variants of vertex ranking as well as local partitioning by \citep{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. In TwitterRank \citep{weng2010twitterrank}, the authors adapt PPR to identify influential users of the micro-blogging service. They also discover that Personalized PageRank weighting graphs edges by the similarity of user’s topical interests gives better results than just weighting the nodes according to those same interests.In \citep{berkhin2006bookmark}, the authors use Personalized PageRank for computing that thay call a\textit{bookmark-coloring} bookmark-coloring model.This model computes authority weights over the web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently compute edge weighted
+personalized PageRanka and provides personalized ranking of typed entity-relationship graphs. It was also noted, \citep{sarkar2008fast}, that Personalized PageRank can be adopted to be a good similarity measure on the Web.\\
+MOVED HERE: As mentioned before, the algorithms of PageRank and Personalized
+PageRank algorithm have been designed so as to improve Web page
+rankings. The Personalized Pagerank variant was first suggested in
+\citep{brin1998can}, and shortly after, has been explored to
+personalize Web search
+(\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}). Nevertheless,
+PageRank may be readily applied to arbitrary graphs to produce node
+importance scores, and this places PageRank amongst a class of network
+analysis techniques \citep{brandes2005network} known as centrality
+measures or indices \citep{koschutzki2005centrality}. Similarly,
+Personalized PageRank is a general similarity measure in graphs, used
+in multiple domains. For example, in \citep{freschi2007protein}, the
+authors used the Personalized PageRank model, which they call
+ProteinRank, to predict protein functions. ALSO: In Keren's thesis, we have shown that PPR's random walk similarity metric outperforms classical collaborative
+filtering and content-based recommendation methods.
+\subsection{Effect of High Degree Nodes on Personalized PageRank}
+\label{sec:ppr_high_degree}
+The study of large networks is a fairly recent development, and there have been many phenomena shown to be appearing in real-world datasets. One important property is the small-world phenomenon \citep{watts1998collective}, the existence of short paths between any randomly-chosen pair of vertices. Many real-world networks exhibit small-world behavior, and they are characterized by having a low average shortest path length and many dense subgraphs.
+Another hallmark of large graphs is the power-law degree distribution. Several groups of authors independently discovered that virtually every large network found in nature exhibits a power-law degree distribution \citep{aiello2001random,albert1999internet}. Our graph also stands in these standards, as shown in \autoref{tab:node_types} and \autoref{fig:power_law_addons}, the addon nodes degree has a power-law distribution and also the small small-world phenomenon holds. In our research, we are experimenting with removing high degree nodes from the graph. In \citep{sarkar2010tractable}, Sarkar proves that removing high degree nodes from an undirected power-law graph involves a very small penalty. The main intuition behind their analysis is that a very high degree node passes on a small fraction of its probability mass to the out-neighbors,
+which might not be significant enough to invest computing resources.They argue that stopping a random walk at a high degree node does not change the personalized pagerank value at other nodes which have relatively smaller degree. Similar to our approach, they turn a high degree
+node into a sink by removing all the outgoing neighbors and do not change any incoming edges.
+
 
 \section{Link Prediction in Graphs}
+\label{sec:link_prediction}
+Link prediction in complex networks has attracted increasing attention from computer science community. Many social, biological, and information systems can be well described by
+networks, where nodes represent individuals, and links denote the relations or interactions between nodes. \textit{Link Prediction} attempts to estimate the likelihood of the existence of a link between two nodes, based on observed links and the attributes of nodes \citep{getoor2005link}.
+Social network analysis comes up against the missing data problem \citep{kossinets2006effects}, where link prediction algorithms may play a role.In addition, the data in constructing biological and social networks may contain inaccurate information, resulting in spurious links \citep{von2002comparative, butts2003network}. Link prediction algorithms can be applied in identifying these spurious links \citep{guimera2009missing}.Besides helping in analyzing networks with missing data, the link prediction algorithms can be used to predict the links that may appear in networks. For example, in online social networks, very likely but not yet existent links can be recommended as promising friendships. Similar techniques can be applied to evaluate the evolving mechanism for given networks or finding a missing user addon.
+A learning algorithm for link prediction, presented in \citep{lao2010relational}, uses random walk processes to define a distribution, rather than some other forms of logical inference, such as belief propagation.It was shown that also personalized PageRank can be used to approximate belief propagation on certain graphs \citep{cohen2010graph}.
 
 \section{Clustering}
 
@@ -791,7 +820,7 @@ all edges                                                                    & 1
 \includegraphics[scale=0.48]{figures/zipf-terms.png} \\
 (c) terms \\
 \caption{Log-scale rank vs. degree plots of add-ons (a), users (b), and terms (c)}
-	\label{fig:minlen2noremove}
+	\label{fig:zipf}
 \end{figure}
 
 \chapter{The missing addon in User ecosystem}
@@ -867,7 +896,6 @@ assigned a high PageRank score if the sum of the ranks of its
 backlinks is high, that is, if it is linked to by other important
 Webpages.
 
-
 The PageRank algorithm described computes universal node importance,
 or `centrality' scores, solely based on the network structure, that is,
 ignoring user preferences. The {\it Personalized PageRank} variant, as in
@@ -923,20 +951,6 @@ provide another mechanism for affecting the probability flow in the
 graph.
 \fi
 
-RELATED?: As mentioned before, the algorithms of PageRank and Personalized
-PageRank algorithm have been designed so as to improve Web page
-rankings. The Personalized Pagerank variant was first suggested in
-\citep{brin1998can}, and shortly after, has been explored to
-personalize Web search
-(\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}). Nevertheless,
-PageRank may be readily applied to arbitrary graphs to produce node
-importance scores, and this places PageRank amongst a class of network
-analysis techniques \citep{brandes2005network} known as centrality
-measures or indices \citep{koschutzki2005centrality}. Similarly,
-Personalized PageRank is a general similarity measure in graphs, used
-in multiple domains. For example, in \citep{freschi2007protein}, the
-authors used the Personalized PageRank model, which they call
-ProteinRank, to predict protein functions.
 
 \iffalse In this thesis the goal of biasing the PageRank with the
 teleportation vector is to personalize the user addons of choice
@@ -1023,68 +1037,43 @@ another way to represent our data.
 \subsection{iGraph}
 \fi
 
-\subsection{Applying PPR for finding the missing add-on}
+\subsection{Predicting the missing add-on using PPR}
 
-CONTINUE HERE. In this research, the question that we wish to answer is `given
+The question that we wish to answer in this research is `given
 a set of {\it add-ons}, which are known to co-exist on the machine of
 some user, what other {\it add-ons} are most likely to be linked to
 that user?'. This question is addressed by means of structural
 similarity in the graph. Formally, we assign $V_u$ to be uniform over $A(u)'$, that is, the re-set probability to each of the nodes representing {\it add-on} $a\in A'$ is set to ${1 \over \mid A' \mid}$, and is zero otherwise. The constructed transition matrix $\transition$ assign equal importance to all of
 the graph edges. That is, the transition probability from node $i$ to
 a linked node $j$ is defined as: $_{ij}={1 \over \mid N_i \mid}$,
-where $N_i$ is the set of nodes linked over an outgoing edge from $i$. For example, suppose that node $i$ is linked to two {\it term} nodes and five {\it user} nodes; then, the probability of reaching any of these nodes using the transition operation equals ${1\over 7}$. In general, it is possible to assign varying edge weights, either using parametric weights according to edge types, or deriving such weights from local edge properties. Recent works have also considered learning a selective set of meaningful paths in the graph that link query with target nodes.\textcolor{red}{[SELA: Cite Einat?]} We leave the exploration of learned random walk measures to future work. 
+where $N_i$ is the set of nodes linked over an outgoing edge from $i$. For example, suppose that node $i$ is linked to two {\it term} nodes and five {\it user} nodes; then, the probability of reaching any of these nodes using the transition operation equals ${1\over 7}$. In general, it is possible to assign varying edge weights, either using parametric weights according to edge types, or deriving such weights from local edge properties. Recent works have also considered learning a selective set of meaningful paths in the graph that link query with target nodes \citep{minkovTOIS10,laoML10} We leave the exploration of learned random walk measures to future work. 
 
 The computed Personalized Pagerank vector assigns scores to all of the
-graph nodes. We consider the graph nodes of type {\it add-on} and rank
-them by their score. It is conjectured that the `missing add-on' will
-be included among the top-ranked items in the list, due to high
-structural coherence with the input set of add-ons observed in the
-user's environment. We expect relatedness to flow over multiple path
-types, reflecting various types of structural similarity in the graph,
-mainly:
+graph nodes. We rank the graph nodes of type {\it addon} by their PPR score. It is conjectured that the `missing add-on' will be included among the top-ranked items in the list, due to high structural coherence with the set of addons that comprise the query. Concretely, the probability mass assigned to the query nodes is expected to flow over multiple path types, reflecting the following main types of structural similarity:
 \begin{itemize}
-\item {\it co-occurrence patterns}: A dominant, short, path that
+\item {\it User-based similarity}: A dominant short path that
   directly leads to related add-ons is {\it add-on} $\Rightarrow$ {\it user}
-   $\Rightarrow$ {\it add-on}; this path links a node denoting an input add-on
-  with other users that have that add-on installed on their
-  machine. Walking from these {\it user} nodes to their associated
-  {\it add-ons} should highly weight those add-ons that frequently
-  co-occur with the input add-on. As the query consists of multiple
-  {\it add-on} nodes, the result of the random walk process is the
-  aggregated score vectors, meaning that other add-ons, which co-exist
-  on users' machines with multiple input add-ons will be prioritized
-  in the rankings. 
-\item {\it term-based similarity}: As demonstrated before
-  (Sec. \autoref{sec:graph_representation}), the name and descriptions of add-on
-  instances are varied. In particular, the same add-on may include
-  different version numbers. The representation graph links each {\it
-    add-on} node with the {\it terms} that it contains. Thus,
-  co-reference can readily take place via the path {\it add-on}
-  $\Rightarrow$ {\it term} $\Rightarrow$ {\it add-on}. Also here,
-  probability mass is mainly propagrated over this path between {\it
-    add-ons} that share multiple {\it terms}.
+   $\Rightarrow$ {\it add-on}. This path links each of the query addons
+  with other users that have the same addon installed on their
+  machine. Walking away from these {\it user} nodes to their associated
+  {\it addons} should highly weight addons that frequently
+  co-occur with the input addon on the same machines. As the query consists of multiple {\it addon} nodes, the resultant PPR scores are expected to prioritize {\it addons} that co-exist on users' machines with multiple input addons.   
+\item {\it Term-based similarity}: As demonstrated before
+  (Sec. \autoref{sec:graph_representation}), the name and descriptions of addon
+  instances exhibit lexical variations. For example, similar addons may vary with respect to the software's version number. The constructed graph links each {\it addon} node with the {\it terms} that it contains. Thus, co-reference resolution can take place via the path {\it addon}
+  $\Rightarrow$ {\it term} $\Rightarrow$ {\it addon}. Also here, the graph-based similarity metric favors {\it addons} pairs that connected over multiple {\it terms}. 
 \end{itemize}
 
-To the extent that the random walk process is applied until its
-convergence point, long-range relationships in the graph are
-manifested in the stationary distribution, consisting in this case
-also of the concatantaion of the short paths listed. In this fashion,
-we expect that co-occurrence of coreferent items will be also
-reflected in the random walk results.
-
-PLACE IN RELATED WORK: In Keren's thesis, we have shown that PPR's
-random walk similarity metric outperforms classical collaborative
-filtering and content-based recommendation methods.
+The stationary distribution of the random walk process manifests long-range relationships in the graph, consisting of various concatenations of the paths listed. We therefore expect that co-occurrence of coreferent {\it addons} will be also reflected in the random walk results.
 
 
 \section{Experimental methodology}
 
-Given the collected corpus, we derive sets of labeled queries for evaluation purposes.  Each query corresponds to a randomly selected user $u$. We randomly select one of the user's add-ons, $a$, and eliminate it artificially from the user's `profile', having the link between the nodes denoting $u$ and $a$ disconnected in the graph. In
+We derive labeled queries from our corpus for evaluation purposes.  Each query corresponds to a randomly selected user $u$. Having selected the user node $u$, we further randomly select one of its linked {\it addons} $a$. The selected addon is eliminated artificially from the user's `profile', having the link between the nodes denoting $u$ and $a$ disconnected in the graph. In
 the experiments, we evaluate the extent to which the missing link can
 be recovered. 
 
-The process of generating an individual labeled example is formally outlined in Figure
-\ref{fig:example-gen}. Naturally, the sampled users are required to have at least two addons installed on their machine--otherwise, the query vector would be left empty, once removing the add-on from the user node for testing purposes. 
+The process of generating an individual labeled example is formally outlined in Figure \ref{fig:example-gen}. Obviously, the sampled users are required to have at least two addons installed on their machine--otherwise, the query vector would be left empty, once detaching the target addon from the user node for testing purposes. 
 
 \begin{figure}
 \begin{enumerate}[(a)]
@@ -1105,8 +1094,9 @@ The process of generating an individual labeled example is formally outlined in 
 \label{fig:example-gen}
 \end{figure}
 
-The labeled examples thus consist of queries, which include the addons still associated with {\it user} $u$, and a single known correct response, which is the removed addon $a$.
-Once disconnected from the user node, there should be no selection bias towards the target add-on $a$ compared with the other addon nodes. Assuming that addons are mutually related, the ranking scheme should identify strong association between the removed add-on and the environment of remaining add-ons associated with the same user. Accordingly, we expect to find the missing add-on among the top ranks of the list with high probability. Obviously, the add-ons already associated with the query user are  typically assigned high relevancy scores by query-sensitive algorithms like PPR. Importantly, we remove the query add-ons from the evaluated ranked list. 
+Once disconnected from the user node, there should be no selection bias towards the target addon $a$ compared with the other addon nodes in the graph. As discussed above, PPR's ranking scheme should discover association between the removed add-on and the addons still associated with the user. Naturally, the addons included in the query are assigned high relevancy scores by query-sensitive algorithms like PPR. The query addons are therefore discarded from the evaluated ranked list. 
+
+For example, suppose that we uniformly at random choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Let us sample the googletoolbar\_32.dll as the target addon. The remaining four addons form the query vector. After executing the PPR, the four query nodes are removed from the ranked list.
 
 \subsection{Evaluation measures}
 
@@ -1115,11 +1105,6 @@ when we are predicting the missing add-on, we are looking at the
 addons ranking list (the ranking is according to PageRank scores) and
 check the Recall@K. This measure seems to give similar results as the
 Popularity baseline.\fi
-
-All of the evaluated methods produce a ranked list of add-ons. 
-Concretely, the PPR and PageRank algorithms compute scores for all of the graph nodes.
-It is straight-forward to filter the nodes by their type, and output a ranked list that consists of add-ons only.
-
 
 \iffalse Since, lets say it is ranked in 8th position, not
 taking into account the ranking position of the original user addons,
@@ -1130,50 +1115,24 @@ ten.\\ \textcolor{green}{\textit{Sela: Example:}}
     validation.. using MAP meausre(?)  (can include a description of
     MAP as an appendix)}} \fi
 
-We use a set of standard information retrieval metrics for the evaluation of the output ranked lists. Note that in our settings, there is a single `correct' answer. The various metrics assess the quality of each algorithm by the extent to which it succeeds to 
-place the relevant node at high ranks on average, across all queries. A short description of the evaluation measures follows.
+We experiment in this work with PPR and alternative methods. All methods generate scores, which are processed into output ranked lists of addons. Accordingly, we assess performance using a set of metrics designed for the evaluation of ranked lists. Note that in our settings, there is a single known `correct' answer. The various metrics assess the extent to which each method places the relevant response at the top of the ranked list, on average across all queries. A short description of the evaluation measures follows.
 
-\paragraph{Recall at k (Recall@k)}
-This is the fraction of queries, for which the relevant response is included among the top $k$ ranks, as formulizaed in Eq.~\eqref{eq:rec-at-k}. \textcolor{red}{SELA: DONE? the equation need to be modified: first, it is the average scores acorss multiple queries. Lets assume that we have $N$ queries. Second, account for the fact that we have a single correct response per query. You use a general definition of recall, but you should really used a formula for recal-at-k}. This criterion captures the quality of rankings for applications where the first few results matter most. 
-For recommendation systems, users usually will only view several top ranked candidates. Therefore
-whether the correct addon exists in the top ranked candidates is
-important, and Recall@k is designed for measuring this. \textcolor{red}{Need to discuss how to introduce the missing add-on problem alongside a recommendation application.}
-\begin{equation}
- Recall@k = \frac{1}{N} \times \displaystyle\sum\limits_{k=1}^{N} (Recall \, at \, rank \, of \, k^{th} \, relevant \, addon)
-\label{eq:rec-at-k}
-\end{equation}
-
+\paragraph{Recall at rank k}
+This is the fraction of queries, for which the relevant response is included among the top $k$ ranks (see also \citep{minkovTOIS10}). The non-interpolated recall at rank k of a given ranked list is defined to be 0 for each rank $k = 0, ..., k_{i−1}$, where $k_i$ is the rank that holds the single correct entry, and 1 for ranks $k\geq k_i$. The (mean) recall at rank $k$ averages the recall
+scores at each rank $k$ across the rankings of multiple queries. Thus, mean recall is in the range [0,1] at each rank $k$. For example, recall at rank
+3= 0.7, means that in 70\% of the queries, the correct answer appears among the
+top 3 ranks of the retrieved lists.
 
 \paragraph{Mean Reciprocal Rank (MRR)}
 
-The mean reciprocal rank \citep{voorhees1999trec} is a
-well-known evaluation metric in Information Retrieval (IR), which considers the position of the first correct
-answer in the ranked list.  As formulized in Eq.~\eqref{eq:mrr}, the reciprocal rank is the inverse of the position of the first correct addon in the ranked set of addons produced for a given query; the MRR is the average of the reciprocal ranks across all of the queries. Unlike the recall@k measure, which disregards the results below rank $k$ for evaluation purposes, MRR consider the full list of ranked items. It is especially informative in assessing recommendation quality in domains that target a small set of valuable items \citep{chen2006less}, such as friends recommendation in social
-networks. In our settings, there is a single correct answer per query. It is desired to include the missing add-on, and possible other relevant add-ons that can be recommended to the user, at high positions of the ranked list.
+The mean reciprocal rank metric \citep{voorhees1999trec} considers the position of the first correct answer in the ranked list.  As formalized in Eq.~\eqref{eq:mrr}, the non-interpolated reciprocal rank is the inverse of the position of the correct item (addon) in the ranked set for a given query; the MRR score is the mean reciprocal rank across all of the queries. Unlike the recall-at-rank-k measure, which disregards the results below rank $k$ for evaluation purposes, MRR is based on the full list of ranked items. such measures (once extended to consider multiple correct answers) are especially informative in assessing recommendation quality in domains that target a small set of valuable items, such as friends recommendation in social
+networks \citep{chen2006less}. 
 \begin{equation}
- MRR = \frac{1}{Q} \times \displaystyle\sum\limits_{q=1}^{Q} \frac{1}{rank(1^{st} \, relevant \, result \, of \, query \, q)}
+ MRR = \frac{1}{Q} \times \displaystyle\sum\limits_{q=1}^{Q} \frac{1}{rank_q)}
 \label{eq:mrr}
 \end{equation}
 
-\subsection{Statistical validity}
-
-Overall, we generated datasets that include $N=1000$ labeled examples, each sampled from a unique user...
-For example, we uniformly at random choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Each addon is represented by a node in our graph, as well as the user. After discovering all user addons, we randomly choose one addon to remove. Lets say we choose the googletoolbar\_32.dll addon. The remaining four addons are the query vector for the personalized PageRank. After executing the PPR and removing from the ranking list the nodes of the query vector, we look for the removed addon rank. If it is ranked in top 10, this rank will contribute to Recall@10.
-The corpus contains multi-national users from all around the globe.
-For most of the experiments we have generated four datasets with $N=1000$ labeled examples, checked its standard error and calculated average scores.
-\iffalse
-\textcolor{red}{Give a detailed example of a query?
-Explain that the 1000 were chosen uniformally at random
-also explainx4k
-What else can we say here?.. are the selected users in
-  the dataset and corpus multi-national, or geographically focused?
-  any other characteristics worth mentioning?}
-
-
-\textcolor{green}{\textit{Einat:Used Personalized PageRank -- which parameters? how were the paramater
-values set?}}
-\fi
-
+For example, suppose that the removed addon is placed at rank 20 in response to an individual query by the evaluated method. This result will not contribute to mean Recall@10 score; it will contribute however to Recall@20 score (or mean recall at any rank lower than 20). The contribution of this result to MRR is ${1 \over 20}=.05$.
 
 \section{Experiments}
 \label{sec:experiments}
@@ -1181,29 +1140,27 @@ values set?}}
 We use Personalized PageRank to rank {\it add-on} nodes in
 the graph by their structural similarity to the user profile, or {\it
   query}. The generated rankings using this approach may be affected
-by design choices concerning the graph structure and the random walk scheme. This section first provides details regarding the implementation of PPR, as well as baseline methods that we compare against. It then discusses several aspects concerning the graph design that are evaluated in this work.
+by design choices concerning the graph structure and the random walk scheme. This section first provides details regarding the implementation of PPR, and provides details about baseline methods that we compare against. It then discusses aspects concerning the graph design that are evaluated in this work.
 
 \subsection{Methods}
 \label{sec:methods}
 
-\subsubsection{PPR} In this research, we experiment with a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package, a numerical software library written in FORTRAN 77, for solving large
-scale eigenvalue problems (used also in Mining and Analyzing Social
-Networks book \citep{ting2004minig}). Concretely, ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
+In the experiments, we make use of a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package, a numerical software library written in FORTRAN 77, for solving large scale eigenvalue problems (often used in analyzing large social networks, e.g., \citep{ting2004minig}). ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
 vertices. We have created a unique number for each node and store the
 mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
 management (every very small leak would cause a serious global memory
-leak).\fi We ran the experiment using a standard PC machine with x memory using a a 64bit version of igraph. On average, running a batch of 1,000 queries required only x--y seconds. In the experiments, we set the teleport probability parameter $\alpha$=0.85 following previous works. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability values has negligible effect on the produced rankings.
+leak).\fi We ran the experiment using a standard PC machine using a a 64bit version of igraph. On average, running a batch of 1,000 queries required only a few seconds. In the experiments, we set the teleport probability parameter $\alpha=0.85$ following previous works. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability value has negligible effect on the produced rankings.
 
-
-We compare our algorithms against two strong baselines: ranking {\it add-ons} by `popularity', as well as based on their PageRank scores. 
+We further evaluate two non-personalized alternative ranking methods: ranking {\it add-ons} by `popularity', as well as based on their PageRank scores. 
 
 \subsubsection{Popularity baseline} 
-A simple approach for predicting the `missing' add-on would be to rank the {\it add-on} items by their popularity, determined by the total number of users associated with each add-on in the dataset. Using this approach, the response to all queries is equal and fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
-add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution  \textcolor{red}{cite Keren's thesis, SELA: What to cite?}. Another advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for datasets containing hundreds of thousands of users and tens of millions of items by means of database querying. 
+
+A simple approach for predicting the `missing' add-on would be to rank the {\it add-on} items by their popularity, determined by the total number of users associated with each add-on in the corpus. Using this approach, the response to all queries is fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
+add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution. An advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for corpora that contain hundreds of thousands of users and tens of millions of items by means of database querying. 
 
 \subsubsection{PageRank baseline} 
-For each addon we have calculated its PageRank score given the underlying graph. The PageRank scores assigned to the graph nodes 
-reflect their structural centrality in the graph. We are interested in comparing PPR performance with this non-personalized version of the random walk algorithm.
+
+For each addon we have calculated its PageRank score given the underlying graph. The PageRank scores assigned to the graph nodes reflect their structural centrality in the graph. We are interested in comparing PPR performance with this non-personalized version of the random walk algorithm.
 
 Both baselines were implemented using {\it igraph}. \iffalse were implemented in a high performance, parallel
 or distributed environment. We chose to use igraph \citep{igraph}, a
@@ -1212,16 +1169,13 @@ high-performance, parallel machine learning framework. \fi
 \subsection{Graph design choices}
 \label{sec:design}
 
-The proposed graph schema is simple and natural in the sense that it directly represents the relational structure of its source information. We discuss in this section a set of considerations involved in fine tuning of the graph design. The impact of the design options detailed below is evaluated empirically.  
+The proposed graph schema is simple and natural in the sense that it directly represents the relational structure of the source information. We discuss in this section a set of considerations involved in fine tuning of the graph design. The impact of the design options detailed below is evaluated empirically.  
 
 \subsubsection{Pruning of high-degree nodes} 
 
-Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. First, high density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. Removing such high degree nodes should only result in only a small approximation error [cite Purnamrita Sarkar], while improving performance by increasing the `visibility' of lower-degree nodes. MERGE WITH: Such high-frequency nodes are generally known to be of low value for similarity assessment. In the graph walk schema, this implies that the probability mass assigned to such nodes would be distributed among a large variety of neighboring nodes in the random walk process, having little impact on the final rankings. At the same time, such nodes are likely to receive a large number of contributions from their neighbors. The output list is likely therefore to be biased towards popular nodes. Ideally, the score distribution produced by Personalized PageRank should reflect node relevancy to the input teleportation vector, which simulates the user's ecosystem. The impact of high degree nodes may reduce the influence of the original seeds.
+Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. High density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. According to \citep{sarkar2010fast}, removing high degree nodes should only result in only a small approximation error. Indeed, the graph walk schema implies that the probability mass assigned to high-degree nodes be distributed among a large variety of neighboring nodes in the random walk process, thus having little impact on the final rankings. At the same time, high-degree nodes receive a large number of contributions from their neighbors, and are therefore highly-ranked. Removing these nodes from the graph will increase the `visibility' of lower-degree nodes. Finally, we wish that the Personalized PageRank scores reflect node relevancy with respect to the input query vector, representing the user's ecosystem. Influential high degree nodes may weaken the association with the query seeds.
 
-Following previous works, as in \citep{sarkar2010fast},
-we experiment with a graph variant, in which high-degree nodes are
-removed. We set the threshold over a node's out-degree to 500 in this
-work. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it add-ons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries include {\it add-ons} that may be less trivial to predict. One may find special interest in this configuration for the purpose of recommending {\it add-ons} as the recommendation of highly popular and possibly familiar {\it add-ons} may be less beneficial for some users. 
+We report experimental results using the full graph, as well as using a graph variant, in which high-degree nodes are removed. We define high-degree nodes in this work as nodes for which the out-degree is equal or higher than 500. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it addons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries no long include popular {\it addons}, but rather contain only lower-frequency addons, which are more challenging to predict. We believe that this latter configuration is of special interest for recommendation purposes; if one wishes to recommend addons to users, focusing on non-trivial items can be highly beneficial.
 
 \subsubsection{Term modeling}
 
@@ -1230,6 +1184,7 @@ The modeling of {\it term} nodes is desirable as it establishes links between re
 \subsubsection{Specificity of path information} 
 
 Add-on names often include full file-system path information, e.g., `C:/Program Files (x86)/Skype/skype1.dll'. We remove path prefixes (like `C://Program Files (x86)/skype') in our main experiments for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
+
 
 \section{Results}
 \label{sec:user_main_results}
@@ -1286,7 +1241,10 @@ Can show results of multiple configurations as curves on the same graph.
 
 \paragraph{Main results}
 
-Figure~\ref{fig:main} shows recall-at-k performance using PPR, comparing it against ranking-by-popularity and PageRank rankings. Full results, including standard deviation figures and MRR results are detailed in Table~\ref{tab:full}. 
+Throughout this section, we report results using query sets that include $Q=1000$ labeled examples of randomly sampled user-addon pairs per individial experiment. Each experiment was repeated using four sets of queries (4$\times$1000). Wherever possible, we report mean results alongside standard deviation.  
+
+Let us first consider the general scenario, in which the underlying graph contains all of the {\it add-ons}, including the most prevalent ones. Figure~\ref{fig:main} shows recall-at-k performance using PPR, comparing it against ranking-by-popularity and PageRank rankings. Full results, including standard deviation figures and MRR results are detailed in Table~\ref{tab:full}.
+As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable performance to the alternative methods. Recall-at-rank-10 using PPR is as high as .354, reaching recall of .660 and .801 at the top 50 and top 100 ranks, respectively. Compared with the non-personalized popularity-based ranking, recall-at-10 results improve at a high rate of 45.7\% using PPR (.354 vs. .243). Improvement rates at rank-50 and rank-100 measure 18.9\% and 12.7\%, respectively. These results indicate that PPR excels at recovering the missing add-on in general, and is more successful in ranking it at the top 10 ranks.  Interestingly, performance using the popularity- and PageRank-based rankings is nearly identical. This result is not very surprising as the most popular {\it add-ons} are likely to be prominent in terms of graph centrality. 
 
 \begin{figure}[t]
 \centering
@@ -1347,39 +1305,22 @@ Full path & POP & 	0.004 (0.003) & 0.019 (0.006) & 0.033 (0.007) & 0.003 (0.001)
 \end{tabular}
 \end{table}
 
-Let us first consider the general scenario, in which the underlying graph contains all of the {\it add-ons}, including the most prevalent ones. As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable performance to the alternative methods. Recall-at-rank-10 using PPR is as high as .354, reaching recall of .660 and .801 at the top 50 and top 100 ranks, respectively. Compared with the non-personalized popularity-based ranking, recall-at-10 results improve at a high rate of 45.7\% using PPR (.354 vs. .243). Improvement rates at rank-50 and rank-100 measure 18.9\% and 12.7\%, respectively. These results indicate that PPR excels at recovering the missing add-on in general, as well as at distinguishing it from other add-ons as highly relevant. Interestingly, performance using the popularity- and PageRank-based rankings is nearly identical. This result is not very surprising as the most popular {\it add-ons} are likely to be prominent in terms of graph centrality. 
+Next, we discuss our results using the graph variant, in which highly-connected addons have been removed (Sec.~\ref{sec:design}). This scenario is more challenging, as the queried disassociated {\it add-ons} are not highly-frequent in the global population. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular add-ons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This indicates that popular nodes occupying the top ranks `push' relevant yet less popular answer nodes to lower positions of the ranked list.  
 
-We further evaluated a graph variant, in which highly-connected add-ons have been removed (see Sec.~\ref{sec:design}). This scenario is more challenging, as the queried dis-associated {\it add-ons} are necessarily not of high-frequency. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular add-ons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This again indicates that popular nodes occupy the top ranks, pushing relevant but less popular answer nodes to lower positions of the ranked list.  
-
-Overall, we conclude from these experiments that there indeed exists high structural association between the add-ons installed on one's machine, to the extent that it is possible to predict one of these add-ons if removed randomly. Personalized PageRank has been shown to provide an effective mechanism for this task, as it evaluates nodes by their structural joint similarity to the set of add-ons present at the specified environment. 
+Overall, we conclude from these experiments that there indeed exists high structural semantic association between the add-ons installed on one's machine, to the extent that it is possible to predict one of these add-ons if removed randomly. Personalized PageRank is shown to provide an effective mechanism for this task, as it evaluates nodes by their structural joint similarity to the set of add-ons present at the specified environment. 
 
 \subsubsection{Impact of term modeling}
 
-As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling for our task.
-Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite. including {\it user} and {\it add-on} nodes only, connected over bi-directional {\it has-add-on} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it add-on} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), where recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). 
+As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite. including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
 
-We were interested in investigating the reasons for the low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it add-on} and {\it term} nodes; ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it add-on} nodes are typically connected to a large number of {\it user} nodes, but only to very few {\it term} nodes. To illustrate this, consider some arbitrary add-on with a short description, linking to three {\it term} nodes, and a medium user set neighborhood, consisting of about 200 {\it user} nodes. Since the random walk propagates uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes to increase their traversal probability may remedy this situation. We leave this for future work.
+We were interested in investigating the reasons for the relatively low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it addons} and {\it term} nodes only (i.e., without {\it users}); ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it addon} nodes are typically connected to a large number of {\it user} nodes, and only to a very few {\it term} nodes. To illustrate this, consider some arbitrary addon for which a short description is available. This {\it addon} node will link to a few (roughly, three) {\it term} nodes, and a medium user set neighborhood (roughly, 200) {\it user} nodes. Since the random walk distributes probability mass uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes (see~\citep{minkovTOIS10}) will increase their traversal probability and increase their impact. We leave the exploration of this possibility for future work.
 
 \subsubsection{Sensitivity to path information}
 
-Table~\ref{tab:full} further shows experimental results using graph variants in which {\it add-on} were represented by the full path. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increased by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to {\it add-ons} residing in a similar paths--such an association would be technical rather than semantic. However, repeating the experiment with {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with path information removed (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, paths may vary by machine configuration, which also may indicate on sub-groups in the population (e.g., advanced users may use a different operating systems than less sophisticated users). Removing the path, on the other hand, may provide better statistics if there is little variance across users, which may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
+Table~\ref{tab:full} further shows experimental results using graph variants in which {\it addons} were represented by the full path. Again, both the graph variants, with and without high-degree nodes, are evaluated. We observe that when path information is present in the full graph, recall performance using PPR is somewhat degraded (e.g., recall-at-rank-10 is reduced from .354 by 17\% to .294). In contrast, when high-degree nodes are removed from the graph, PPR performance is improved when path information is modeled (recall-at-rank-10 increases by 22.5\% from .405 to .496). We suspected that this improvement was due to contribution of {\it terms} extracted from the path, leading the algorithm to favor {\it addons} based on path configuration information--such an association would be technical rather than semantic. However, repeating the experiment having the  {\it term} nodes removed from the graph still yielded impressive performance gains, compared with the graph with no path information (e.g., recall-at-10 measured at .478). We conjecture that path information is in fact {\it meaningful} for the task at hand. In particular, paths may differ by language, where it is likely that eco-systems vary geographically. Or, the path on which addons are installed may indicate by itself on sub-groups in the population (e.g., advanced users who use certain operating systems, and vice versa). 
+When there is little variance among users, better statistics is obtained without path information; this may be the case in the full graph scenario, where most queries correspond to highly frequent nodes, possibly sampled from one dominant cluster (say, U.S. users, who use standard operating system). 
 
-CONTINUE HERE
-
-The performance of the popularity-based approach, however, plummets in this setting (recall-at-rank-10 diminished by 73.3\% from .243 to .0065). PageRank's performance is affected to a lesser extent (recall-at-rank-10 reduced by 23.9\% from .243 to .185). 
-
-addons paths hurts the performance, this can support our claim that
-high degree nodes, which obviously added when adding addons paths,
-disturb the PPR weight propagation from the real missing addons
-nodes. Interestingly, adding addons paths but removing high degree
-nodes improves the performance of our algorithm, see
-\autoref{fig:with_without_paths_remove500}. These two experiments,
-shown in \autoref{fig:with_without_paths}, support our claim that high
-degree nodes should be removed to improve prediction quality. Since,
-once they are removed, addition information about the user, like it
-paths, contributes to understanding and predicting its ecosystem
-state.
-
+Finally, the performance of the popularity-based approach plummets in this setting (recall-at-rank-10 diminished by 73.3\% from .243 to .0065). PageRank's performance is affected to a lesser extent (recall-at-rank-10 reduced by 23.9\% from .243 to .185). These trends are in line with our observation, by which path information impairs the statistical information, upon which these methods base their predictions.
 
 \iffalse
 \begin{figure}[t]
@@ -1444,28 +1385,19 @@ state.
 \end{figure}
 \fi
 
-As we have mentioned earlier, in order for our prediction algorithm to
-run, we require that user has at least two add-ons. At
-\autoref{fig:addonsNumberGraph},we are showing the affect number of
-addons that user have pre-installed on the algorithm accuracy. The
-\autoref{fig:addonsNumberGraph} graph shows that, while the prediction
-algorithm still performs on any number of pre-installed, its accuracy
-decreases as the number addons that user has, growth. One possible
-explanation to this behavior could be - if user addon is predicted,
-i.e. receives its PageRank score, mainly from other users that have a
-similar ecosystem - that the lesser addons user has the more unique
-its ecosystem.
+\paragraph{Sensitivity to environment size}
 
-\begin{figure}[p]
+As mentioned earlier, we select users that have at least two add-ons installed on their machines. Figure~\ref{fig:addonsNumberGraph} shows recall performance at the top ranks using PPR per different sampled populations: users who have at least $N$ addons installed, having $N=2,4,5,10,15,20$. It is shown that recall levels decrease as the number of addons known to be installed at the user's machine grows. We believe that as more species co-exist on one machine, higher heterogeneity is introduced to the system, where sub-groups of addons cluster together. PPR may find addons that are semantically related to several such clusters. As a result, the position of the target addon in the ranked list will be lower on average. Nevertheless, PPR maintains high performance for users who have up to 5 addons installed, and yields meaningful results in general. 
+
+\begin{figure}[h]
 \centering
 \includegraphics[scale=1,angle=0]{figures/addonsNumberGraph.png}
-\caption{Effect of addon number on prediction accuracy}
+\caption{Effect of query size on prediction accuracy}
 \label{fig:addonsNumberGraph}
 \end{figure}
 
 
-
-We have also verified that user nodes are crucial for the prediction
+\iffalse We have also verified that user nodes are crucial for the prediction
 algorithm, as shown in \autoref{fig:nouserNoremove}.
 
 \begin{figure}[h]
@@ -1474,36 +1406,13 @@ algorithm, as shown in \autoref{fig:nouserNoremove}.
 \caption{Effect of user nodes on prediction accuracy}
 \label{fig:nouserNoremove}
 \end{figure}
-
+\fi
 
 \section{Discussion}
-Our prediction algorithm performs best on full graph when highly
-connected nodes are removed, removing very highly connected nodes
-improves PPR convergence and reduces the noise in random walk.
-Moreover, users that are having only two addons eases the prediction,
-which intuitively makes sense since the PPR personalization vector
-contains only one node. In experiment shown in
-\autoref{fig:addonsNumberGraph}, you can observe that picking users
-with higher number of pre-installed addons reduces the algorithm
-performance but still performs well. In experiment shown in
-\autoref{fig:with_without_terms}, you can observe the importance of
-term nodes, they improve connectivity between similar addons and thus
-improves our prediction rate. An obvious observation can be made from
-experiment shown in \autoref{fig:nouserNoremove}., graph without user
-nodes are almost not possible for recommender to find a missing addon
-node.
 
-[EINAT:]AN ISSUE: There are several aspects of this problem. Correlations may
-be due to user's tastes, especially for users who are actively
-involved in the maintancne of their machine. Another factor is
-functionality, where we may expect to find complimentary
-add-ons. Finally, there may be positive correlations due to
-manipulations in the automatic installations, reflecting business
-alliances. A limitation of this study is that we have no evidence
-whatsoever about the specific factors that led some add-on to be
-installed on one's machine. WE DO NOT MODEL THESE FACTORS
-SEPARATELY. Perhaps say that these different types of co-existance are
-also exhibited in biological eco-systems?
+In this chapter, we evaluated the coherence among addons that are installed on the same machine. We found that Personalized PageRank performs well on the task of predicting relevant addons given information about its environment. Alternative one-fit-all rankings of addons by popularity or graph centrality yielded substantially inferior results, indicating that addon populations exhibit strong correlations between individual addon species.  
+
+We haven't yet examined the reasons for the existence of these correlations. Multiple factors may underlie this phenomenon. The mixture of addons on one's machine is certainly affected by the user's personal preferences, as long as the user is actively involved in maintaining his computing environment. Another factor is functionality, where some addons are complimentary. Importantly, and of high interest, are positive correlations between addons as the result of interventions and manipulations of software companies in the add installation process. Co-existence of addons by different companies may be an indication of  business alliances. Moreover, rivalry between addon distributors may be reflected in negative correlation between these addons. In the next chapter, we investigate business alliances and rivalries as factors that explain trends observed in the addon ecosystem.  
 
 \chapter{PPR-based analysis of addon coexistence}
 \label{chap:Symbiosis}
@@ -1822,7 +1731,19 @@ A personalized PageRank vector is the stationary distribution of a random walk t
 
 We aggregate PageRank scores of all addons of a company into the expected score and compare companies based on the expected score. For each company $c_q$ in the PPR query, we construct a ranked list of all other companies according to their expected PPR scores. In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
 
-The personalized PageRank analysis appears very successful in revealing truly symbiotic relations between companies.
+%[SELA: Added Ratio Matrix, \autoref{fig:RatioMatrix}. The red cell are the ones with ratio smaller than 1, the red cells with border are the ones smaller than 0.5. The green cells are the ones with ration greater than 1, the green cells with border are the ones greater than 1.1]
+\autoref{fig:RatioMatrix} shows the ratio between expected PPR scores of company $c_i$ given query company $c_q$ and the expected non-personalized PR score of $c_i$. Ratios greater than 1 are colored in green, all the rest is colored in red. It can be immediately seen that most ratios are colored in red, meaning that PPR scores are generally lower than PR scores. Some cells of the table are highlighted with a dark frame. Green cells are highlighted if the PPR to PR ratio is greater than $1.1$, while red cells are highlighted if the PPR to PR ratio is lower than $0.5$. Those cells correspond to company pairs that are likely to stay in a symbiotic (green) or clash (red) relationship with each other.
+
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
+    \caption{Ratios of Expected PPR and expected PR of companies}
+    \label{fig:RatioMatrix}
+\end{figure}
+
+%By a quick look at the \autoref{fig:RatioMatrix} relations, we see that some companies are more "friendly" with others, e.g. given SearchToolbar company the expected PPR scores from Softonic and SweetIM are greatly improved. This could be explained by many distribution agreements the SearchToolbar company (Zugo) has signer  There also company that one hurts others performance, e.g. given the Norton anti virus company, all others companies expected PPRs scores are hurt. This behavior can be explained by the essence of any anti virus company - not favoring addons distributors. Some exceptions are anti virus companies like Avira which has bundled with addons manufacture like ASK.
+
+Our methodology appears very successful in revealing truly symbiotic relations between companies. Below are a few examples
 In~\autoref{fig:incredi_sym_conduit}, we show the expected PageRank score of IncrediMail in Conduit's PPR and in non-personalized PageRank. As  \autoref{fig:incredi_sym_conduit} shows, IncrediMail's score increases significantly when PageRank is personalized around Conduit. We see that as the personalized PageRank prioritizes Conduit, it ``drags up'' IncrediMail. This implies that there is a close semantic relationship between Conduit and IncrediMail: as we mentioned in~\autoref{subsub:co_occurrence}, Conduit ended up merging with IncrediMail (which is now called Perion) in 2014. 
 
 Personalized PageRank provides insights on a relation between Babylon and ASK (which are known revivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no semantic relationship between the two companies. 
@@ -1913,16 +1834,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \label{fig:ask_clash_imesh}
 \end{figure}
 
-[SELA: Added Ratio Matrix, \autoref{fig:RatioMatrix}. The red cell are the ones with ratio smaller than 1, the red cells with border are the ones smaller than 0.5. The green cells are the ones with ration greater than 1, the green cells with border are the ones greater than 1.1]
-\autoref{fig:RatioMatrix} shows all the expected PPR and PR ratios between the companies. Ratio is greater than 1 means that company benefits from being in another (the seed) company environment, while ratio smaller than 1 means the opposite. By quick look at the \autoref{fig:RatioMatrix} relations, we see that some companies are more "friendly" with others, e.g. given SearchToolbar company the expected PPR scores from Softonic and SweetIM are greatly improved. This could be explained by many distribution agreements the SearchToolbar company (Zugo) has signer  There also company that one hurts others performance, e.g. given the Norton anti virus company, all others companies expected PPRs scores are hurt. This behavior can be explained by the essence of any anti virus company - not favoring addons distributors. Some exceptions are anti virus companies like Avira which has bundled with addons manufacture like ASK.
 
-
-\begin{figure}[h]
-\centering
-    \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
-    \caption{Ratios of Expected PPR and expected PR of companies}
-    \label{fig:RatioMatrix}
-\end{figure}
 
 \iffalse
 \begin{sidewaysfigure}[ht]
