@@ -92,7 +92,6 @@
 \def\ignore#1{}
 
 \begin{document}
-\date{\today\\v1.3}
 \title{\Huge{The ecology of Web browser}
                 \huge
              \\[10mm] Sela Ferdman
@@ -103,7 +102,8 @@
              \\       Department of Computer Sciences
              \\[10mm] November, 2015
 }
-\date{\today\\v1.4}
+\author{}
+\date{}
 \maketitle{}
 
 \pagestyle{plain}
@@ -168,7 +168,8 @@ In this work we have developed and proved a methodology to find what addon any g
 
 Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday environment. As of today, some operating systems are based entirely on browsers (e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}). Browser extensions, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. An extension was developed, for example, that provides visually impaired users with access to the content of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. Toolbars are another kind of a browser extension. These are GUI widgets, which typically reside in the upper part of the browser's window. All major Web browsers support toolbar development as means of extending the browser's GUI and functionality. 
 
-A great number of extensions are installed by users on a daily basis nowadays. It was reported that more than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://www.medianama.com/2012/06/223-the-lowdown-google-io-2012-day-2-310m-chrome-users-425m-gmail-more}}. While browser extensions in general, and toolbars in particular, may be installed following an explicit request by the user, addons are often `silently' installed by a third party as the user downloads some other program from the Web, or likewise are included in a 'software bundle'. There are several reasons why software companies are interested in having specific toolbars installed on the user's machine. First, toolbars are often used for collecting information about the browsing history of the user (e.g., Yahoo! Toolbar). In addition, it is often the case that once installed, toolbar software directs all of the user searches to some dedicated search portal (e.g. MyWebSearch.com). The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://seekingalpha.com/article/1147451-avg-feb-1st-google-policy-updates-threaten-avg-s-growth-engine-signals-steep-downside}}.  It was recently estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}} . \textcolor{red}{This news from 2013 may need to be refreshed..} \iffalse Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal
+A great number of extensions are installed by users on a daily basis nowadays. It was reported that more than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, may be installed following an explicit request by the user, addons are often `silently' installed by a third party as the user downloads some other program from the Web, or likewise are included in a 'software bundle'. There are several reasons why software companies are interested in having specific toolbars installed on the user's machine. First, toolbars are often used for collecting information about the browsing history of the user (e.g., Yahoo! Toolbar). In addition, it is often the case that once installed, toolbar software directs all of the user searches to some dedicated search portal (e.g. MyWebSearch.com). 
+The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was recently estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}} . \textcolor{red}{This news from 2013 may need to be refreshed..} \iffalse Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal
 of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular add-on survives on the user's machine
 more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
 profiles and personalization of software services, there is no previous research, to the best of our knowledge, which used information about user browser extensions to similarly model user behavior. We will examine the hypothesis by which the existence of an extension on a user’s computer reflects something about the user's
@@ -534,7 +535,7 @@ For the purposes of this study, we consider a subset of the data, including all 
 \end{figure}
 \fi
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/user_addons_histogram.png}
 \caption{Distribution of number of addons per user}
@@ -757,7 +758,7 @@ Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -1183,7 +1184,9 @@ The modeling of {\it term} nodes is desirable as it establishes links between re
 
 \subsubsection{Specificity of path information} 
 
-Add-on names often include full file-system path information, e.g., `C:/Program Files (x86)/Skype/skype1.dll'. We remove path prefixes (like `C://Program Files (x86)/skype') in our main experiments for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
+Add-on names often include full file-system path information, e.g., 
+`C:/Program Files (x86)/Skype/skype1.dll'. We remove path prefixes (like `C://Program Files (x86)/skype') in our main experiments for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. 
+Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
 
 
 \section{Results}
@@ -1389,7 +1392,7 @@ Finally, the performance of the popularity-based approach plummets in this setti
 
 As mentioned earlier, we select users that have at least two add-ons installed on their machines. Figure~\ref{fig:addonsNumberGraph} shows recall performance at the top ranks using PPR per different sampled populations: users who have at least $N$ addons installed, having $N=2,4,5,10,15,20$. It is shown that recall levels decrease as the number of addons known to be installed at the user's machine grows. We believe that as more species co-exist on one machine, higher heterogeneity is introduced to the system, where sub-groups of addons cluster together. PPR may find addons that are semantically related to several such clusters. As a result, the position of the target addon in the ranked list will be lower on average. Nevertheless, PPR maintains high performance for users who have up to 5 addons installed, and yields meaningful results in general. 
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[scale=1,angle=0]{figures/addonsNumberGraph.png}
 \caption{Effect of query size on prediction accuracy}
@@ -1400,7 +1403,7 @@ As mentioned earlier, we select users that have at least two add-ons installed o
 \iffalse We have also verified that user nodes are crucial for the prediction
 algorithm, as shown in \autoref{fig:nouserNoremove}.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[scale=.8,angle=0]{figures/nouserNoremove.png}
 \caption{Effect of user nodes on prediction accuracy}
@@ -1425,7 +1428,7 @@ The clash effect can be observed when addons of one company get removed if addon
 
 Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiotic effects are fairly visible to the users (e.g., an addon is prompted to be installed during an installation processes of another addon or a software product), some other symbiotic effects are hidden (e.g., those following undisclosed agreements between addon distributors). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media\footnote{\url{http://finance.yahoo.com/news/babylon-shares-jump-yahoo-sticks-125203474.html}}, the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[scale=.8,angle=0]{figures/ask_offer.png}
 \caption{ASK Toolbar installation bundled with Java version upgrade.}
@@ -1453,7 +1456,7 @@ To the best of our knowledge, this thesis is the first research study of the add
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Companies list}
 \label{table:companies_list}
@@ -1516,7 +1519,7 @@ As discussed in Section~\ref{sec:methods}, an addon is represented in our system
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{An example of a company's name contained in an addon's path or description}
 \label{table:addon_desc}
@@ -1596,7 +1599,7 @@ Jaccard(c_i, c_j) = \frac{|\mathbf{M}_i \cap \mathbf{M}_j|}{|\mathbf{M}_i| + |\m
 $$
 where the absolute value symbol means the cardinality of a set.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/JaccardMatrix.png}
 \caption{All companies Jaccard index}
@@ -1616,14 +1619,14 @@ To summarize, addon co-occurrence computation does not appear to be the correct 
 Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use Personalized PageRank as the main mechanism to detect company symbiosis in the Web browser ecosystem. Addon ranking obtained by the standard (non-personalized) PageRank corresponds to the unbiased and undisturbed addon ecosystem in which every addon bears its relative importance value with respect to the others. Once the personalized PageRank is applied, the ecosystem is disturbed with artificial preference of some of its elements. The artificial disturbance causes the entire ecosystem to adjust to the new condition, and such an adjustment reveals characteristics of the ecosystem that would not be visible in the original, undisturbed state. 
 
 \iffalse
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/incredi_sym_conduit.png}
 \caption{IncrediMail symbiotic relation with Conduit}
 \label{fig:incredimail_sym_conduit}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/babylon_nosym_ask.png}
 \caption{Babylon non-symbiotic relation with ASK Toolbar}
@@ -1657,7 +1660,7 @@ where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Spe
 
 %Add the formula that describes relative jump. Expected score
 
-\begin{table}[]
+\begin{table}[t]
 \centering
 \caption{PageRank scores}
 \label{table:pagerank_scores}
@@ -1692,12 +1695,12 @@ where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Spe
 A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
 \fi
 
-We aggregate PageRank scores of all addons of a company into the expected score and compare companies based on the expected score. For each company $c_q$ in the PPR query, we construct a ranked list of all other companies according to their expected PPR scores. In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
+%We aggregate PageRank scores of all addons of a company into the expected score and compare companies based on the expected score. For each company $c_q$ in the PPR query, we construct a ranked list of all other companies according to their expected PPR scores. In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
 
 %[SELA: Added Ratio Matrix, \autoref{fig:RatioMatrix}. The red cell are the ones with ratio smaller than 1, the red cells with border are the ones smaller than 0.5. The green cells are the ones with ration greater than 1, the green cells with border are the ones greater than 1.1]
 \autoref{fig:RatioMatrix} shows the ratio between expected PPR scores of company $c_i$ given query company $c_q$ and the expected non-personalized PR score of $c_i$. Ratios greater than 1 are colored in green, all the rest is colored in red. It can be immediately seen that most ratios are colored in red, meaning that PPR scores are generally lower than PR scores. Some cells of the table are highlighted with a dark frame. Green cells are highlighted if the PPR to PR ratio is greater than $1.1$, while red cells are highlighted if the PPR to PR ratio is lower than $0.5$. Those cells correspond to company pairs that are likely to stay in a symbiotic (green) or clash (red) relationship with each other.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
     \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
     \caption{Ratios of Expected PPR and expected PR scores of companies}
@@ -1710,7 +1713,7 @@ Our methodology appears very successful in revealing truly symbiotic relations b
 
 In~\autoref{fig:incredi_sym_conduit}, we show the expected score of IncrediMail in Conduit's PPR and its expected score in non-personalized PageRank. We can see that IncrediMail's score increases significantly when PageRank is personalized around Conduit: as the personalized PageRank prioritizes Conduit, it also ``drags up'' IncrediMail. This implies that there is a close semantic relationship between Conduit and IncrediMail: as we mentioned in~\autoref{subsub:co_occurrence}, Conduit ended up merging with IncrediMail (which is now called Perion) in 2014. 
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
@@ -1732,7 +1735,7 @@ Personalized PageRank provides insights on a relation between Babylon and ASK (w
 
 More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
@@ -1766,9 +1769,9 @@ The most interesting symbiotic relationships are those that cannot be validated 
 \subsection{Clash Relationships}
 \label{sec:clash_relations}
 
-In \autoref{sec:symb_relations}, we investigated symbiotic relationships between addon species, i.e. when one species benefit from another. In this section, we look for the opposite type of relationship: the \emph{clash}, which occurs when one species causes harm to another species. The idea behind detecting clash relations is very similar to the idea behind detecting simbiotic relations (as described in \autoref{sec:symb_relations}): we again aggregate addon PageRank scores into company scores --- both for non-personalized PagerRank and personalized PageRank with a query of all company's addons. In contrast to detecting symbiotic relations, we now look for a company whose score decreases substantially when another company is in the PPR query. In \autoref{fig:clash_1}, we can see two examples of the clash relationship. \autoref{fig:ask_clash_trend} shows that when an antivirus company TrendMicro is in the query, it causes ASK's scores to drop. The same can be seen in \autoref{fig:babylon_clash_ask}, between Babylon and ASK.
+In \autoref{sec:symb_relations}, we investigated symbiotic relationships between addon species, i.e. when one species benefit from another. In this section, we look for the opposite type of relationship: the \emph{clash}, which occurs when one species causes harm to another species. The idea behind detecting clash relations is very similar to the idea behind detecting simbiotic relations (as described in \autoref{sec:symb_relations}): we again aggregate addon PageRank scores into company scores --- both for non-personalized PagerRank and personalized PageRank with a query of all company's addons. In contrast to detecting ssymbiotic relations, we now look for a company whose score decreases substantially when another company is in the PPR query. In \autoref{fig:clash_1}, we can see two examples of the clash relationship. \autoref{fig:ask_clash_trend} shows that when an antivirus company TrendMicro is in the query, it causes ASK's scores to drop. The same can be seen in \autoref{fig:babylon_clash_ask}, between Babylon and ASK.
 \iffalse
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -1787,7 +1790,7 @@ In \autoref{sec:symb_relations}, we investigated symbiotic relationships between
 \end{figure}
 \fi
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
@@ -1805,7 +1808,7 @@ In \autoref{sec:symb_relations}, we investigated symbiotic relationships between
 	\label{fig:clash_1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
@@ -1829,7 +1832,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 
 [SELA: Added clash between ASK toolbar and iMesh \autoref{fig:ask_clash_imesh}]
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/ask_clash_imesh.png}
 \caption{ASK Toolbar relationship with iMesh}
@@ -1839,7 +1842,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 
 
 \iffalse
-\begin{sidewaysfigure}[ht]
+\begin{sidewaysfigure}[!ht]
     \includegraphics[scale=0.8]{figures/RatioMatrix.png}
     \caption{Expected PPR and PR ratio between the companies}
     \label{fig:RatioMatrix}
@@ -1847,7 +1850,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \fi
 
 \iffalse
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -1866,7 +1869,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \end{figure}
 \fi
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
@@ -1913,7 +1916,7 @@ We have also observed companies that cause other companies add-ons decline.
 \chapter{} 
 \renewcommand{\figurename}{Appendix}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -1927,7 +1930,7 @@ We have also observed companies that cause other companies add-ons decline.
 	\label{fig:appendix_pr}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -1941,7 +1944,7 @@ We have also observed companies that cause other companies add-ons decline.
 	\label{fig:appendix_pr2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[scale=0.8]{figures/PPR_length_dist.png}
 \caption{Personaliztion vector length}
