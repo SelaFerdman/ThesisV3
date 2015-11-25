@@ -30,7 +30,8 @@
 \usepackage{wrapfig}
 \usepackage{lscape}
 \usepackage{epstopdf}
-
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\geometry{bottom=2cm}
 %\usepackage{txfonts}
 \usepackage{%
   pstricks,
@@ -42,9 +43,11 @@
 \usepackage{enumerate}
 \usepackage{amsmath}
 \usepackage{algorithm,algorithmic}
+
+\interfootnotelinepenalty=10000
+
 \renewcommand{\algorithmicrequire}{\textbf{Inputs:}}
 \renewcommand{\algorithmicensure}{\textbf{Outputs:}}
-
 % PSTricks settings and definitions
 \let\Oldsection\section
 \renewcommand{\section}{\FloatBarrier\Oldsection}
@@ -96,7 +99,7 @@
                 \huge
              \\[10mm] Sela Ferdman
              \\[25mm] \Large THESIS SUBMITTED IN PARTIAL FULFILLMENT OF THE
-             \\       REQUIREMENTS FOR THE MASTER DEGREE
+             \\       REQUIREMENTS FOR THE MASTER'S DEGREE
              \\[15mm] University of Haifa
              \\       Faculty of Social Sciences
              \\       Department of Computer Sciences
@@ -104,6 +107,7 @@
 }
 \author{}
 \date{}
+\pagenumbering{gobble}
 \maketitle{}
 
 \pagestyle{plain}
@@ -117,7 +121,7 @@
 \\[3mm] Supervised By: Dr. Einat Minkov and Dr. Ron Bekkerman
 \Large
 \\ [10mm]THESIS SUBMITTED IN PARTIAL FULFILLMENT OF THE
-\\ REQUIREMENTS FOR THE MASTER DEGREE
+\\ REQUIREMENTS FOR THE MASTER'S DEGREE
 \\ [10mm]University of Haifa
 \\ [1mm]Faculty of Social Sciences
 \\ [1mm]Department of Computer Sciences
@@ -141,21 +145,23 @@ $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigs
 \fi
 
 
-\chapter*{}
+
+\tableofcontents
+
 
 \addcontentsline{toc}{chapter}{Abstract}
 \begin{center}
-\huge{Abstract}
+\title{\huge{
+ The ecology of Web browser
+\\[5mm]  Sela Ferdman\\
+}}
+\LARGE{Abstract}
 \end{center}
-
 
 Web browsers are the users window to the World Wide Web. All the web browsers extend their features via addons. There is enormous amount of different addons in the Internet world. A decision whether to install a particular addon is typically in user hands, thus the collection of the user addons is somewhat reflecting the user tastes, domains of interests and other user aspects. And since the collection of addons reflects the user, we can learn the users and try to predict what are the addons that he might have had or what are the addons that are missing in his environment to complete his "personality" profile.
 We may call it a user habitat. Given this habitat, we have noticed that the addons have some relations between them and we have hypothesized that by looking at the whole net of users and addons we may find what are the missing elements to complete/stabilize the user habitat. Somewhat like predicting the missing elements in the Mendeleev's table.
 Given the data we have about the user,addons and their connections we constructed a big graph with nodes as users, addons and its terms. We have used the Personalized PageRank random walks to traverse the graph and predict the missing addon in the user eco-system. After seeing that our hypothesize is proved correct, we have noticed that there are special relations between addons by some well known companies, like Google, AVG, etc. It turned out that some companies are benefiting from each other - we've indicated this as a symbiotic relations, while other companies are hurt by being in a company with specific company - we've called this a clash relation.
 In this work we have developed and proved a methodology to find what addon any given user would be missing. Moreover, we've found a way to uncover hidden relations between companies using the methodology described above.
- 
-
-\tableofcontents
 
 \listoffigures
 \addcontentsline{toc}{chapter}{List of Figures}
@@ -169,12 +175,13 @@ In this work we have developed and proved a methodology to find what addon any g
 Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday environment. As of today, some operating systems are based entirely on browsers (e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}). Browser extensions, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. An extension was developed, for example, that provides visually impaired users with access to the content of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. Toolbars are another kind of a browser extension. These are GUI widgets, which typically reside in the upper part of the browser's window. All major Web browsers support toolbar development as means of extending the browser's GUI and functionality. 
 
 A great number of extensions are installed by users on a daily basis nowadays. It was reported that more than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, may be installed following an explicit request by the user, addons are often `silently' installed by a third party as the user downloads some other program from the Web, or likewise are included in a 'software bundle'. There are several reasons why software companies are interested in having specific toolbars installed on the user's machine. First, toolbars are often used for collecting information about the browsing history of the user (e.g., Yahoo! Toolbar). In addition, it is often the case that once installed, toolbar software directs all of the user searches to some dedicated search portal (e.g. MyWebSearch.com). 
-The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was recently estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}} . \textcolor{red}{This news from 2013 may need to be refreshed..} \iffalse Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal
-of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular add-on survives on the user's machine
-more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
+The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
+\iffalse 
+Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular add-on survives on the user's machine more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
 profiles and personalization of software services, there is no previous research, to the best of our knowledge, which used information about user browser extensions to similarly model user behavior. We will examine the hypothesis by which the existence of an extension on a user’s computer reflects something about the user's
 application download history, as well as about his or her general preferences. Specifically, we will evaluate whether clustering users using the underlying data allows one to improve prediction of future behavior. The main research questions and goals are stated in Section 3. An overview of related literature is given below. In addition to previous works on user profiling, we discuss recent learning methods used in large-scale recommendation systems, relating in detail to clustering techniques, which are used to alleviate data sparsity
-issues. Finally, descriptions of the prediction models that we plan to use, and an account of the special characteristics and challenges involved with the dataset.\fi
+issues. Finally, descriptions of the prediction models that we plan to use, and an account of the special characteristics and challenges involved with the dataset.
+\fi
 
 Often, addons are distributed through the installation process of third-party software products, such as, for example, Adobe Reader. Most of the time, during the software installation process, an opt-out check box is presented to the user per addon to be installed. If the user chooses to uncheck the box, the addon will not get installed. However, many users click through the installation process without reading the small font, and when the process is completed the users discover they installed something they did not intend to. 
 
@@ -1097,7 +1104,7 @@ The process of generating an individual labeled example is formally outlined in 
 
 Once disconnected from the user node, there should be no selection bias towards the target addon $a$ compared with the other addon nodes in the graph. As discussed above, PPR's ranking scheme should discover association between the removed add-on and the addons still associated with the user. Naturally, the addons included in the query are assigned high relevancy scores by query-sensitive algorithms like PPR. The query addons are therefore discarded from the evaluated ranked list. 
 
-For example, suppose that we uniformly at random choose a user that has five addons - skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Let us sample the googletoolbar\_32.dll as the target addon. The remaining four addons form the query vector. After executing the PPR, the four query nodes are removed from the ranked list.
+For example, suppose that we uniformly at random choose a user that has five addons -skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Let us sample the googletoolbar\_32.dll as the target addon. The remaining four addons form the query vector. After executing the PPR, the four query nodes are removed from the ranked list.
 
 \subsection{Evaluation measures}
 
@@ -1426,7 +1433,7 @@ The symbiosis phenomenon often occurs when addons of some companies are distribu
 
 The clash effect can be observed when addons of one company get removed if addons of another company are installed on this machine. For example, \emph{Kaspersky AntiVirus}, which develops addons for all browsers, treats \emph{iMesh} addons as threats and removes them from the computer\footnote{\url{http://securelist.social-kaspersky.com/en/kadvisories/KLA10420}}.
 
-Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiotic effects are fairly visible to the users (e.g., an addon is prompted to be installed during an installation processes of another addon or a software product), some other symbiotic effects are hidden (e.g., those following undisclosed agreements between addon distributors). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media\footnote{\url{http://finance.yahoo.com/news/babylon-shares-jump-yahoo-sticks-125203474.html}}, the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
+Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiotic effects are fairly visible to the users (e.g., an addon is prompted to be installed during an installation processes of another addon or a software product), some other symbiotic effects are hidden (e.g., those following undisclosed agreements between addon distributors). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media\footnote{\url{http://goo.gl/AdlzUM}}, the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
 
 \begin{figure}[!htbp]
 \centering
@@ -1525,8 +1532,8 @@ As discussed in Section~\ref{sec:methods}, an addon is represented in our system
 \label{table:addon_desc}
 \begin{tabular}{@{}|l|l|@{}}
 \toprule
-Addon installed in a folder containing the company name & C:\textbackslash{Program Files (x86)}\textbackslash{Kaspersky Lab}\\ & \textbackslash{Kaspersky Internet Security 2012}\textbackslash{avp.dll} \\ \midrule
-Addon description containing the company name & Kaspersky Protection extension \\ \bottomrule
+Path & C:\textbackslash{Program Files (x86)}\textbackslash{Kaspersky Lab}\textbackslash{Kaspersky Internet Security 2012}\textbackslash{avp.dll} \\ \midrule
+Description & Kaspersky Protection extension \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1577,7 +1584,7 @@ For each company from our list, we construct the PPR query to contain all the co
 \STATE Execute Personalized PageRank
 \STATE Rank all addons according to the PPR score
 \FOR{company $d\in COMP \setminus \{c\} $}
-\STATE Computer expected PPR score 
+\STATE Compute expected PPR score 
 \STATE Compare with expected PR score
 \STATE If there is a significant drop $\Rightarrow$ clash
 \STATE If there is a significant increase $\Rightarrow$ symbiosis
