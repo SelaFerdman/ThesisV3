@@ -1662,7 +1662,7 @@ where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Spe
 
 \begin{table}[t]
 \centering
-\caption{PageRank scores}
+\caption{Expected PageRank scores}
 \label{table:pagerank_scores}
 %\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
@@ -1695,15 +1695,17 @@ where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Spe
 A personalized PageRank vector is the stationary distribution of a random walk that, with probability $\alpha$ follows a step of a random walk and with probability $(1-\alpha)$ jumps back to a seed node. When there are multiple seed nodes, then the choice of the seed node is uniformly random. Thus, nodes close to the seed are more likely to be visited and get a higher rank. Recently, such techniques were shown to produce communities that best match communities found in real-world networks~\citep{abrahao2012separability}. Putting company nodes as the only seed nodes in personalized PageRank will grant a higher score to the company addons and the addons that are related in some way to this company. Our hypothesis is that nodes of the company that are having symbiotic relation with the seed nodes company will also get a higher score because of its relatedness to the symbiosis company.
 \fi
 
-%We aggregate PageRank scores of all addons of a company into the expected score and compare companies based on the expected score. For each company $c_q$ in the PPR query, we construct a ranked list of all other companies according to their expected PPR scores. In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
+We aggregate PageRank scores of all addons of a company into the expected PageRank score (see~\autoref{table:pagerank_scores}). For each company $c_q$ in the PPR query, we compute the expected PPR scores of all the other companies. 
+
+%In addition, we maintain a ranked list of companies according to their expected (non-personalized) PR scores (see~\autoref{table:pagerank_scores}). For each $c_q$, we compare the two ranked lists of companies. If a company $c_i$ ``pops up'' closer to the top of the $c_q$'s PPR ranked list of companies, as compared to the original (non-personalized) ranked list of companies, we conclude that $c_i$ and $c_q$ are in a symbiotic relationship. 
 
 %[SELA: Added Ratio Matrix, \autoref{fig:RatioMatrix}. The red cell are the ones with ratio smaller than 1, the red cells with border are the ones smaller than 0.5. The green cells are the ones with ration greater than 1, the green cells with border are the ones greater than 1.1]
-\autoref{fig:RatioMatrix} shows the ratio between expected PPR scores of company $c_i$ given query company $c_q$ and the expected non-personalized PR score of $c_i$. Ratios greater than 1 are colored in green, all the rest is colored in red. It can be immediately seen that most ratios are colored in red, meaning that PPR scores are generally lower than PR scores. Some cells of the table are highlighted with a dark frame. Green cells are highlighted if the PPR to PR ratio is greater than $1.1$, while red cells are highlighted if the PPR to PR ratio is lower than $0.5$. Those cells correspond to company pairs that are likely to stay in a symbiotic (green) or clash (red) relationship with each other.
+\autoref{fig:RatioMatrix} shows the ratio between expected PPR scores of company $c_i$ given a query company $c_q$ and the expected non-personalized PR score of $c_i$. Ratios greater than 1 are colored in green, all the rest is colored in red. It can be immediately seen that most ratios are colored in red, meaning that PPR scores are generally lower than PR scores. Some cells of the table are highlighted with a dark frame. Green cells are highlighted if the PPR to PR ratio is greater than $1.1$, while red cells are highlighted if the PPR to PR ratio is lower than $0.5$. Those cells correspond to company pairs that are likely to stay in a symbiotic (green) or clash (red) relationship with each other.
 
 \begin{figure}[!htbp]
 \centering
     \includegraphics[scale=0.8]{figures/RatioMatrixPortrate.png}
-    \caption{Ratios of Expected PPR and expected PR scores of companies}
+    \caption{Ratios of Expected PPR and expected PR scores of companies. Rows are companies in PPR queries.}
     \label{fig:RatioMatrix}
 \end{figure}
 
@@ -1731,7 +1733,7 @@ In~\autoref{fig:incredi_sym_conduit}, we show the expected score of IncrediMail 
 	\label{fig:symbiotic_pagerank}
 \end{figure}
 
-Personalized PageRank provides insights on a relation between Babylon and ASK (which are known revivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no semantic relationship between the two companies. 
+Personalized PageRank provides insights on a relation between Babylon and ASK (which are known rivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no symbiotic relationship between the two companies. 
 
 More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
 
@@ -1769,45 +1771,34 @@ The most interesting symbiotic relationships are those that cannot be validated 
 \subsection{Clash Relationships}
 \label{sec:clash_relations}
 
-In \autoref{sec:symb_relations}, we investigated symbiotic relationships between addon species, i.e. when one species benefit from another. In this section, we look for the opposite type of relationship: the \emph{clash}, which occurs when one species causes harm to another species. The idea behind detecting clash relations is very similar to the idea behind detecting simbiotic relations (as described in \autoref{sec:symb_relations}): we again aggregate addon PageRank scores into company scores --- both for non-personalized PagerRank and personalized PageRank with a query of all company's addons. In contrast to detecting ssymbiotic relations, we now look for a company whose score decreases substantially when another company is in the PPR query. In \autoref{fig:clash_1}, we can see two examples of the clash relationship. \autoref{fig:ask_clash_trend} shows that when an antivirus company TrendMicro is in the query, it causes ASK's scores to drop. The same can be seen in \autoref{fig:babylon_clash_ask}, between Babylon and ASK.
-\iffalse
-\begin{figure}[!htbp]
-\centering
-\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-\includegraphics[scale=0.49]{figures/clashAviraImesh.png}
-\caption{Avira clash relationship with iMesh}
-\label{fig:avira_clash_imesh}
-\end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
-	\centering
-\includegraphics[scale=0.49]{figures/clashConduitHotSpot.png}
-\caption{Conduit clash relationship with HotSpot}
-\label{fig:conduit_clash_hotspot}
-\end{subfigure}
-\caption{Clash relationship between companies}
-	\label{fig:clash_pagerank}
-\end{figure}
-\fi
+In \autoref{sec:symb_relations}, we investigated symbiotic relationships between addon species, i.e. when one species benefit from another. In this section, we look for the opposite type of relationship: the \emph{clash}, which occurs when one species causes harm to another species. The idea behind detecting clash relations is very similar to the idea behind detecting simbiotic relations (as described in \autoref{sec:symb_relations}): we again aggregate addon PageRank scores into company scores --- both for non-personalized PagerRank and personalized PageRank with a query of all company's addons. In contrast to looking for companies whose scores increase, which we assume correspond to symbiotic relations, we now look for companies whose scores decrease substantially when another company is in the PPR query. 
+
+As we can see in~\autoref{fig:RatioMatrix}, the company that experiences the most substantial plunge in the PPR to PR score ratios is the Norton Antivirus. Other antivirus companies such as AVG, Avira, and Kaspersky clash strongly with Norton. A fairly straightforward validation for these results comes from the fact that there is a known competition between antivirus companies: in most cases, two antivirus software products cannot coexist on the same computer, so when one product gets installed the other often gets uninstalled. Norton is known for being preinstalled on many computers, while cheaper antivirus software such as AVG replaces Norton at a later stage. This is precisely the phenomenon we observe in our results.
+
+In the toolbar domain, it is remarkable to see that Google Toolbar appears clashing with all the other toolbars: smaller toolbar producers are likely to aim at uninstalling Google Toolbar as they consider Google their main competitor.
+
+Let us show a few other examples. \autoref{fig:ask_clash_trend} shows that when an antivirus company TrendMicro is in the query, it causes ASK's scores to drop. Since antivirus companies sometimes treat toolbars as malware, this clash is not surprising. Another clash is shown in \autoref{fig:ask_clash_imesh}, between ASK and iMesh --- both companies operate in the toolbar space and are likely to compete with each other, however our result appears to be the only empirical proof for this competition.
+
 
 \begin{figure}[!htbp]
 \centering
-\begin{subfigure}[b]{0.8\textwidth}
-	\centering
-\includegraphics[scale=0.8]{figures/babylon_clash_ask.png}
-\caption{Babylon clash relation with ASK Toolbar}
-\label{fig:babylon_clash_ask}
-\end{subfigure}
 \begin{subfigure}[b]{0.8\textwidth}
 	\centering
 \includegraphics[scale=0.8]{figures/ask_clash_trend.png}
 \caption{ASK Toolbar clash relation with TrendMicro}
 \label{fig:ask_clash_trend}
 \end{subfigure}
+\begin{subfigure}[b]{0.8\textwidth}
+	\centering
+\includegraphics[scale=0.8]{figures/ask_clash_imesh.png}
+\caption{ASK Toolbar clash relation with iMesh}
+\label{fig:ask_clash_imesh}
+\end{subfigure}
 \caption{Clash relations between companies}
 	\label{fig:clash_1}
 \end{figure}
 
+\iffalse
 \begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.8\textwidth}
@@ -1825,31 +1816,27 @@ In \autoref{sec:symb_relations}, we investigated symbiotic relationships between
 \caption{Clash relations between companies}
 	\label{fig:clash_2}
 \end{figure}
+\fi
 
-A fairly straightforward validation for these results comes from the fact that there is a known competition between antivirus companies: in most cases, two antivirus software products can not coexist on the same computer, so when one product gets installed the other has to stop working and often gets uninstalled. Thus, using our terminology, antivirus companies stay in a clash relationship. And indeed, as shown in \autoref{fig:clash_av}, our algorithm detects antivirus companies clashing.
+%A fairly straightforward validation for these results comes from the fact that there is a known competition between antivirus companies: in most cases, two antivirus software products can not coexist on the same computer, so when one product gets installed the other has to stop working and often gets uninstalled. Thus, using our terminology, antivirus companies stay in a clash relationship. And indeed, as shown in \autoref{fig:clash_av}, our algorithm detects antivirus companies clashing.
 
-Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMail clashes with both Google Toolbars and Babylon. These three companies indeed competed (back in 2013) over toolbar installation on users machines. {RON: didn't we have some other clashes? between smaller companies? We need to have at least one insight that we cannot validate in the Web.]
+%Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMail clashes with both Google Toolbars and Babylon. These three companies indeed competed (back in 2013) over toolbar installation on users machines. \autoref{fig:ask_clash_imesh} shows a clash between ASK toolbar and iMesh 
 
-[SELA: Added clash between ASK toolbar and iMesh \autoref{fig:ask_clash_imesh}]
-
+%[SELA: Added clash between ASK toolbar and iMesh \autoref{fig:ask_clash_imesh}]
+\iffalse
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{figures/ask_clash_imesh.png}
+\includegraphics[scale=0.8]{figures/ask_clash_imesh.png}
 \caption{ASK Toolbar relationship with iMesh}
 \label{fig:ask_clash_imesh}
 \end{figure}
 
-
-
-\iffalse
 \begin{sidewaysfigure}[!ht]
     \includegraphics[scale=0.8]{figures/RatioMatrix.png}
     \caption{Expected PPR and PR ratio between the companies}
     \label{fig:RatioMatrix}
 \end{sidewaysfigure}
-\fi
 
-\iffalse
 \begin{figure}[!htbp]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
@@ -1867,7 +1854,6 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \caption{Clash relationship between AntiVirus companies}
 	\label{fig:clash_av}
 \end{figure}
-\fi
 
 \begin{figure}[!htbp]
 \centering
@@ -1886,6 +1872,7 @@ Another clash relations is shown in \autoref{fig:clash_2}, we see that IncrediMa
 \caption{Clash relationship between AntiVirus companies}
 	\label{fig:clash_av}
 \end{figure}
+\fi
 
 \iffalse
 After aggregating all add-ons for each for every company we have looked for what have happened to other company add-ons when PPR origin is a specific company.
@@ -1903,10 +1890,10 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 \fi
 
 
-\section{Discussion}
-We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
-We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
-We have also observed companies that cause other companies add-ons decline.
+\section{Conclusion}
+%We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
+%We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
+%We have also observed companies that cause other companies add-ons decline.
 
 
 
