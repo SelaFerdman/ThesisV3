@@ -31,7 +31,7 @@
 \usepackage{lscape}
 \usepackage{epstopdf}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-\geometry{bottom=2cm}
+\geometry{top=2cm,bottom=2cm}
 %\usepackage{txfonts}
 \usepackage{%
   pstricks,
@@ -145,9 +145,9 @@ $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigs
 \fi
 
 
-
+\newpage
 \tableofcontents
-
+\newpage
 
 \addcontentsline{toc}{chapter}{Abstract}
 \begin{center}
@@ -168,8 +168,8 @@ In this work we have developed and proved a methodology to find what addon any g
 \listoftables
 \addcontentsline{toc}{chapter}{List of Tables}
 
+
 \chapter{Introduction}
-\thispagestyle{empty}
 \pagenumbering{arabic}
 
 Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday environment. As of today, some operating systems are based entirely on browsers (e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}). Browser extensions, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. An extension was developed, for example, that provides visually impaired users with access to the content of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. Toolbars are another kind of a browser extension. These are GUI widgets, which typically reside in the upper part of the browser's window. All major Web browsers support toolbar development as means of extending the browser's GUI and functionality. 
@@ -193,13 +193,6 @@ Companies that distribute browser addons are engaged in partnerships or compete 
 
 [RON: the term ``computer virus'' has existed for a while - the connection between a hardware system (a computer) with a biological system is quite intuitive. However, we go far beyond this - we're investigating biological \_processes\_ in an artificial environment, which sounds pretty novel]
 
-\section{Main Contributions}
-\label{sub:contributions}
-The main contributions of this work are the following:
-\begin{itemize}
-\renewcommand{\labelitemi}{$\bullet$} 
-\item 
-\end{itemize}
 
 \chapter{Related Research}
 \label{sec:related}
@@ -308,35 +301,43 @@ a dynamic and automatic way is presented in \citep{marin2013dynamic}.
 
 \section{PageRank}
 \label{sec:pagerank_related}
-PageRank was originally proposed by Brin and Page \citep{page1999pagerank} as a ranking system
-for Web pages. Over the last decade, PageRank has gained importance in a wide range of applications and domains, ever since it first proved to be  effective in determining node importance in large graphs (and was a pioneering idea behind Google's search engine). Page and Brin considered PageRank as a model of user behaviour.
+PageRank was originally proposed by Page and Brin~\citep{page1999pagerank} as a ranking system
+for Web pages. Over the last decade, PageRank has gained popularity  in a wide range of applications and domains, ever since it first proved to be  effective in determining node importance in large graphs (which was the pioneering idea behind Google's search engine). Page and Brin considered PageRank as a model of user behavior.
 \noindent
-A simplified definition of the PageRank as proposed in \citep{page1999pagerank} was
+A simplified definition of PageRank as proposed in \citep{page1999pagerank} is:
 \begin{equation}
  PR(u)=\sum_{v\in B_u}\frac{PR(v)}{N_v}
 \end{equation}
-where $u$ is the particular Web page, $B_u$ is the set of pages that point to $u$, $c$ is a factor used for normalization to keep the total PageRank over all pages constant and $N_v$ is the number of links from page $v$. This means that pages that link to page $u$ are providing a portion of their PageRank to he PageRank of $u$. A portion of rank comming from a page $v$ pointing to $u$ is equal to all other portions that are provided to other pages which have a link from page $v$. This simplified definition of PageRank leads to some problems. It doesn't consider pages with no outgoing links, disconnected clusters of pages with no links between them and pages that point to eachother but don't have outgoing links which are building a loop that accumulates PageRank but don't distribute any rank to other pages. That is why an improved model, the \textit{random surfer model}, was introduced. It simulates a surfer who can randomly start at any page and randomly jump to any page if he ends up surfing on a page without outgoing links or a loop. He also is able to jump between disconnected areas since he knows about their existence without the links between them. The definition of the model is:
+where $PR(u)$ is the PageRank score of a webpage $u$, $B_u$ is the set of pages that hyperlink $u$, and $N_v$ is the number of hyperlinks from page $v$. This means that pages that link to page $u$ are providing a portion of their PageRank score to the PageRank score of $u$. %A portion of rank comming from a page $v$ pointing to $u$ is equal to all other portions that are provided to other pages which have a link from page $v$. 
+This simplified definition of PageRank leads to some problems. It doesn't consider pages with no outgoing links, disconnected clusters of pages with no hyperlinks outside, and loopy hyperlinks over which the PageRank can get infinitely accumulated. That is why an improved model, the \textit{random surfer model}, was introduced. It simulates a surfer who can randomly start at any page and randomly jump to any page if he ends up surfing over a page without outgoing links or a loop. The definition of the model is:
 \begin{equation}
- PR(u) = \frac{1-d}{N}+d\sum_{v\in B_u}\frac{PR(v)}{N_v}.
+ PR(u) = \frac{1-d}{N}+d\sum_{v\in B_u}\frac{PR(v)}{N_v},
 \end{equation}
-The parameter $d$ is a damping factor which can be set between 0 and 1 but usually is set to $d=0.85$. In this form the sum of PageRanks from all Web pages form a probability distribution since the sum equals to one. PageRank can also be interpreted as an vector over all pages and form an eigenvalue problem with the normalized adjacency matrix. PageRank of a page can be interpreted as a probability with which a random surfer chooses the page while the damping factor $d$ can be viewed as a probability that the surfer stops following the links and a page and requests a random page instead. Further the PageRank $PR(u)$ can be calculated by a simple iterative algorithm.\\
-Although PageRank models a random surfer on the web and computes the probability of finding this surfer at any given page, PageRank exists for any graph and not just the web graph, PageRank on a graph produces an importance score for each node. Instead of looking at a \textit{random surfer} on the web, the non-web PageRank models a random walk on the graph. Random walks are a common technique to analyze graphs, with a rich history predating PageRank.
-PageRank has found a wide range of applications in a variety of domains within computer science such as distributed networks, data mining, web algorithms, and distributed computing \citep{cook04,Bianchini05,LangvilleM03}.
-PageRank was used in many recommender systems. Recommender systems suggest to a user top ranked items with respect to a personalized ordering. \citep{gori2006random} proposed a random-walk based scoring algorithm called Item-Rank, which ranks products according to the expected user preferences.
-As \citep{franceschet2011pagerank} explain, the purpose of the PageRank ranking technique is to recursively measure the importance of a node in terms of the importance assigned to the nodes linking to it. In \citep{gyongyi2004combating}, the authors propose a TrustRank method based on PageRank to identify web spam. The authors of \citep{morrison2005generank} paper, have found PageRank useful for the analysis of microarray experiments.The GeneRank method proposed at \citep{morrison2005generank} produces lists of genes that may be relevant to a microarray experiment. GeneRank uses a surfer over known relationships between genes, where the surfer \textit{restarts} with probability proportional to the activation level of the genes in the experiment. Its output is a set of genes \textit{near} the genes with high activation levels. \citep{freschi2007protein} use similar approach to develop a ProteinRank, to predict protein functions. While the author of \citep{singh2007pairwise} introduced the IsoRank algorithm to identify functionally similar nodes between two different graphs. PageRank algorithm is also used to rank sport teams. The authors of \citep{govan2009offense} extended the ideas originating from \citep{keener1993perron} by using PageRank to compute a ranking of sports teams.\\
-The exact computation of PageRank vectors requires solving a linear system, and this can be computationally intractable for large networks. There are iterative methods based on matrix multiplication, but for graphs as vast as the Web, this is still unfeasible. Instead, algorithms using PageRank often use fast approximation algorithms for PageRank, first developed by \citep{andersen2006local} and tightened by \citep{chung2010sharp}. These algorithms require only
-local computations around the neighborhood of the PageRank seed vector.
+where $N$ is the number of nodes in the hyperlink graph. The parameter $d$ is a damping factor which can be set between 0 and 1 but usually is set to $d=0.85$. In this form the sum of PageRanks from all Web pages form a probability distribution since the sum equals to one. PageRank can also be interpreted as an vector over all pages and form an eigenvalue problem with the normalized adjacency matrix. PageRank of a page can be interpreted as a probability with which a random surfer chooses the page while the damping factor $d$ can be viewed as a probability that the surfer stops following the links on a page and requests a random page instead.
+
+Although PageRank models a random surfer on the web and computes the probability of finding the surfer at any given page, PageRank exists for any graphs and not just the Web graph. When applied to a specific graph, PageRank produces an importance score for each node. Instead of looking at a \textit{random surfer} on the Web, the non-Web PageRank models a random walk on the graph. Random walks are a common technique to analyze graphs, with a rich history predating PageRank \citep{spitzer2013principles}.
+
+PageRank has found a wide range of applications in a variety of domains within computer science such as computer networking, data mining, web algorithms, and distributed computing \citep{cook04,Bianchini05,LangvilleM03}.
+PageRank was used in many recommender systems. Given a set of users and a set of items the users can be interested in, a recommender system learns user's personal preferences and suggests items to users based on those preferences. \citep{gori2006random} propose a random-walk based scoring algorithm called Item-Rank, which is then used in a recommender system.
+
+As \citep{franceschet2011pagerank} explains, the purpose of the PageRank ranking technique is to recursively measure the importance of a node in terms of the importance assigned to the nodes linking to it. In \citep{gyongyi2004combating}, the authors propose a TrustRank method based on PageRank to identify web spam. The authors of \citep{morrison2005generank} paper, find PageRank useful for microarray analysis in bioinformatics. The GeneRank method proposed in \citep{morrison2005generank} produces lists of genes that may be relevant to a microarray experiment. GeneRank uses a surfer over known relationships between genes, while the surfer \textit{restarts} with probability proportional to the activation level of the genes in the experiment. Its output is a set of genes \textit{near} the genes with high activation levels. \citep{freschi2007protein} use similar approach to develop ProteinRank, to predict protein functions. \citep{singh2007pairwise} introduces the IsoRank algorithm to identify functionally similar nodes in two different graphs. The usage of PageRank stretches out to non-computer science areas. The authors of \citep{govan2009offense}, for example,  extended the ideas of \citep{keener1993perron} by using PageRank to compute a rank of sports teams.
+
+The exact computation of PageRank vectors requires solving a system of linear equations, which can be computationally intractable for large graphs. There are iterative methods based on matrix multiplication, but for graphs as vast as the Web, this is still unfeasible. Instead, PageRank related methods often use fast approximation algorithms for PageRank, first developed by \citep{andersen2006local} and tightened by \citep{chung2010sharp}.
 
 \section{Personalized PageRank}
-Personalized PageRank is an extension of the PageRank algorithm \cite{page1999pagerank}, described in \autoref{sec:pagerank_related}, both of which are based on a random surfer model. At PageRank random surfer starts at any node on the graph. At each step, with a probability of 1−$\alpha$ the surfer moves to a neighboring node randomly, and with a probability of $\alpha$ he teleports to a random node on the graph. This process is repeated until the walk converges to a steady-state. The stationary probability of the surfer at each node is taken as the score of the node. However, this form of score is purely based on the static link structure, indicating the overall popularity of each node on the graph, without tailoring to a specific query node.\\
-In contrast, Personalized PageRank enables query-sensitive ranking,
-in the sense that we can specify a query node to obtain a \textit{personalized}
-ranking accordingly. It is based on the same random surfer model of the original PageRank, except when the surfer teleports, he always prefers the query node \textit{q}. Specifically, at each step, with probability $\alpha$ the surfer teleports to \textit{q} instead of a random node, thus visiting the neighborhood of \textit{q} more frequently. Thus, the stationary distribution, called a Personalized PageRank Vector (PPV), is biased towards \textit{q} and its neighborhood, which can be interpreted as a popularity or relevance metric specific to \textit{q}.
-More generally, a query \textit{q} can comprise multiple nodes on the
-graph, such that in the teleportation the surfer can jump to any node in \textit{q}. Fortunately, the computation for a multi-node query is no more difficult than for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV a multi-node query is a simple linear combination of the individual PPV each node in the query.
+Personalized PageRank is an extension of the PageRank algorithm \citep{page1999pagerank}, both of which are based on a random surfer model. In PageRank, the random surfer starts at any node on the graph. At each step, with a probability of $(1-d)$ the surfer moves to one of neighboring nodes, and with probability $d$ teleports to a random node in the graph. This process is repeated until the walk converges to a steady-state. The stationary probability of the surfer reaching a node is taken as the normalized PageRank score of the node. This form of scoring is the most natural case, which does not artificially prefer some nodes over the others.
 
-The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, it is biased to give more relevance to a given set of nodes ~\cite{haveliwala2003topic}. In our particular case, these 
-nodes are the addons of specific user, that is, the 
+In contrast, Personalized PageRank (PPR) enables query-sensitive ranking,
+in which we can specify a \emph{query node} (or \emph{nodes}, see below) to obtain a ranking that is personalized for the query. PPR is based on the same random surfer model of the original PageRank, except when the surfer teleports, it always prefers the query node $\mathbf{a}_q$. 
+Specifically, at each step, with probability $d$ the surfer teleports to $\mathbf{a}_q$ instead of a random node, thus visiting the neighborhood of $\mathbf{a}_q$ more frequently. As a result, the stationary distribution, called a Personalized PageRank Vector (PPV), is biased towards $\mathbf{a}_q$ and its neighborhood, which can be interpreted as a node importance measure specific to $\mathbf{a}_q$.
+
+Generally speaking, a query can comprise a set of nodes $\mathbf{A}_q$ in the
+graph, such that---in the event of teleportation---the surfer will jump to any node in $\mathbf{A}_q$. Fortunately, the PPR computation for a multi-node query is no more difficult than the one for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV of a multi-node query is a simple linear combination of the individual PPVs of all nodes in the query.
+
+\iffalse 
+[RON: this paragraph doesn't belong here]
+The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
+nodes are the addons of a specific user, that is, the 
 members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
 			\begin{equation}
 				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
@@ -349,9 +350,11 @@ the PageRank equation is adapted as follows to compute the Personalized PageRank
 				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
 				\label{eq:ppr_related_work}
 			\end{equation}
+\fi
 
 Personalized PageRank is used in a wide variety of applications, \citep{lee2011random} adopt PPR algorithm for ranking entities according to a given query that is represented as a set of entities in the graph and infer a multidimensional recommendation. Personalized PageRank has been used both for variants of vertex ranking as well as local partitioning by \citep{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. In TwitterRank \citep{weng2010twitterrank}, the authors adapt PPR to identify influential users of the micro-blogging service. They also discover that Personalized PageRank weighting graphs edges by the similarity of user’s topical interests gives better results than just weighting the nodes according to those same interests.In \citep{berkhin2006bookmark}, the authors use Personalized PageRank for computing that thay call a\textit{bookmark-coloring} bookmark-coloring model.This model computes authority weights over the web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently compute edge weighted
 personalized PageRanka and provides personalized ranking of typed entity-relationship graphs. It was also noted, \citep{sarkar2008fast}, that Personalized PageRank can be adopted to be a good similarity measure on the Web.\\
+\iffalse
 MOVED HERE: As mentioned before, the algorithms of PageRank and Personalized
 PageRank algorithm have been designed so as to improve Web page
 rankings. The Personalized Pagerank variant was first suggested in
@@ -367,6 +370,7 @@ in multiple domains. For example, in \citep{freschi2007protein}, the
 authors used the Personalized PageRank model, which they call
 ProteinRank, to predict protein functions. ALSO: In Keren's thesis, we have shown that PPR's random walk similarity metric outperforms classical collaborative
 filtering and content-based recommendation methods.
+\fi
 \subsection{Effect of High Degree Nodes on Personalized PageRank}
 \label{sec:ppr_high_degree}
 The study of large networks is a fairly recent development, and there have been many phenomena shown to be appearing in real-world datasets. One important property is the small-world phenomenon \citep{watts1998collective}, the existence of short paths between any randomly-chosen pair of vertices. Many real-world networks exhibit small-world behavior, and they are characterized by having a low average shortest path length and many dense subgraphs.
@@ -473,11 +477,11 @@ add-ons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
+We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
 
-\textcolor{red}{SELA: Add ERD of DB.Information about the database structure is included in Appendix x} Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
+Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
 
-{\it Users.} A user record specifies his origin: IP, ISP, Country,and City, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.). In addition, the user's homepage and the default search Website defined per browser are specified.
+{\it Users.} A user record specifies his origin: IP, ISP and Country, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.).
 
 {\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
 \begin{itemize}
@@ -492,7 +496,7 @@ We experiment in this study with large-scale authentic data.  The data includes 
 \begin{small}
 \includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot.png}
 \end{small}
-\caption{An example SQL table}
+\caption{User addons record}
 \label{fig:db_addons_snapshot}
 \end{figure}
 
@@ -501,18 +505,18 @@ We experiment in this study with large-scale authentic data.  The data includes 
 \begin{small}
 \includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot_desc.png}
 \end{small}
-\caption{Another example of SQL table}
+\caption{User addons record}
 \label{fig:db_addons_snapshot_desc}
 \end{figure}
 
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the figure), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
 
 \begin{figure}[t]
 \centering
 \begin{small}
 \includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot.png}
 \end{small}
-\caption{An example SQL table with different versions for same addons}
+\caption{Addon with different versions in user record}
 \label{fig:addons_versioning_snapshot}
 \end{figure}
 
@@ -521,7 +525,7 @@ The field values correspond to raw information extracted from the users' machine
 \begin{small}
 \includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot_desc.png}
 \end{small}
-\caption{Another example SQL table with different versions for same addons}
+\caption{Addon with different versions in user record}
 \label{fig:addons_versioning_snapshot_desc}
 \end{figure}
 
@@ -761,7 +765,9 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is\\
+`a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} \\
+node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
 
@@ -783,7 +789,7 @@ The graph representation of this data has several advantages. Besides being comp
 	\label{fig:terms_layer}
 \end{figure}
   
-Figure \ref{fig:sample_graph2} shows another toy graph, demostrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This gtaph includes two users named shortly as `u-1' and `u-2'. The two users are similar in that they share two add-ons, `a-1' and `a-2'. In addition, while {\it add-ons} `a-3' and `a-4' are distinct from each other, these add-on nodes are connected via the common term node `w-2'. 
+Figure \ref{fig:sample_graph2} shows another toy graph, demonstrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This graph includes eight users named shortly as `u-1',`u-2', etc. The eight users are similar in that they share some of the add-ons, `a-1',`a-2', etc. In addition, while {\it add-ons} `a-3' and `a-2' are distinct from each other, these add-on nodes are connected via the common term node `w-skype'. 
 
 We will apply random walks in the graph in order to assess similarity, or relatedness, between users and add-ons.  
 
@@ -1157,7 +1163,7 @@ In the experiments, we make use of a fast and memory-efficient implementation of
 vertices. We have created a unique number for each node and store the
 mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
 management (every very small leak would cause a serious global memory
-leak).\fi We ran the experiment using a standard PC machine using a a 64bit version of igraph. On average, running a batch of 1,000 queries required only a few seconds. In the experiments, we set the teleport probability parameter $\alpha=0.85$ following previous works. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability value has negligible effect on the produced rankings.
+leak).\fi We ran the experiment using a standard PC machine using a a 64bit version of igraph, which was adapted for our needs and bug fixes were applied. On average, running a batch of 1,000 queries required a few hours. In the experiments, we set the teleport probability parameter $\alpha=0.85$ following previous works \citep{boldi2005totalrank}. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability value has negligible effect on the produced rankings.
 
 We further evaluate two non-personalized alternative ranking methods: ranking {\it add-ons} by `popularity', as well as based on their PageRank scores. 
 
@@ -1181,7 +1187,7 @@ The proposed graph schema is simple and natural in the sense that it directly re
 
 \subsubsection{Pruning of high-degree nodes} 
 
-Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. High density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. According to \citep{sarkar2010fast}, removing high degree nodes should only result in only a small approximation error. Indeed, the graph walk schema implies that the probability mass assigned to high-degree nodes be distributed among a large variety of neighboring nodes in the random walk process, thus having little impact on the final rankings. At the same time, high-degree nodes receive a large number of contributions from their neighbors, and are therefore highly-ranked. Removing these nodes from the graph will increase the `visibility' of lower-degree nodes. Finally, we wish that the Personalized PageRank scores reflect node relevancy with respect to the input query vector, representing the user's ecosystem. Influential high degree nodes may weaken the association with the query seeds.
+Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. High density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. According to \citep{sarkar2010fast}, removing high degree nodes should only result in only a small approximation error, see also \autoref{sec:ppr_high_degree}. Indeed, the graph walk schema implies that the probability mass assigned to high-degree nodes be distributed among a large variety of neighboring nodes in the random walk process, thus having little impact on the final rankings. At the same time, high-degree nodes receive a large number of contributions from their neighbors, and are therefore highly-ranked. Removing these nodes from the graph will increase the `visibility' of lower-degree nodes. Finally, we wish that the Personalized PageRank scores reflect node relevancy with respect to the input query vector, representing the user's ecosystem. Influential high degree nodes may weaken the association with the query seeds.
 
 We report experimental results using the full graph, as well as using a graph variant, in which high-degree nodes are removed. We define high-degree nodes in this work as nodes for which the out-degree is equal or higher than 500. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it addons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries no long include popular {\it addons}, but rather contain only lower-frequency addons, which are more challenging to predict. We believe that this latter configuration is of special interest for recommendation purposes; if one wishes to recommend addons to users, focusing on non-trivial items can be highly beneficial.
 
@@ -1191,8 +1197,9 @@ The modeling of {\it term} nodes is desirable as it establishes links between re
 
 \subsubsection{Specificity of path information} 
 
-Add-on names often include full file-system path information, e.g., 
-`C:/Program Files (x86)/Skype/skype1.dll'. We remove path prefixes (like `C://Program Files (x86)/skype') in our main experiments for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. 
+Addon names often include full file-system path information, e.g., \\
+`C:/Program Files (x86)/Skype/skype1.dll'.In our main experiments we remove path prefixes \\
+(like `C://Program Files (x86)/skype') for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. 
 Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
 
 
@@ -1321,7 +1328,7 @@ Overall, we conclude from these experiments that there indeed exists high struct
 
 \subsubsection{Impact of term modeling}
 
-As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite. including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
+As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite, including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
 
 We were interested in investigating the reasons for the relatively low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it addons} and {\it term} nodes only (i.e., without {\it users}); ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it addon} nodes are typically connected to a large number of {\it user} nodes, and only to a very few {\it term} nodes. To illustrate this, consider some arbitrary addon for which a short description is available. This {\it addon} node will link to a few (roughly, three) {\it term} nodes, and a medium user set neighborhood (roughly, 200) {\it user} nodes. Since the random walk distributes probability mass uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes (see~\citep{minkov2010improving}) will increase their traversal probability and increase their impact. We leave the exploration of this possibility for future work.
 
@@ -1431,7 +1438,7 @@ In this chapter, we investigate the addon coexistence phenomenon. We observe tha
 
 The symbiosis phenomenon often occurs when addons of some companies are distributed via third parties: addon installation is offered to a user as a part of some other product installation process, for example, while the user installs Skype, the installation process suggests also installing Skype's `Click to Call' addon in all browsers. Another example is Ask Toolbar: at the time the data for this chapter was collected, Ask Toolbar installation was integrated with Java installation\footnote{\url{https://java.com/en/download/faq/ask_toolbar.xml}}. During the installation of Java, users were prompted to download and install the Ask Toolbar, see \autoref{fig:ask_offer}. 
 
-The clash effect can be observed when addons of one company get removed if addons of another company are installed on this machine. For example, \emph{Kaspersky AntiVirus}, which develops addons for all browsers, treats \emph{iMesh} addons as threats and removes them from the computer\footnote{\url{http://securelist.social-kaspersky.com/en/kadvisories/KLA10420}}.
+The clash effect can be observed when addons of one company get removed if addons of another company are installed on this machine or if the addons are not installed at all when another's company addons are pre-installed on the machine. For example, \emph{Kaspersky AntiVirus}, which develops addons for all browsers, treats \emph{iMesh} addons as threats and removes them from the computer\footnote{\url{http://securelist.social-kaspersky.com/en/kadvisories/KLA10420}}.
 
 Needless to say, the life cycle of the addon ecosystem is mostly obscure for an outside observer. While some symbiotic effects are fairly visible to the users (e.g., an addon is prompted to be installed during an installation processes of another addon or a software product), some other symbiotic effects are hidden (e.g., those following undisclosed agreements between addon distributors). Clash effects, on the other hand, are almost always invisible. Besides a few well known conflicts between competing addon distributors that were widely covered in mass media\footnote{\url{http://goo.gl/AdlzUM}}, the competition is kept away from the eyes of general public. In this chapter, we disclose some of these effects and shed light on the entire addon ecosystem. 
 
@@ -1456,7 +1463,7 @@ Although antivirus and anti-malware software aim to prevent unintentional addon 
 
 In 2013, Avast Anti Virus published a list of top ten companies that were distributing their addons via third-party software installations\footnote{\url{https://blog.avast.com/2013/03/20/avast-browser-cleanup-at-work/}} --- these addons were subject to removal. Surprisingly, the list published by Avast in 2015 is very similar to their 2013 list --- many of these companies are in our list as well~(\autoref{table:companies_list}). Back in 2013, Avast identified over 3,300,000 different browser extensions for three major browsers. They also noticed that ``A lot of toolbars are available in different variants. These variations affect mostly the name''. 
 
-In a fairly recent blog post from July the 9th 2015, Avast describes the addon ecosystem of a user's Web browser. They mention that one of the major characteristics of the ecosystem is that ``the addons fight against each other''\footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
+In a blog post of July the 9th 2015, Avast describes the addon ecosystem of a user's Web browser. They mention that one of the major characteristics of the ecosystem is that ``the addons fight against each other''\footnote{\url{https://blog.avast.com/2015/07/09/top-10-most-annoying-browser-toolbars/}}.
 Based on Avast statistics on forced removals of competing toolbars, some companies from our list are among the top ten offenders. For example, Conduit performed more than 13,000,000 removals of their competitors' toolbars, ASK removed 11,000,000 toolbars and other companies were not far behind. Not surprisingly, Avast itself uses the same practice. A Techdows blog post\footnote{\url{http://techdows.com/2012/11/avast-comes-bundled-with-google-toolbar.html}} mentions that ``Avast is contradicting itself. Their latest product offers a built-in feature to rid your browser of toolbars, while offering a toolbar when installing their software.''
 
 To the best of our knowledge, this thesis is the first research study of the addon ecosystem in the Web browser. This is a true Big Data study as we analysed Web browsers of close to a million users. Both addon developers and computer security companies can benefit from this study and its conclusions. In the rest of this chapter, we will describe the setup of our empirical analysis, in particular, the reasons behind our design choices. We will provide background information and cover the history of this project starting with preliminary experimental efforts we made before coming up with our final experimental design. We will then present our main findings: the identified symbiosis and competition relationships. We will conclude this chapter with a discussion on the results.
@@ -1518,7 +1525,7 @@ Then we've decided to find another way to represent our data.
 \section{Experimental design}
 \label{sec:experiment_des}
 
-In this work, we research coexistence effects in the addon ecosystem. In~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analyze the behavior of \emph{addon distributing companies}, i.e.~\emph{species}, using the ecological parlance. 
+In this work, we research coexistence effects in the addon ecosystem. In~\autoref{chap:user_ecosystem}, we investigated the addon ecosystem on the individual level: if a subject (an addon) is artificially extracted from a web browser of a specific user, the browser ecosystem ``knows'' which subject is missing. In this chapter, in contrast, we analyze coexistence of \emph{addon manufacturing companies}, i.e.~\emph{species}, using the ecological parlance. 
 
 In the new setting, we first need to reveal which addon belongs to which company. An addon company most often distributes many addons --- hundreds or even thousands. For example, \emph{Kaspersky URL Advisor Firefox addon} and \emph{Kaspersky Protection Chrome extension} are developed by the same company, so we say that they belong to the same species. Often, the same addon has different names --- it is not easy to infer that addons with different names are in fact the same addon. We do not aim to infer that --- instead, we are concerned with mapping addon names to company names. Also, it is important to mention that addons bear characteristics of a machine on which they are installed. For example, the file-system path of an addon on a specific machine may or may not be unique among all addons we observe in this study: a user can choose to install an addon at a non-standard location in his/her machine's file system, or stick to a default location instead.
 
@@ -1708,6 +1715,8 @@ We aggregate PageRank scores of all addons of a company into the expected PageRa
 
 %[SELA: Added Ratio Matrix, \autoref{fig:RatioMatrix}. The red cell are the ones with ratio smaller than 1, the red cells with border are the ones smaller than 0.5. The green cells are the ones with ration greater than 1, the green cells with border are the ones greater than 1.1]
 \autoref{fig:RatioMatrix} shows the ratio between expected PPR scores of company $c_i$ given a query company $c_q$ and the expected non-personalized PR score of $c_i$. Ratios greater than 1 are colored in green, all the rest is colored in red. It can be immediately seen that most ratios are colored in red, meaning that PPR scores are generally lower than PR scores. Some cells of the table are highlighted with a dark frame. Green cells are highlighted if the PPR to PR ratio is greater than $1.1$, while red cells are highlighted if the PPR to PR ratio is lower than $0.5$. Those cells correspond to company pairs that are likely to stay in a symbiotic (green) or clash (red) relationship with each other.
+
+It is inevitable to notice that the score ratios in~\autoref{fig:RatioMatrix} are not symmetric, i.e.~the expected PPR score of company $c_1$ can decrease when $c_2$ is in the query, however, the expected PPR score of $c_2$ can increase when $c_1$ is in the query. This can be easily explained by non-symmetry of symbiotic / clash relationships: two companies $c_1$ and $c_2$ can sign a contract according to which $c_1$ helps distributing addons of $c_2$, however $c_2$ does not have to help distributing addons of $c_1$. Moreover, $c_2$ may even end up removing $c_1$'s addons. 
 
 \begin{figure}[!htbp]
 \centering
@@ -1905,6 +1914,7 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 
 
 %\bibliographystyle{alpha}
+\iffalse
 \newpage
 \appendix
 \chapter{} 
@@ -1943,7 +1953,7 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 \includegraphics[scale=0.8]{figures/PPR_length_dist.png}
 \caption{Personaliztion vector length}
 \end{figure}
-
+\fi
 
 
 \bibliographystyle{apalike}
