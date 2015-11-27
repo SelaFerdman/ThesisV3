@@ -1907,10 +1907,10 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 
 \section{Conclusion}
 \label{sec:clash_conclusion}
-In this chapter, we had an ambitious goal to look for a relations at the world of addons not only as individual but as part of something bigger - addons manufactures.
-After developing the a set of tools in \autoref{chap:user_ecosystem} and proving that the methodology and the algorithms, that are used in the same chapter, are correct we have applied these techniques in this chapter.
-We were looking for a way to discover mostly hidden relationships between the addons manufactures companies, and were pleased to discover that the tools from \autoref{chap:user_ecosystem} can come handy here as well.
-First, we looked for a way to relate addons to the companies and besides an obvious was like searching for a company name in the addons attributes, we came up with a way that may come handy also to security researches - we discovered that addons of the same manufacture are forming some kind of community and once some addons of the same manufacture are climbing up in the PR scores - all addons of that manufacture will climb up, the discussion of this behavior is in \autoref{sec:experiment_des}.
+In this chapter, we had an ambitious goal to analyze the global ecosystem of Web browser addons over a large sample of almost a million personal computers. After developing the analytics toolkit in \autoref{chap:user_ecosystem} and empirically proving the correctness of developed algorithms at the individual level, in this chapter we took the developed methodology to the macro-level.
+We were looking for a way to discover mostly hidden relationships between the addons manufacturing companies, and were pleased to discover that the tools from \autoref{chap:user_ecosystem} can come handy here as well.
+
+First, we developed a method for mapping addons to their manufacturers that went beyond a straightforward search for a company name in the addon attributes. The problem of mapping addons to their manufacturers is important in security applications. Using personalized PageRank centered around known addons of a company, we discovered that most addons of the same manufacturer form a kind of community: once some addons of the same manufacture are climbing up in the PR scores - all addons of that manufacture will climb up, the discussion of this behavior is in \autoref{sec:experiment_des}.
 After we chose 19 known addons manufactures and their related addons, we looked for the relations betweem them.
 After careful consideration, we decided that weighted aggregation of each company addons scores is the correct way to represent the companies in future analysis.
 We looked at all companies through the lens of every standalone company - checking companies scores changes given the presence of some individual company.
@@ -1923,6 +1923,9 @@ In this chapter, we found and proved a methodology to find typically hidden rela
 %We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
 %We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
 %We have also observed companies that cause other companies add-ons decline.
+
+\chapter{Summary}
+\label{chap:summary}
 
 
 
