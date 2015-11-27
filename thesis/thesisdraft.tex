@@ -199,6 +199,7 @@ Companies that distribute browser addons are engaged in partnerships or compete 
 
 
 \section{User Profiling}
+\label{sec:user_profilingg}
 
 User profiles characterize users according to their personal
 preferences and skills, as reflected by raw material gathered from
@@ -230,6 +231,7 @@ one. Accordingly, we will seek to derive patterns from these data logs
 that are meaningful using machine learning methods.
 
 \section{Recommender Systems}
+\label{sec:recommender_systems}
 
 Recommendation (or, Recommender) system applications \citep{resnick1997recommender} consider two
 classes of entities, usually referred to as users and items. Users
@@ -839,9 +841,6 @@ all edges                                                                    & 1
 
 \chapter{The missing addon in User ecosystem}
 \label{chap:user_ecosystem}
-\iffalse
-\textcolor{green}{\textit{Einat: Start by introducing the problem, why it is interesting..}}\\
-\fi
 
 As described in Chapter~\ref{sec:datasets}, we consider authentic user-addon
 associations represented as a graph. The graph includes typed nodes
@@ -1575,7 +1574,7 @@ We perform the procedure described above iteratively: after we discover addons t
 An example for an addon that drastically changed its rank is the addon named \emph{tbmyba.dll}, which jumped from the 1200 rank position to the 15 rank position when running PPR with Babylon addons in the query. Indeed, we found out that this addon belongs to Babylon\footnote{\url{http://www.file.net/process/tbmyba.dll.html}}.
 
 The success of this process reveals an interesting phenomenon: it turns out that there is a ``community'' of addons of the same company, and this community can be discovered via the Personalized PageRank weight propagation that starts with already known community members. One possible explanation for this phenomenon would be that it is a common practice for a company to offer a few of its addons for installation at the same time. For example, while Babylon is installing its Internet Explorer addon, it might also install its Chrome extension. Even if we manage to map the Internet Explorer addon to Babylon using the simple name matching procedure, the Chrome extension might not contain any attribute that would qualify it as related to Babylon. Still, our algorithm would discover it in a similar way it discovered a missing addon for a specific user. 
-Another explanation may come from the \emph{collaborative filtering} theory: users who have many addons in common might also have different addons of the same company --- such addons will therefore be located in a close proximity of each other in the PageRank graph.
+Another explanation may come from the \emph{collaborative filtering} theory, described in \autoref{sec:recommender_systems} and \autoref{sec:user_profilingg}: users who have many addons in common might also have different addons of the same company --- such addons will therefore be located in a close proximity of each other in the PageRank graph.
 
 Now that we linked addons with their species (that is, their manufacturer companies), we are ready to analyze relations between the addon companies in the Internet ecosystem. The following algorithm~\autoref{alg:collect_addon_data} summarizes our methodology. 
 For each company from our list, we construct the PPR query to contain all the company's addons. The PPR output is the ranked list of all addons in the graph. Our goal is to find out addons of which companies ``pop up'' in the PPR as compared to non-personalized PageRank. If we identify a company whose addons are universally improving their rank in the PPR of another company, we may conclude that the two companies are engaged in a partnership. Using the ecological language, we call it \emph{symbiosis}. We also expect addons of some companies to ``drop down'' the PPR ranked list, in comparison to the regular PR ranked list. We can suggest that two companies \emph{clash} with each other if many addons of one company drop down in the PPR of another company.
@@ -1650,7 +1649,7 @@ Following~\autoref{chap:user_ecosystem} and~\autoref{sec:experiment_des}, we use
 
 When all addons of a particular company comprise the PPR query, it is natural to expect the company's addons popping up in the ranked list. Other addons that are closely related to the addons of the query company might then follow the company's addons in their way to the top of the ranked list. The beauty of personalized PageRank is in the fact that the essence of the relationship between the addons does not have to be disclosed a priori, nor explicitly modeled. This implies that hidden, invisible relationships between addon manufacturers can be discovered in the process.
 
-Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $c_i$ that is involved in a symbiotic relationship with the query company $c_q$. Our goal is to reveal such a relationship based on the $c_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $c_i$, we could make a conclusion about the probability of a symbiotic relationship between $c_i$ and $c_q$.
+Our research hypothesis is that addons that pop up in the PPR ranked list belong to a company $C_i$ that is involved in a symbiotic relationship with the query company $C_q$. Our goal is to reveal such a relationship based on the $C_i$'s addon behavior as a reaction to the PPR disturbance of the addon ecosystem. Since companies usually maintain many addons, we cannot expect any company to have all its addons universally popping up in the ranked list once PPR is applied. Obviously, some addons would pop up higher than the others, while some addons might not change their rank substantially, or even drop down the ranked list. If we measure the rank change of addons that belong to $C_i$, we could make a conclusion about the probability of a symbiotic relationship between $C_i$ and $C_q$.
 
 There are two factors that affect the significance of the addon's rank change:
 \begin{enumerate}
@@ -1658,7 +1657,7 @@ There are two factors that affect the significance of the addon's rank change:
 \item \textbf{The (final) PPR rank.} The length of the leap is not the only significance measure. Intuitively, if an addon jumps from rank 10,000 to rank 1000, such a jump is less significant than if the addon jumps from rank 100 to rank 10. The explanation is simple: an addon at a rank 10,000 was most probably not important, and a big change in its rank would not make it significantly more important. In contrast, an addon that moved to the 10th place cannot be ignored.
 \end{enumerate}
 
-We are interested in the change of rank of the company, as aggregated over the set of its addons' ranks. In a search for a formula that would aggregate the behavior of all the company's addons, we make the following observation: if an addon is rare (i.e.~installed on just a few browsers), then the change in its rank --- even a significant one --- might have little effect on the behavior of the company in whole. For example, if an addon moves from rank 10,000 to rank 10, but is installed on 10 browsers only, its effect on the aggregated rank of the company would be less significant than, say, a change in rank from 100 to 50 of an addon that is installed on 10,000 browsers.
+We are interested in the change of rank of the company, as aggregated over the set of its addons' ranks. In a search for a formula that would aggregate the behavior of all the company's addons, we make the following observation: if an addon is rare (i.e.~installed on just a few browsers), then the change in its rank --- even a significant one --- might have little effect on the behavior of the company in whole. For example, if an addon moves from rank 10,000 to rank 10, but is installed on 10 user browsers only, its effect on the aggregated rank of the company would be less significant than, say, a change in rank from 100 to 50 of an addon that is installed on 10,000 user browsers.
 
 The potential complexity of addon rank aggregation over the three parameters listed above (length of the leap, the final rank, and the addon frequency) makes us search for simplification. Since an addon's rank is determined by the order of all addons when sorted over their PR (or PPR) \emph{scores}, we observe that an addon score is a better measure of the addon's importance than its rank. For example, if an addon's score was 5 in the non-personalized PR, and got increased to 10 in PPR, while there were no other addons with scores as high as 5, then the rank of the addon would not change, so the significance of the score change would be completely ignored when taking into account addon ranks only. In addition, the change in the addon's rank is affected by the change of other addons' ranks, while the change of the addon's score can be taken independently from the other addons' score change. Therefore, we decide to focus on addon PR scores rather then on ranks. Now, there are only two parameters that need to be taken into account for measuring a company's ``importance'': the PR (or PPR) scores of its addons, and their frequencies in the dataset.
 
@@ -1751,7 +1750,7 @@ In~\autoref{fig:incredi_sym_conduit}, we show the expected score of IncrediMail 
 
 Personalized PageRank provides insights on a relation between Babylon and ASK (which are known rivals in the toolbar domain). In \autoref{fig:babylon_nosym_ask}, we see that Babylon's score decreases significantly in ASK's PPR, as compared to its score in non-personalized PageRank. Despite the fact that ASK and Babylon heavily co-occur in our dataset (see~\autoref{subsub:co_occurrence}), our result shows that there is no symbiotic relationship between the two companies. 
 
-More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
+More symbiotic relations are shown in~\autoref{fig:symbiotic_2}. \autoref{fig:hotspot_sym_conduit} shows that HotSpot Shield is in symbiosis with Conduit, and this relationship can be verified in the Web\footnote{\url{https://www.pcrisk.com/removal-guides/7246-remove-hotspot-shield-toolbar}}. \autoref{fig:ask_sym_avira} shows a rather unusual partnership between an antivirus company Avira and the addon distributor ASK. When investigating relationships between antivirus companies and addons distributors, we see that addon distributor scores usually suffer in PPRs of antivirus companies, see \autoref{fig:ask_clash_trend}. A simple explanation is that some browser addons are considered malware and are removed by antivirus products. Nevertheless, in \autoref{fig:ask_sym_avira}, we observe that ASK toolbar's score increases in Avira's PPR. An explanation can be found on Avira's official web site, which states that ``Avira chose Ask.com to be our partner in bringing you the SearchFree Toolbar \dots''\footnote{\label{avira_ask}\url{https://www.avira.com/en/avira-searchfree-toolbar}}. 
 
 \begin{figure}[!htbp]
 \centering
@@ -1907,6 +1906,20 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 
 
 \section{Conclusion}
+\label{sec:clash_conclusion}
+In this chapter, we had an ambitious goal to look for a relations at the world of addons not only as individual but as part of something bigger - addons manufactures.
+After developing the a set of tools in \autoref{chap:user_ecosystem} and proving that the methodology and the algorithms, that are used in the same chapter, are correct we have applied these techniques in this chapter.
+We were looking for a way to discover mostly hidden relationships between the addons manufactures companies, and were pleased to discover that the tools from \autoref{chap:user_ecosystem} can come handy here as well.
+First, we looked for a way to relate addons to the companies and besides an obvious was like searching for a company name in the addons attributes, we came up with a way that may come handy also to security researches - we discovered that addons of the same manufacture are forming some kind of community and once some addons of the same manufacture are climbing up in the PR scores - all addons of that manufacture will climb up, the discussion of this behavior is in \autoref{sec:experiment_des}.
+After we chose 19 known addons manufactures and their related addons, we looked for the relations betweem them.
+After careful consideration, we decided that weighted aggregation of each company addons scores is the correct way to represent the companies in future analysis.
+We looked at all companies through the lens of every standalone company - checking companies scores changes given the presence of some individual company.
+In \autoref{sec:symb_relations}, we discovered a symbiotic relations between some of the given company. We were amazed to see that every relation we discovered is grounded in reality. Some of the symbiotic relations were so surprising, like a symbiotic relation between antivirus company and addon developer (a natural rivals), that we double checked the results and were proven correct. Interestingly, the justifications for our results we found in the web, using Google's search engine - based on PageRank.
+
+In \autoref{sec:clash_relations}, we looked at the opposite of symbiotic relations -  a clash relations. For this kind of relations, we found an additional way to validate our measurements - it is a well known fact the antivirus companies clash (two antivirus products cannot be installed on the same machine). This relations between the antivirus companies were discovered by our technique in addition to other companies relations as well.
+
+In this chapter, we found and proved a methodology to find typically hidden relations between companies as well as related unknown addons to its manufactures.
+
 %We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
 %We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
 %We have also observed companies that cause other companies add-ons decline.
