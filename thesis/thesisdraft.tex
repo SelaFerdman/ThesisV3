@@ -1924,8 +1924,25 @@ In this chapter, we found and proved a methodology to find typically hidden rela
 %We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
 %We have also observed companies that cause other companies add-ons decline.
 
-\chapter{Summary}
+\chapter{Summary of contributions}
 \label{chap:summary}
+Web Browser addons is an unresearched domain. In this work we aimed at developing tools and methodology for addons behavioral analysis.
+Given an unique dataset of addons, we practiced different types of data layering and collection, and different types of machine learning algorithms until we came up with the final decision about how to organize the data for a future analysis, this process is described in \autoref{sec:datasets}.
+After organizing the data in a graph of users and addons, knowing that Personalized PageRank is well-suited for capturing relationships between vertices in a graph, we proposed the PPR as the basis for analysing the addons behaviour.
+Believing that user addons for some kind of an ecosystem with its own rules, we believed that since such rules exist we can conjectured that we can predict the addons behaviour.
+At first, we have looked for a way to predict which addons is missing at user addons ecosystem, given all other user addons.
+Our algorithm would output a ranked list of addons it finds the most appropriate to appear at the given user, already in the first experiment we had an impressive results - the predicted addon, with high probability, was found in top 10 in the ranked list. In \autoref{chap:user_ecosystem}, we describe the many experiments we conducted while searching for optimized setup. Given the "Big Data" size of the graph, we had to overcome the technical difficulty in order to run many thousands of experiments in suitable amount of time.
+As the results show in \autoref{chap:user_ecosystem}, our approach significantly outperforms all the baselines.
+While an extensive work with addons in \autoref{chap:user_ecosystem}, some interesting phenomena poped-up, we saw that not only addons have a relations via user but also addons have a relations between them based on their company manufacture. We saw that some addons appear more with some addons and seems to not appear at all with some other addons.
+Armed with this observation and with the methodology from \autoref{chap:user_ecosystem}, we decided to explore this phenomena more deeply, and maybe shed light on the relations between addons manufactures.
+In \autoref{chap:Symbiosis}, we explore these relations between the addon companies.
+We discovered that some companies are having a symbiotic relations - when one company addon are installed there is a good chance that the other company addons will be there too. Moreover, we discovered that simple co-occurrence measure is not good enough to indicate a symbiotic relations - while our methodology is very precise when discovering symbiosis between companies. Given the symbiotic relations, as one would have guessed, we also discovered the opposite relations between companies - we coined it as a clash relations.
+In the clash relations, addons of one company do not tend to appear with addons of another company. Our discoveries about the companies were justified by looking at press releases and by learning to understand the way specific companies are operating.
+While working on \autoref{chap:Symbiosis}, we have also discovered a way relate an addon to a company even when its attributes have no clue that this addon may be related to a specific company, the algorithm described in \autoref{chap:Symbiosis}.
+
+To conclude, working with a unique domain with no prior research on Browser addons conducted, we have successfully build a toolset and methodology to deal with this domain.
+We have developed an algorithm that predicts a missing user addon and significantly outperforms the baseline algorithms.
+We have discovered and correctly predicted a relationships between addons manufacture companies.
 
 
 
