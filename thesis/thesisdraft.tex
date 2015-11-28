@@ -31,7 +31,7 @@
 \usepackage{lscape}
 \usepackage{epstopdf}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-\geometry{top=2cm,bottom=2cm}
+\geometry{top=3.5cm,bottom=2cm}
 %\usepackage{txfonts}
 \usepackage{%
   pstricks,
@@ -479,13 +479,13 @@ add-ons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2014. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. ( Since Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox.) In addition, the users are from all around the globe. 
+We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users all over the world that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2013. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. Since Microsoft Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox).
 
-Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects,
+Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects:
 
 {\it Users.} A user record specifies his origin: IP, ISP and Country, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.).
 
-{\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype and Babylon addons installed. As shown in the figure, the following attributes are specified for each add-on:
+{\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons installed. As shown in the figures, the following attributes are specified for each add-on:
 \begin{itemize}
 \item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
@@ -1158,7 +1158,7 @@ by design choices concerning the graph structure and the random walk scheme. Thi
 \subsection{Methods}
 \label{sec:methods}
 
-In the experiments, we make use of a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package, a numerical software library written in FORTRAN 77, for solving large scale eigenvalue problems (often used in analyzing large social networks, e.g., \citep{ting2004minig}). ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
+In the experiments, we make use of a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package \citep{lehoucq1998arpack}, a numerical software library written in FORTRAN 77, for solving large scale eigenvalue problems (often used in analyzing large social networks, e.g., \citep{ting2004minig}). ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
 vertices. We have created a unique number for each node and store the
 mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
 management (every very small leak would cause a serious global memory
@@ -1908,41 +1908,44 @@ After identifying all company add-ons, we decided to remove add-ons that are ins
 \section{Conclusion}
 \label{sec:clash_conclusion}
 In this chapter, we had an ambitious goal to analyze the global ecosystem of Web browser addons over a large sample of almost a million personal computers. After developing the analytics toolkit in \autoref{chap:user_ecosystem} and empirically proving the correctness of developed algorithms at the individual level, in this chapter we took the developed methodology to the macro-level.
-We were looking for a way to discover mostly hidden relationships between the addons manufacturing companies, and were pleased to discover that the tools from \autoref{chap:user_ecosystem} can come handy here as well.
+We were looking for a way to discover mostly hidden relationships between the addons manufacturing companies, and were pleased to see that the tools from \autoref{chap:user_ecosystem} can come handy here as well.
 
-First, we developed a method for mapping addons to their manufacturers that went beyond a straightforward search for a company name in the addon attributes. The problem of mapping addons to their manufacturers is important in security applications. Using personalized PageRank centered around known addons of a company, we discovered that most addons of the same manufacturer form a kind of community: once some addons of the same manufacture are climbing up in the PR scores - all addons of that manufacture will climb up, the discussion of this behavior is in \autoref{sec:experiment_des}.
-After we chose 19 known addons manufactures and their related addons, we looked for the relations betweem them.
-After careful consideration, we decided that weighted aggregation of each company addons scores is the correct way to represent the companies in future analysis.
-We looked at all companies through the lens of every standalone company - checking companies scores changes given the presence of some individual company.
-In \autoref{sec:symb_relations}, we discovered a symbiotic relations between some of the given company. We were amazed to see that every relation we discovered is grounded in reality. Some of the symbiotic relations were so surprising, like a symbiotic relation between antivirus company and addon developer (a natural rivals), that we double checked the results and were proven correct. Interestingly, the justifications for our results we found in the web, using Google's search engine - based on PageRank.
+First, we developed a method for mapping addons to their manufacturers that went beyond a straightforward search for a company name in the addon attributes. The problem of mapping addons to their manufacturers is especially important in security applications. Using personalized PageRank centered around known addons of a company, we discovered that most addons of the same manufacturer form a community: while the query addons ``climb up'' the PR scores, other addons of the same manufacturer are ``dragged up'' together with the query addons. See the discussion in \autoref{sec:experiment_des}.
 
-In \autoref{sec:clash_relations}, we looked at the opposite of symbiotic relations -  a clash relations. For this kind of relations, we found an additional way to validate our measurements - it is a well known fact the antivirus companies clash (two antivirus products cannot be installed on the same machine). This relations between the antivirus companies were discovered by our technique in addition to other companies relations as well.
+We chose 19 well-known addon manufacturing companies and identified their addons. Our objective was to detect symbiotic and clash relationships between the companies. 
+After a careful consideration, we decided to use a weighted aggregation over all addon PR scores of each company on our list, in order to assess ``importance'' of each company.
+%We looked at all companies through the lens of every standalone company - checking companies scores changes given the presence of some individual company.
+In \autoref{sec:symb_relations}, we discovered symbiotic relations between some of the companies on our list. We were plausibly surprised to see that many relations we discovered could we validated online. Some of the discovered symbiotic relations were counter-intuitive, for example a symbiotic relation between an antivirus company and a toolbar developer (antivirus tools tend to treat toolbars as malware)--- this relation was proven correct.
 
-In this chapter, we found and proved a methodology to find typically hidden relations between companies as well as related unknown addons to its manufactures.
+In \autoref{sec:clash_relations}, we looked for the opposite of symbiotic relations---clash relations. For some of the clash relations, their validation was quite straightforward---it is well known that antivirus companies clash with each other (two antivirus products cannot be operational on the same machine). Along with discovering clashes between antivirus companies, we discovered other clashes most of which were obscure for an outside observer.
+
+%In this chapter, we found and proved a methodology to find typically hidden relations between companies as well as related unknown addons to its manufactures.
 
 %We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
 %We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
 %We have also observed companies that cause other companies add-ons decline.
 
-\chapter{Summary of contributions}
+\chapter{Summary}
 \label{chap:summary}
-Web Browser addons is an unresearched domain. In this work we aimed at developing tools and methodology for addons behavioral analysis.
-Given an unique dataset of addons, we practiced different types of data layering and collection, and different types of machine learning algorithms until we came up with the final decision about how to organize the data for a future analysis, this process is described in \autoref{sec:datasets}.
-After organizing the data in a graph of users and addons, knowing that Personalized PageRank is well-suited for capturing relationships between vertices in a graph, we proposed the PPR as the basis for analysing the addons behaviour.
-Believing that user addons for some kind of an ecosystem with its own rules, we believed that since such rules exist we can conjectured that we can predict the addons behaviour.
-At first, we have looked for a way to predict which addons is missing at user addons ecosystem, given all other user addons.
-Our algorithm would output a ranked list of addons it finds the most appropriate to appear at the given user, already in the first experiment we had an impressive results - the predicted addon, with high probability, was found in top 10 in the ranked list. In \autoref{chap:user_ecosystem}, we describe the many experiments we conducted while searching for optimized setup. Given the "Big Data" size of the graph, we had to overcome the technical difficulty in order to run many thousands of experiments in suitable amount of time.
-As the results show in \autoref{chap:user_ecosystem}, our approach significantly outperforms all the baselines.
-While an extensive work with addons in \autoref{chap:user_ecosystem}, some interesting phenomena poped-up, we saw that not only addons have a relations via user but also addons have a relations between them based on their company manufacture. We saw that some addons appear more with some addons and seems to not appear at all with some other addons.
-Armed with this observation and with the methodology from \autoref{chap:user_ecosystem}, we decided to explore this phenomena more deeply, and maybe shed light on the relations between addons manufactures.
-In \autoref{chap:Symbiosis}, we explore these relations between the addon companies.
-We discovered that some companies are having a symbiotic relations - when one company addon are installed there is a good chance that the other company addons will be there too. Moreover, we discovered that simple co-occurrence measure is not good enough to indicate a symbiotic relations - while our methodology is very precise when discovering symbiosis between companies. Given the symbiotic relations, as one would have guessed, we also discovered the opposite relations between companies - we coined it as a clash relations.
-In the clash relations, addons of one company do not tend to appear with addons of another company. Our discoveries about the companies were justified by looking at press releases and by learning to understand the way specific companies are operating.
-While working on \autoref{chap:Symbiosis}, we have also discovered a way relate an addon to a company even when its attributes have no clue that this addon may be related to a specific company, the algorithm described in \autoref{chap:Symbiosis}.
+The ecosystem of the Web browser is an unexplored research area. Thousands of browser addons fight their way to recognition and profitability. Addon manufacturers engage in partnerships or compete with each other. Most of this dynamics is hidden from the eyes of Web users. The goal of this work was to develop tools and methodologies for analyzing this complex ecosystem.
 
-To conclude, working with a unique domain with no prior research on Browser addons conducted, we have successfully build a toolset and methodology to deal with this domain.
-We have developed an algorithm that predicts a missing user addon and significantly outperforms the baseline algorithms.
-We have discovered and correctly predicted a relationships between addons manufacture companies.
+We were provided with a unique dataset of addons installed on almost a million machines. We tested different types of data representation, and applied a few machine learning algorithms, until we came up with the final decision about how to organize the data for future analysis. This process is described in \autoref{sec:datasets}.
+
+After organizing the data in a graph of users, addons, and terms extracted from addon attributes, we applied Personalized PageRank (PPR) to capture relationships between vertexes in the graph.
+
+%Believing that user addons for some kind of an ecosystem with its own rules, we believed that since such rules exist we can conjectured that we can predict the addons behaviour.
+First, we hypothesized that---analogously to a biological ecosystem---the Web browser ecosystem seeks to enter a steady state in which addons naturally coexist with each other. We looked for a way to verify our hypothesis by artificially ``disturbing'' the ecosystem and seeing whether it tends to come back to the steady state. Technically, we extracted addon nodes from the graph, and applied PPR to identify the missing nodes. Given a query of all addons installed on a machine from which one addon got ``extracted'', our algorithm constructed a ranked list of addons most probable to be installed on that machine. We obtained impressive results: the extracted addon, with high probability, was found among the top 10 addons in the ranked list. In \autoref{chap:user_ecosystem}, we describe many experiments we conducted while searching for an optimal setup. Given the \emph{Big Data} size of the graph, we had to overcome technical difficulties in order to run many thousands of experiments in suitable amount of time. As the results show in \autoref{chap:user_ecosystem}, our approach significantly outperforms all the baselines.
+
+While analyzing our results of \autoref{chap:user_ecosystem}, we observed some interesting phenomena: we saw that addons relate to each other not only via the machine they are installed on, but also via their manufacturing company. We saw that addons of some manufacturers appear more often with addons of other manufacturers, and do not appear with others.
+
+Armed with this observation and with the methodology we developed in \autoref{chap:user_ecosystem}, we decided to explore this phenomena more deeply, and to shed light on the relations between addon manufactures. Our results are presented in \autoref{chap:Symbiosis}.
+We discovered that some companies are engaged \emph{symbiotic} relations---when one company's addons are installed on a machine, there is a good chance that another company's addons will be there too. We found out that a simple co-occurrence count is not good enough to detect symbiotic relations---most companies with high co-occurrence do not seem to be in symbiosis with each other. We applied PPR with all company's addons in the query and observed other company's addons improving their scores. Our methodology turned out being very precise at discovering symbiosis between companies---we managed to validate many symbiotic relations in online media. As a byproduct of this work, we created a method for mapping an addon to its manufacturing company, even if the addon's attributes provide no clue for this connection.
+
+Building upon the success of discovering symbiosis, we applied the same methodology for discovering the opposite relation---we called it the \emph{clash} relation. In a PPR focused on a company's addons, we detected addons of another company dropping significantly their scores. Using this methodology, we discovered many clash relationships between companies, some of which could be easily validated online, while the others were hidden well enough such that our algorithm was the only one to discover them.
+
+We can conclude that, working in a unique domain with no prior research conducted, we managed to successfully build a set of tools and methodologies to analyze the dynamics of the domain.
+We developed a method for identifying a missing addon---our method significantly outperformed baseline methods.
+We discovered hidden relationships between addon manufacturing companies.
 
 
 
