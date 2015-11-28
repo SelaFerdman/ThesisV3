@@ -354,7 +354,11 @@ the PageRank equation is adapted as follows to compute the Personalized PageRank
 			\end{equation}
 \fi
 
-Personalized PageRank is used in a wide variety of applications, \citep{lee2011random} adopt PPR algorithm for ranking entities according to a given query that is represented as a set of entities in the graph and infer a multidimensional recommendation. Personalized PageRank has been used both for variants of vertex ranking as well as local partitioning by \citep{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. In TwitterRank \citep{weng2010twitterrank}, the authors adapt PPR to identify influential users of the micro-blogging service. They also discover that Personalized PageRank weighting graphs edges by the similarity of user’s topical interests gives better results than just weighting the nodes according to those same interests.In \citep{berkhin2006bookmark}, the authors use Personalized PageRank for computing that thay call a\textit{bookmark-coloring} bookmark-coloring model.This model computes authority weights over the web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently compute edge weighted
+Personalized PageRank is used in a wide variety of applications, \cite{lee2011random} applied the PPR algorithm with multiple-entity queries to the task of multidimensional recommendation. Personalized PageRank was used both for vertex ranking and local partitioning by \cite{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. 
+
+The important task of identifying influential users in social media was solved using Personalized PageRank, both on Twitter \citep{weng2010twitterrank} and on LinkedIn \citep{budalakoti2012}. \cite{weng2010twitterrank} discovered that the Personalized PageRank produces better results whenever graph edges are weighted by the similarity of user’s interests, rather than whenever graph nodes are weighted according to user's interests. \cite{budalakoti2012} found out that the Personalized PageRank in LinkedIn's graph of connection invites is more effective when discounted by the node outdegree.
+
+\cite{berkhin2006bookmark} use Personalized PageRank for computing what they call a \textit{bookmark-coloring} model. This model computes authority weights over the web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently compute edge weighted
 personalized PageRanka and provides personalized ranking of typed entity-relationship graphs. It was also noted, \citep{sarkar2008fast}, that Personalized PageRank can be adopted to be a good similarity measure on the Web.\\
 \iffalse
 MOVED HERE: As mentioned before, the algorithms of PageRank and Personalized
@@ -487,7 +491,7 @@ Our focus is on {\it user}, and {\it addon} tables. Following is a description o
 
 {\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons installed. As shown in the figures, the following attributes are specified for each add-on:
 \begin{itemize}
-\item Add-on type: extension, bho, toolbar, etc. (see Type column in the table)
+\item Add-on type: extension, bho (Internet Explorer addon), toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
 \item The full path where it resides on the user's machine. (FileName column)
 \item A textual description of the add-on. (Description column)
