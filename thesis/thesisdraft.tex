@@ -336,26 +336,9 @@ Specifically, at each step, with probability $d$ the surfer teleports to $\mathb
 Generally speaking, a query can comprise a set of nodes $\mathbf{A}_q$ in the
 graph, such that---in the event of teleportation---the surfer will jump to any node in $\mathbf{A}_q$. Fortunately, the PPR computation for a multi-node query is no more difficult than the one for a single-node query due to the \textit{Linearity Theorem} \citep{jeh2003scaling}, as the PPV of a multi-node query is a simple linear combination of the individual PPVs of all nodes in the query.
 
-\iffalse 
-[RON: this paragraph doesn't belong here]
-The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
-nodes are the addons of a specific user, that is, the 
-members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
-			\begin{equation}
-				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
-				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
-				\label{eq:pr}
-			\end{equation}
-the PageRank equation is adapted as follows to compute the Personalized PageRank ~(\ref{eq:ppr_related_work}):
-			\begin{equation}
-				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
-				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
-				\label{eq:ppr_related_work}
-			\end{equation}
-\fi
 
-The Personalized Pagerank was first suggested in
-\citep{brin1998can}, and shortly after, was used to
+Personalized Pagerank was first suggested by
+\cite{brin1998can}, and shortly after, was pretty naturally applied to
 personalize Web search
 \citep{haveliwala2002topic,haveliwala2003topic,haveliwala2003analytical}. Later, Personalized PageRank was used in a wide variety of other applications. \cite{lee2011random} applied the PPR algorithm with multiple-entity queries to the task of multidimensional recommendation. Personalized PageRank was used both for vertex ranking and local partitioning by \cite{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. 
 
@@ -379,12 +362,14 @@ authors used the Personalized PageRank model, which they call
 ProteinRank, to predict protein functions. ALSO: In Keren's thesis, we have shown that PPR's random walk similarity metric outperforms classical collaborative
 filtering and content-based recommendation methods.
 \fi
+
 \subsection{Effect of High Degree Nodes on Personalized PageRank}
 \label{sec:ppr_high_degree}
-The study of large networks is a fairly recent development, and there have been many phenomena shown to be appearing in real-world datasets. One important property is the small-world phenomenon \citep{watts1998collective}, the existence of short paths between any randomly-chosen pair of vertices. Many real-world networks exhibit small-world behavior, and they are characterized by having a low average shortest path length and many dense subgraphs.
-Another hallmark of large graphs is the power-law degree distribution. Several groups of authors independently discovered that virtually every large network found in nature exhibits a power-law degree distribution \citep{aiello2001random,albert1999internet}. Our graph also stands in these standards, as shown in \autoref{tab:node_types} and \autoref{fig:power_law_addons}, the addon nodes degree has a power-law distribution and also the small small-world phenomenon holds. In our research, we are experimenting with removing high degree nodes from the graph. In \citep{sarkar2010tractable}, Sarkar proves that removing high degree nodes from an undirected power-law graph involves a very small penalty. The main intuition behind their analysis is that a very high degree node passes on a small fraction of its probability mass to the out-neighbors,
-which might not be significant enough to invest computing resources.They argue that stopping a random walk at a high degree node does not change the personalized pagerank value at other nodes which have relatively smaller degree. Similar to our approach, they turn a high degree
-node into a sink by removing all the outgoing neighbors and do not change any incoming edges.
+Studying large-scale networks is a fairly recent development---many phenomena have shown to be appearing in real-world large-scale datasets. One important property is the small-world phenomenon \citep{watts1998collective}: the existence of short paths between any randomly-chosen pair of vertexes. Many real-world networks exhibit small-world behavior, and they are characterized by having a low average shortest path length and many dense subgraphs.
+
+Another hallmark of large graphs is the power-law degree distribution. Several groups of authors independently discovered that virtually every large network found in nature exhibits a power-law degree distribution \citep{albert1999internet,aiello2001random}. Our graph also stands in these standards, as shown in \autoref{tab:node_types} and \autoref{fig:power_law_addons}: the addon nodes degree has a power-law distribution and also the small small-world phenomenon holds. In our research, we experiment with removing high-degree nodes from the graph. \cite{sarkar2010tractable} proves that removing high-degree nodes from an undirected power-law graph leads to a very small penalty. The main intuition behind their analysis is that a very-high-degree node passes a very small fraction of its probability mass to its out-neighbors,
+which might not be significant enough to invest computing resources. The authors argue that stopping a random walk at a high degree node does not change the personalized PageRank scores of other nodes which have relatively smaller degree. Similarly to our approach, they transform high-degree
+nodes into sinks by removing all their outgoing edges (while not touching any incoming edges).
 
 
 \section{Link Prediction in Graphs}
@@ -396,10 +381,7 @@ A learning algorithm for link prediction, presented in \citep{lao2010relational}
 
 \section{Clustering}
 
-A known issue of Recommender Systems is the `cold-start' problem,
-where little historical data is available for new users, or
-items. Clustering is often employed to alleviate the cold-start
-problem. A cluster is a collection of data objects that are similar to
+\emph{Clustering} can be employed for identifying similar users, addons, or both. A cluster is a collection of data objects that are similar to
 one another within the same cluster and are dissimilar to the objects
 in other clusters \citep{han2006data}. When applied to the domain of Web browsing
 history, clustering can group together a set of Web pages with similar
@@ -412,29 +394,33 @@ number of items they rated, and items were similarly
 re-clustered. Each user was assigned to a class with a degree of
 membership proportional to the similarity between the user and the
 mean of the class. Their recommendation performance on synthetic data
-was good, but not as good on real data. A flexible mixture model (FMM)
+was good, but not as good on real data. 
+
+A flexible mixture model (FMM)
 extends existing clustering algorithms for CF by clustering both users
 and items at the same time, allowing each user and item to be in
 multiple clusters and modeling the clusters of users and items
 separately \citep{si03}. Experimental results show that the FMM algorithm has
 better accuracy than the Pearson correlation-based CF algorithm and
-aspect model \citep{hofmann2004latent}. Clustering for both users and items is often
+aspect model \citep{hofmann2004latent}. 
+
+Clustering for both users and items is often
 referred to as multi-way clustering \citep{bekkerman05} or bi-clustering \citep{zhu2009analyzing}.
-Bekkerman at \citep{bekkerman05} have shown that clustering users and items
+\cite{bekkerman05} showed that clustering users and items
 simultaneously provides better results (when the users and the
 features are inter-dependent). In our focus domain, for example, a
 user may use one set of browser addons for work and another for
 entrainment. Multi-Way Distributional Clustering (MDC) is an efficient
 implementation of Combinatorial Markov Random Fields (Comraf), a novel
-type of undirected graphical models due to \citep{bekkerman2006semi}]. The
-model is grounded on three principles: (i) Exploiting multi-modality
+type of undirected graphical models \citep{bekkerman2006semi}. The
+model is based on three principles: (i) Exploiting multi-modality
 of the data, i.e. the fact that the data can be viewed from different
 angles or perspectives. For example, consider a dataset of documents
-that should be clustered into topics. Rather than represent full
-documents, a different modality of this data would be sets of words
+that should be clustered into topics. Besides the modality of
+documents, a different modality of this data could be sets of words
 that are contained in the documents. Additional modalities would be a
 set of author names, a set of documents titles etc. Comraf allows one
-to simultaneously cluster a number of data modalities, having each one
+to simultaneously cluster a number of data modalities, while each one
 potentially improves the quality of all the others. (ii) Most existing
 clustering methods are based on explicit definition of a pairwise
 distance measure between data instances. Such a measure is usually
@@ -444,20 +430,32 @@ instead optimizes a global objective function over the entire
 data. (iii) Most existing clustering algorithms are either
 agglomerative (start with small clusters and merge them to compose
 larger clusters), divisive (start with one large cluster and split it
-to obtain smaller clusters), or flat, such as k-means (start with k
+to obtain smaller clusters), or flat, such as k-means (start with $k$
 clusters and rearrange data within these clusters). \citep{bekkerman05} propose to combine all the three approaches together, while
 choosing the most appropriate one for each data modality. A detailed
 description of the Comraf model is given in \citep{bekkerman2006semi}, and
-the underlying clustering algorithm (MDC) is described in \citep{bekkerman05}. Some modalities may be not clustered by Comraf, as explained
-in \citep{bekkerman2007multi}.  In the proposed research, the underlying
-data is highly sparse. We will therefore explore clustering of items
-(addons) in order to get denser historical records for each user. In
-addition, we may cluster users, in order to associate new users who
-have little known history with relevant user groups. As described
-above, concurrently clustering data along both dimensions may be
-desired.
+the underlying clustering algorithm (MDC) is described in \citep{bekkerman05}. Some modalities do not have to be clustered, as explained
+in \citep{bekkerman2007multi}. 
 
 \chapter{Problem definition}
+
+\iffalse 
+[RON: moved here]
+The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
+nodes are the addons of a specific user, that is, the 
+members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
+				\label{eq:pr}
+			\end{equation}
+the PageRank equation is adapted as follows to compute the Personalized PageRank ~(\ref{eq:ppr_related_work}):
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
+				\label{eq:ppr_related_work}
+			\end{equation}
+\fi
 
 This is essentially equivalent to the research goals.\\
 We have decided to investigate the browser ecosystem from three points of view:\\
@@ -517,7 +515,7 @@ Our focus is on {\it user}, and {\it addon} tables. Following is a description o
 \label{fig:db_addons_snapshot_desc}
 \end{figure}
 
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has at least a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
 
 \begin{figure}[t]
 \centering
@@ -541,7 +539,7 @@ Finally, we note another characteristic of interest of this data.  Since the add
 
 \section{Experimental data}
 
-For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--addon associations. It consists of 907,844 unique users and 456,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of addons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--addon associations. It consists of 907,844 unique users and 256,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of addons installed per user machine. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \iffalse
 \begin{figure}[t]
@@ -565,7 +563,7 @@ In order to enable assessment of textual similarity for record co-reference purp
 
 
 \section{Graph representation}
-\label{sec:graph_representation}
+\label{tab:graph_representation}
 \begin{table}[t]
 \begin{center}
 \begin{small}
@@ -583,17 +581,17 @@ In order to enable assessment of textual similarity for record co-reference purp
 \end{tabular}
 \end{small}
 \end{center}
-\caption{\label{tab:graph_structure} The graph node and directional edge types}
+\caption{\label{tab:graph_structure} The graph node and edge types}
 \end{table}
 
-We compactly represent the dataset using a relational graph. Each node in the graph represent a unique, typed,  object.  Concretely, the graph includes the following node types:
+We compactly represent the dataset using a relational graph. Each node in the graph represents a unique, typed,  object.  Concretely, the graph includes the following node types:
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$} 
 \item {\it User} - this node represents user by his unique user id. 
 \item {\it Addon} - this node represents unique addons, where an {\it addon} is defined as the concatenation of all its attributes, namely, file path, addon name and description.
-\item {\it Terms} 
+\item {\it Term} 
 \end{itemize}
-Directional edges link node pairs.
+Bi-directional edges link node pairs.
 Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
 First, we represent the structural relationship between each user and the {\it addons} installed on his PC via the {\it has-addon} edge type, originating at the {\it user} node. An inverse relation exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
 In addition, as described above, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation.
@@ -773,9 +771,9 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path infomration is availabe, where the respective node name is\\
+Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path information is available, where the respective node name is\\
 `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it addon} \\
-node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it addon} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., for example, the {\it addon} node in the figure is linked to six term nodes, which resulted from the string tokenization and processing. 
   
 The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it addons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same addon. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two addons are linked over a path that traverses the "Skype" term node.
 
@@ -1078,7 +1076,7 @@ graph nodes. We rank the graph nodes of type {\it addon} by their PPR score. It 
   {\it addons} should highly weight addons that frequently
   co-occur with the input addon on the same machines. As the query consists of multiple {\it addon} nodes, the resultant PPR scores are expected to prioritize {\it addons} that co-exist on users' machines with multiple input addons.   
 \item {\it Term-based similarity}: As demonstrated before
-  (Sec. \autoref{sec:graph_representation}), the name and descriptions of addon
+  (Sec. \autoref{tab:graph_representation}), the name and descriptions of addon
   instances exhibit lexical variations. For example, similar addons may vary with respect to the software's version number. The constructed graph links each {\it addon} node with the {\it terms} that it contains. Thus, co-reference resolution can take place via the path {\it addon}
   $\Rightarrow$ {\it term} $\Rightarrow$ {\it addon}. Also here, the graph-based similarity metric favors {\it addons} pairs that connected over multiple {\it terms}. 
 \end{itemize}
@@ -1940,7 +1938,7 @@ We were provided with a unique dataset of addons installed on almost a million m
 After organizing the data in a graph of users, addons, and terms extracted from addon attributes, we applied Personalized PageRank (PPR) to capture relationships between vertexes in the graph.
 
 %Believing that user addons for some kind of an ecosystem with its own rules, we believed that since such rules exist we can conjectured that we can predict the addons behaviour.
-First, we hypothesized that---analogously to a biological ecosystem---the Web browser ecosystem seeks to enter a steady state in which addons naturally coexist with each other. We looked for a way to verify our hypothesis by artificially ``disturbing'' the ecosystem and seeing whether it tends to come back to the steady state. Technically, we extracted addon nodes from the graph, and applied PPR to identify the missing nodes. Given a query of all addons installed on a machine from which one addon got ``extracted'', our algorithm constructed a ranked list of addons most probable to be installed on that machine. We obtained impressive results: the extracted addon, with high probability, was found among the top 10 addons in the ranked list. In \autoref{chap:user_ecosystem}, we describe many experiments we conducted while searching for an optimal setup. Given the \emph{Big Data} size of the graph, we had to overcome technical difficulties in order to run many thousands of experiments in suitable amount of time. As the results show in \autoref{chap:user_ecosystem}, our approach significantly outperforms all the baselines.
+First, we hypothesized that---analogously to a biological ecosystem---the Web browser ecosystem seeks to enter a steady state in which addons naturally coexist with each other. We looked for a way to verify our hypothesis by artificially ``disturbing'' the ecosystem and seeing whether it tends to come back to the steady state. Technically, we removed an edge between an addon node and the machine on which it was installed, and applied PPR to identify the missing edge. Given a query of all addons installed on a machine from which one addon got ``extracted'', our algorithm constructed a ranked list of addons most probable to be installed on that machine. We obtained impressive results: the extracted addon, with high probability, was found among the top 10 addons in the ranked list. In \autoref{chap:user_ecosystem}, we describe many experiments we conducted while searching for an optimal setup. Given the \emph{Big Data} size of the graph, we had to overcome technical difficulties in order to run many thousands of experiments in suitable amount of time. As the results show in \autoref{chap:user_ecosystem}, our approach significantly outperforms all the baselines.
 
 While analyzing our results of \autoref{chap:user_ecosystem}, we observed some interesting phenomena: we saw that addons relate to each other not only via the machine they are installed on, but also via their manufacturing company. We saw that addons of some manufacturers appear more often with addons of other manufacturers, and do not appear with others.
 
