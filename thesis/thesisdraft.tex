@@ -177,7 +177,7 @@ Web browsers, a software application for retrieving and presenting resources on 
 A great number of extensions are installed by users on a daily basis nowadays. It was reported that more than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, may be installed following an explicit request by the user, addons are often `silently' installed by a third party as the user downloads some other program from the Web, or likewise are included in a 'software bundle'. There are several reasons why software companies are interested in having specific toolbars installed on the user's machine. First, toolbars are often used for collecting information about the browsing history of the user (e.g., Yahoo! Toolbar). In addition, it is often the case that once installed, toolbar software directs all of the user searches to some dedicated search portal (e.g. MyWebSearch.com). 
 The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
 \iffalse 
-Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular add-on survives on the user's machine more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
+Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular addon survives on the user's machine more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
 profiles and personalization of software services, there is no previous research, to the best of our knowledge, which used information about user browser extensions to similarly model user behavior. We will examine the hypothesis by which the existence of an extension on a user’s computer reflects something about the user's
 application download history, as well as about his or her general preferences. Specifically, we will evaluate whether clustering users using the underlying data allows one to improve prediction of future behavior. The main research questions and goals are stated in Section 3. An overview of related literature is given below. In addition to previous works on user profiling, we discuss recent learning methods used in large-scale recommendation systems, relating in detail to clustering techniques, which are used to alleviate data sparsity
 issues. Finally, descriptions of the prediction models that we plan to use, and an account of the special characteristics and challenges involved with the dataset.
@@ -222,7 +222,7 @@ and artificial neural networks \citep{pazzani97}, multi-class classification \ci
 and so forth.  While browsing behavior has been studied in the context
 of user profiling, in the proposed research we are interested in using
 of a different type of `behavioral logs'. In particular, we believe
-that the logs detailing the add-ons installed on the user's machine
+that the logs detailing the addons installed on the user's machine
 over time can be used as another source of meaningful information
 about the user's preferences. To the best of our knowledge, this type
 of user history data has not been studied before. The user profiling
@@ -244,7 +244,7 @@ matrix, information need to be first collected on the preferences of
 the users for a set of items (e.g., movies, songs, browser
 extensions). Such information can be acquired explicitly (typically,
 by collecting users’ ratings) or implicitly (typically, by
-monitoring users’ behavior, such as songs heard, applications/add-ons
+monitoring users’ behavior, such as songs heard, applications/addons
 downloaded ,web sites visited and books read).  Recommender systems
 produce a list of predictions following one of two main paradigms -
 through content-based modeling or collaborative
@@ -354,12 +354,14 @@ the PageRank equation is adapted as follows to compute the Personalized PageRank
 			\end{equation}
 \fi
 
-Personalized PageRank is used in a wide variety of applications, \cite{lee2011random} applied the PPR algorithm with multiple-entity queries to the task of multidimensional recommendation. Personalized PageRank was used both for vertex ranking and local partitioning by \cite{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. 
+The Personalized Pagerank was first suggested in
+\citep{brin1998can}, and shortly after, was used to
+personalize Web search
+\citep{haveliwala2002topic,haveliwala2003topic,haveliwala2003analytical}. Later, Personalized PageRank was used in a wide variety of other applications. \cite{lee2011random} applied the PPR algorithm with multiple-entity queries to the task of multidimensional recommendation. Personalized PageRank was used both for vertex ranking and local partitioning by \cite{andersen2006local}, with later refinements \citep{andersen2007detecting} and applications to directed graphs \citep{andersen2007local}. 
 
 The important task of identifying influential users in social media was solved using Personalized PageRank, both on Twitter \citep{weng2010twitterrank} and on LinkedIn \citep{budalakoti2012}. \cite{weng2010twitterrank} discovered that the Personalized PageRank produces better results whenever graph edges are weighted by the similarity of user’s interests, rather than whenever graph nodes are weighted according to user's interests. \cite{budalakoti2012} found out that the Personalized PageRank in LinkedIn's graph of connection invites is more effective when discounted by the node outdegree.
 
-\cite{berkhin2006bookmark} use Personalized PageRank for computing what they call a \textit{bookmark-coloring} model. This model computes authority weights over the web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently compute edge weighted
-personalized PageRanka and provides personalized ranking of typed entity-relationship graphs. It was also noted, \citep{sarkar2008fast}, that Personalized PageRank can be adopted to be a good similarity measure on the Web.\\
+\cite{berkhin2006bookmark} use Personalized PageRank for computing what they call a \textit{bookmark-coloring} model. This model computes authority weights of web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently computes edge-weighted personalized PageRank and provides personalized ranking of typed entity-relationship graphs. It was also noted \citep{sarkar2008fast} that Personalized PageRank can be adopted to become a good similarity measure on the Web.
 \iffalse
 MOVED HERE: As mentioned before, the algorithms of PageRank and Personalized
 PageRank algorithm have been designed so as to improve Web page
@@ -421,7 +423,7 @@ referred to as multi-way clustering \citep{bekkerman05} or bi-clustering \citep{
 Bekkerman at \citep{bekkerman05} have shown that clustering users and items
 simultaneously provides better results (when the users and the
 features are inter-dependent). In our focus domain, for example, a
-user may use one set of browser add-ons for work and another for
+user may use one set of browser addons for work and another for
 entrainment. Multi-Way Distributional Clustering (MDC) is an efficient
 implementation of Combinatorial Markov Random Fields (Comraf), a novel
 type of undirected graphical models due to \citep{bekkerman2006semi}]. The
@@ -449,7 +451,7 @@ description of the Comraf model is given in \citep{bekkerman2006semi}, and
 the underlying clustering algorithm (MDC) is described in \citep{bekkerman05}. Some modalities may be not clustered by Comraf, as explained
 in \citep{bekkerman2007multi}.  In the proposed research, the underlying
 data is highly sparse. We will therefore explore clustering of items
-(add-ons) in order to get denser historical records for each user. In
+(addons) in order to get denser historical records for each user. In
 addition, we may cluster users, in order to associate new users who
 have little known history with relevant user groups. As described
 above, concurrently clustering data along both dimensions may be
@@ -477,24 +479,24 @@ It is also interesting to see how the addons in browser ecosystem evolve day by 
 Describe here the data that we've used. How it was extracted, relevant
 statistics (how many users, time span, distribution of addon nunber
 per user).. the types of information that we have about each addon
-(add-on name, description.. -- include examples). Discuss the issue of
+(addon name, description.. -- include examples). Discuss the issue of
 versioning -- there are often small lexical differences between
-add-ons, in particular, in version number, but essentially it is the
+addons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users all over the world that have agreed to anonymously share this information.  The list of browser add-ons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2013. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. Since Microsoft Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox).
+We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users all over the world that have agreed to anonymously share this information.  The list of browser addons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2013. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. Since Microsoft Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox).
 
 Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects:
 
 {\it Users.} A user record specifies his origin: IP, ISP and Country, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.).
 
-{\it Addon.} The installed add-ons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons installed. As shown in the figures, the following attributes are specified for each add-on:
+{\it Addon.} The installed addons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons installed. As shown in the figures, the following attributes are specified for each addon:
 \begin{itemize}
-\item Add-on type: extension, bho (Internet Explorer addon), toolbar, etc. (see Type column in the table)
+\item Addon type: extension, bho (Internet Explorer addon), toolbar, etc. (see Type column in the table)
 \item The name of the program. (Name column)
 \item The full path where it resides on the user's machine. (FileName column)
-\item A textual description of the add-on. (Description column)
+\item A textual description of the addon. (Description column)
 \end{itemize}
 
 \begin{figure}[t]
@@ -515,7 +517,7 @@ Our focus is on {\it user}, and {\it addon} tables. Following is a description o
 \label{fig:db_addons_snapshot_desc}
 \end{figure}
 
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the add-on is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
+The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has atleast a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
 
 \begin{figure}[t]
 \centering
@@ -535,11 +537,11 @@ The field values correspond to raw information extracted from the users' machine
 \label{fig:addons_versioning_snapshot_desc}
 \end{figure}
 
-Finally, we note another characteristic of interest of this data.  Since the add-ons lists per user are updated on a daily basis, it is straightforward to derive add-on changes (installation and removal) over time. However, there is no tracking of user actions or other programs actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, by hostile/protecting program. 
+Finally, we note another characteristic of interest of this data.  Since the addons lists per user are updated on a daily basis, it is straightforward to derive addon changes (installation and removal) over time. However, there is no tracking of user actions or other programs actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, by hostile/protecting program. 
 
 \section{Experimental data}
 
-For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--add-on associations. It consists of 907,844 unique users and 456,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of add-ons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--addon associations. It consists of 907,844 unique users and 456,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of addons installed daily per user. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \iffalse
 \begin{figure}[t]
@@ -559,7 +561,7 @@ For the purposes of this study, we consider a subset of the data, including all 
 \label{fig:user_addons_histogram}
 \end{figure}
 
-In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each add-on mention into a Bag-Of-Words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
+In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each addon mention into a Bag-Of-Words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
 
 
 \section{Graph representation}
@@ -571,12 +573,12 @@ In order to enable assessment of textual similarity for record co-reference purp
 \hline 
 \textbf{source type} & \textbf{edge type} & \textbf{target type} \\
 \hline
-{\it user} & has-add-on & {\it add-on} \\
+{\it user} & has-addon & {\it addon} \\
 \hline
-{\it add-on} &  has-add-on$^{-1}$ & {\it user} \\
-{\it add-on} & has-term & {\it term} \\
+{\it addon} &  has-addon$^{-1}$ & {\it user} \\
+{\it addon} & has-term & {\it term} \\
 \hline
-{\it term} & has-term$^{-1}$ & {\it add-on} \\
+{\it term} & has-term$^{-1}$ & {\it addon} \\
 \hline
 \end{tabular}
 \end{small}
@@ -588,13 +590,13 @@ We compactly represent the dataset using a relational graph. Each node in the gr
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$} 
 \item {\it User} - this node represents user by his unique user id. 
-\item {\it Add-on} - this node represents unique addons, where an {\it add-on} is defined as the concatenation of all its attributes, namely, file path, addon name and description.
+\item {\it Addon} - this node represents unique addons, where an {\it addon} is defined as the concatenation of all its attributes, namely, file path, addon name and description.
 \item {\it Terms} 
 \end{itemize}
 Directional edges link node pairs.
 Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
-First, we represent the structural relationship between each user and the {\it add-ons} installed on his PC via the {\it has-add-on} edge type, originating at the {\it user} node. An inverse relation exists between each {\it add-on} node and the {\it users} that it is known to be installed at. 
-In addition, as described above, each {\it add-on} is associated with its bag of terms representation. Concretely, each {\it add-on} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it add-ons} that contain it over {\it has-term$^{-1}$} relation.
+First, we represent the structural relationship between each user and the {\it addons} installed on his PC via the {\it has-addon} edge type, originating at the {\it user} node. An inverse relation exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
+In addition, as described above, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation.
 
 
 
@@ -603,7 +605,7 @@ In addition, as described above, each {\it add-on} is associated with its bag of
 \begin{enumerate}[(a)]
 \item Go over all users, for each user create a graph node. Graph node name for a user has a prefix "u-" appended to user ID, for example u-00004c1b-8ffc-4ca4-b406-a27e436fa34a node.
 
-\item For each user, go over all its add-ons.
+\item For each user, go over all its addons.
 \item For each addon create a graph node, graph node name has a suffix "a-" and appended all addon attributes. For example "a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll"
 \item For each addon create term nodes according to its attributes, each term node has prefix "w-" and appedned with a term. For example the addon above would create 6 term nodes:
 \end{enumerate}
@@ -771,11 +773,11 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its add-ons, where each unique add-on is mapped to a graph node. {\it Add-on} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single add-on exists, for which only path infomration is availabe, where the respective node name is\\
-`a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it add-on} \\
-node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it add-on} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
+Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path infomration is availabe, where the respective node name is\\
+`a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it addon} \\
+node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., no stemming were applied, for example, the {\it addon} node in the figure is linked to six term nodes, wich resulted from the string tokenization and processing. 
   
-The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it add-ons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same add-on. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two add-ons are linked over a path that traverses the "Skype" term node.
+The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it addons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same addon. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two addons are linked over a path that traverses the "Skype" term node.
 
 \begin{figure}[!htbp]
 \centering
@@ -795,9 +797,9 @@ The graph representation of this data has several advantages. Besides being comp
 	\label{fig:terms_layer}
 \end{figure}
   
-Figure \ref{fig:sample_graph2} shows another toy graph, demonstrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This graph includes eight users named shortly as `u-1',`u-2', etc. The eight users are similar in that they share some of the add-ons, `a-1',`a-2', etc. In addition, while {\it add-ons} `a-3' and `a-2' are distinct from each other, these add-on nodes are connected via the common term node `w-skype'. 
+Figure \ref{fig:sample_graph2} shows another toy graph, demonstrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This graph includes eight users named shortly as `u-1',`u-2', etc. The eight users are similar in that they share some of the addons, `a-1',`a-2', etc. In addition, while {\it addons} `a-3' and `a-2' are distinct from each other, these addon nodes are connected via the common term node `w-skype'. 
 
-We will apply random walks in the graph in order to assess similarity, or relatedness, between users and add-ons.  
+We will apply random walks in the graph in order to assess similarity, or relatedness, between users and addons.  
 
 \subsection{Data statistics}
 
@@ -827,7 +829,7 @@ all edges                                                                    & 1
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
 \includegraphics[scale=0.49]{figures/zipf_addon.png} \\
-\caption{add-ons} 
+\caption{addons} 
 \label{fig:power_law_addons}
 \end{subfigure}
 \begin{subfigure}[b]{0.49\textwidth}
@@ -839,7 +841,7 @@ all edges                                                                    & 1
 	\centering
 \includegraphics[scale=0.48]{figures/zipf-terms.png} \\
 (c) terms \\
-\caption{Log-scale rank vs. degree plots of add-ons (a), users (b), and terms (c)}
+\caption{Log-scale rank vs. degree plots of addons (a), users (b), and terms (c)}
 	\label{fig:zipf}
 \end{figure}
 
@@ -853,7 +855,7 @@ relations are represented by bi-directional graph edges. In the graph, we expect
 Supposedly, complimentary addons, or addons installed by ally parties, will be found in the same machines; likewise, rivalry species will not co-exist on one's computing environment. In this chapter, our focus is on alliances that underlie addon distributions, manifested as positive correlations between addons
 installed on a user's machines. Concretely, we address the following question:
 
-{\it Given partial information about the addon population at the machine of an individual user--how successfully can we infer the identity of additional species (add-ons) that exist in that environment?}
+{\it Given partial information about the addon population at the machine of an individual user--how successfully can we infer the identity of additional species (addons) that exist in that environment?}
 
 To the extent that we can predict with high certainty members of a local community, this will support our claim that addon populations are indeed eco-systems and indicate the strength of this phenomena. The merit of the stated
 question is that it can be evaluated empirically. We report a
@@ -866,9 +868,9 @@ In what follows, we first formalize the task and describe how it is addressed us
 \label{sec:task}
 
 Let us denote the graph nodes $G$ as a union of $U,A,T$, the sets of
-{\it users}, {\it add-ons} and {\it terms}, respectively. We view this
+{\it users}, {\it addons} and {\it terms}, respectively. We view this
 graph as a global ecosystem. An individual user $u\in U$ is linked in
-the graph to its set of add-ons $A(u)$. Let us remove a single item $a_i$
+the graph to its set of addons $A(u)$. Let us remove a single item $a_i$
 from $A(u)$. User $u$ would be then be associated with a reduced {\it
   addon} set $A(u)'=A(u)-a_i$. We wish to evaluate the extent to which the missing link between $u$ and $a_i$ can be recovered based on the remaining information about the user's environment $A(u)'$ and $G$.
 
@@ -1054,23 +1056,23 @@ another way to represent our data.
 \subsection{iGraph}
 \fi
 
-\subsection{Predicting the missing add-on using PPR}
+\subsection{Predicting the missing addon using PPR}
 
 The question that we wish to answer in this research is `given
-a set of {\it add-ons}, which are known to co-exist on the machine of
-some user, what other {\it add-ons} are most likely to be linked to
+a set of {\it addons}, which are known to co-exist on the machine of
+some user, what other {\it addons} are most likely to be linked to
 that user?'. This question is addressed by means of structural
-similarity in the graph. Formally, we assign $V_u$ to be uniform over $A(u)'$, that is, the re-set probability to each of the nodes representing {\it add-on} $a\in A'$ is set to ${1 \over \mid A' \mid}$, and is zero otherwise. The constructed transition matrix $\transition$ assign equal importance to all of
+similarity in the graph. Formally, we assign $V_u$ to be uniform over $A(u)'$, that is, the re-set probability to each of the nodes representing {\it addon} $a\in A'$ is set to ${1 \over \mid A' \mid}$, and is zero otherwise. The constructed transition matrix $\transition$ assign equal importance to all of
 the graph edges. That is, the transition probability from node $i$ to
 a linked node $j$ is defined as: $_{ij}={1 \over \mid N_i \mid}$,
 where $N_i$ is the set of nodes linked over an outgoing edge from $i$. For example, suppose that node $i$ is linked to two {\it term} nodes and five {\it user} nodes; then, the probability of reaching any of these nodes using the transition operation equals ${1\over 7}$. In general, it is possible to assign varying edge weights, either using parametric weights according to edge types, or deriving such weights from local edge properties. Recent works have also considered learning a selective set of meaningful paths in the graph that link query with target nodes \citep{minkov2010improving,lao2010relational} We leave the exploration of learned random walk measures to future work. 
 
 The computed Personalized Pagerank vector assigns scores to all of the
-graph nodes. We rank the graph nodes of type {\it addon} by their PPR score. It is conjectured that the `missing add-on' will be included among the top-ranked items in the list, due to high structural coherence with the set of addons that comprise the query. Concretely, the probability mass assigned to the query nodes is expected to flow over multiple path types, reflecting the following main types of structural similarity:
+graph nodes. We rank the graph nodes of type {\it addon} by their PPR score. It is conjectured that the `missing addon' will be included among the top-ranked items in the list, due to high structural coherence with the set of addons that comprise the query. Concretely, the probability mass assigned to the query nodes is expected to flow over multiple path types, reflecting the following main types of structural similarity:
 \begin{itemize}
 \item {\it User-based similarity}: A dominant short path that
-  directly leads to related add-ons is {\it add-on} $\Rightarrow$ {\it user}
-   $\Rightarrow$ {\it add-on}. This path links each of the query addons
+  directly leads to related addons is {\it addon} $\Rightarrow$ {\it user}
+   $\Rightarrow$ {\it addon}. This path links each of the query addons
   with other users that have the same addon installed on their
   machine. Walking away from these {\it user} nodes to their associated
   {\it addons} should highly weight addons that frequently
@@ -1096,7 +1098,7 @@ The process of generating an individual labeled example is formally outlined in 
 \begin{enumerate}[(a)]
 \begin{small}
 \item Pick uniformly at random a {\it user} node $u$ from the graph.
-\item Find the set of {\it add-on} nodes linked to $u$, $A_u$.
+\item Find the set of {\it addon} nodes linked to $u$, $A_u$.
   all its addon nodes.
 \item Pick uniformly at random an addon node $a$ from the set $A_u$. 
 \item Disconnect the link between nodes $a$ and $u$ in the
@@ -1111,14 +1113,14 @@ The process of generating an individual labeled example is formally outlined in 
 \label{fig:example-gen}
 \end{figure}
 
-Once disconnected from the user node, there should be no selection bias towards the target addon $a$ compared with the other addon nodes in the graph. As discussed above, PPR's ranking scheme should discover association between the removed add-on and the addons still associated with the user. Naturally, the addons included in the query are assigned high relevancy scores by query-sensitive algorithms like PPR. The query addons are therefore discarded from the evaluated ranked list. 
+Once disconnected from the user node, there should be no selection bias towards the target addon $a$ compared with the other addon nodes in the graph. As discussed above, PPR's ranking scheme should discover association between the removed addon and the addons still associated with the user. Naturally, the addons included in the query are assigned high relevancy scores by query-sensitive algorithms like PPR. The query addons are therefore discarded from the evaluated ranked list. 
 
 For example, suppose that we uniformly at random choose a user that has five addons -skypeclicktocall.dll, windowslivelogin.dll, skypeieplugin.dll, linkverifier.dll and googletoolbar\_32.dll. Let us sample the googletoolbar\_32.dll as the target addon. The remaining four addons form the query vector. After executing the PPR, the four query nodes are removed from the ranked list.
 
 \subsection{Evaluation measures}
 
 \iffalse Now, like in \autoref{sec:PPR_addons_method},
-when we are predicting the missing add-on, we are looking at the
+when we are predicting the missing addon, we are looking at the
 addons ranking list (the ranking is according to PageRank scores) and
 check the Recall@K. This measure seems to give similar results as the
 Popularity baseline.\fi
@@ -1154,7 +1156,7 @@ For example, suppose that the removed addon is placed at rank 20 in response to 
 \section{Experiments}
 \label{sec:experiments}
 
-We use Personalized PageRank to rank {\it add-on} nodes in
+We use Personalized PageRank to rank {\it addon} nodes in
 the graph by their structural similarity to the user profile, or {\it
   query}. The generated rankings using this approach may be affected
 by design choices concerning the graph structure and the random walk scheme. This section first provides details regarding the implementation of PPR, and provides details about baseline methods that we compare against. It then discusses aspects concerning the graph design that are evaluated in this work.
@@ -1168,12 +1170,12 @@ mapping to an actual node name in a separate file.\fi The computation of PPR sco
 management (every very small leak would cause a serious global memory
 leak).\fi We ran the experiment using a standard PC machine using a a 64bit version of igraph, which was adapted for our needs and bug fixes were applied. On average, running a batch of 1,000 queries required a few hours. In the experiments, we set the teleport probability parameter $\alpha=0.85$ following previous works \citep{boldi2005totalrank}. In general, due to the exponential decay over distance from the query nodes implied by PPR's random walk formula, the teleport probability value has negligible effect on the produced rankings.
 
-We further evaluate two non-personalized alternative ranking methods: ranking {\it add-ons} by `popularity', as well as based on their PageRank scores. 
+We further evaluate two non-personalized alternative ranking methods: ranking {\it addons} by `popularity', as well as based on their PageRank scores. 
 
 \subsubsection{Popularity baseline} 
 
-A simple approach for predicting the `missing' add-on would be to rank the {\it add-on} items by their popularity, determined by the total number of users associated with each add-on in the corpus. Using this approach, the response to all queries is fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
-add-on list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution. An advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for corpora that contain hundreds of thousands of users and tens of millions of items by means of database querying. 
+A simple approach for predicting the `missing' addon would be to rank the {\it addon} items by their popularity, determined by the total number of users associated with each addon in the corpus. Using this approach, the response to all queries is fixed, having the output list ranked according to the popularity criterion. In other words, since the algorithm performs no personalization, all users are presented with the same
+addon list. Despite its simplicity, the popularity algorithm can perform reasonably well when item popularity follows a power law distribution. An advantage of this algorithm is that it is non-parametric and scalable; item scores may thus be computed efficiently for corpora that contain hundreds of thousands of users and tens of millions of items by means of database querying. 
 
 \subsubsection{PageRank baseline} 
 
@@ -1196,14 +1198,14 @@ We report experimental results using the full graph, as well as using a graph va
 
 \subsubsection{Term modeling}
 
-The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., add-ons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the add-on name, or as a directory name part of the path string. Splitting the add-on names into tokens and linking the respective {\it add-on} and {\it term} nodes should maintain connectivity between multiple version of the same {\it add-on}, where consequently this should improve the graph relatedness measure. On the other hand, it is possible that linking {\it add-ons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it add-on} that has to do with video streaming and has the term `video' as part of its name; other {\it add-ons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it add-ons} that are similar or alternative to the {\it add-ons} that are known to be installed at the target user, pushing downwards in the rankings those {\it add-ons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' add-on.
+The modeling of {\it term} nodes is desirable as it establishes links between related addons, e.g., addons with the same name but with different version numbers. Specifically, version numbers are included either as a suffix to the addon name, or as a directory name part of the path string. Splitting the addon names into tokens and linking the respective {\it addon} and {\it term} nodes should maintain connectivity between multiple version of the same {\it addon}, where consequently this should improve the graph relatedness measure. On the other hand, it is possible that linking {\it addons} over shared {\it terms} will result in a topical drift. Assuming, for example, that the user is known to have an {\it addon} that has to do with video streaming and has the term `video' as part of its name; other {\it addons} reached by traversing a term-hopping path may have similar functionality. In this fashion, given the user's query, the ranked list of results may include {\it addons} that are similar or alternative to the {\it addons} that are known to be installed at the target user, pushing downwards in the rankings those {\it addons} that are complimentary to the users eco-system. Experimental results using graphs with and without {\it term} nodes shows that overall, term modeling has positive effect in predicting the `missing' addon.
 
 \subsubsection{Specificity of path information} 
 
 Addon names often include full file-system path information, e.g., \\
 `C:/Program Files (x86)/Skype/skype1.dll'.In our main experiments we remove path prefixes \\
-(like `C://Program Files (x86)/skype') for several reasons. First, we wish to represent every unique add-on as a distinct node in the graph. Including path details in the add-on name will result in multiple copies of the same add-on merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. 
-Suppose that the target add-on is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same add-on. In addition, Supposedly, it can be harmful to link add-ons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect add-ons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
+(like `C://Program Files (x86)/skype') for several reasons. First, we wish to represent every unique addon as a distinct node in the graph. Including path details in the addon name will result in multiple copies of the same addon merely due to differences in local installation sites. Such redundancy may have negative effect on the produced  graph-based node relatedness metric, as well as bias the evaluation. 
+Suppose that the target addon is included in the answer list with a path prefix that is different from the one used in the target user's machine; if we kept the path, then it would be considered as incorrect answer, while removing the path should help us to identify it as the same addon. In addition, Supposedly, it can be harmful to link addons to common {\it terms} associated with path information (e.g., `program'; `files'; `x86'). Such links may connect addons due to machine configurations that are meaningless semantically (although, the term `skype' would be potentially useful in this case.)
 
 
 \section{Results}
@@ -1222,7 +1224,7 @@ Show results for 4X1000. MMR / recall@k.
 
 Main findings: we outperform popularity; also, representation of terms helps.
 
-2) Focus on lower-degree add-ons:
+2) Focus on lower-degree addons:
 
 - The scores are approximately correct when high-degree nodes are removed.
 - Reduces computational costs.
@@ -1230,7 +1232,7 @@ Main findings: we outperform popularity; also, representation of terms helps.
 
 2A) Include analysis of degree distribution: 
 -- show number of nodes by degree, log-scale. (look for example graphs of Zipf's law).
--- Same, for add-ons.
+-- Same, for addons.
 -- Same, for terms.
 -- Same, for users. (do not use log-scale if it doesn't make sense, as in this case.)
 
@@ -1246,7 +1248,7 @@ SENSITIVITY:
 
 What happens if we include the full path?
 
-Detail number of add-ons before and after filtering. 
+Detail number of addons before and after filtering. 
 
 - Full graph, users+addons+terms
 - High-degree removed, users+addons+terms
@@ -1254,7 +1256,7 @@ Detail number of add-ons before and after filtering.
 - Full graph, users+addons
 - High-degree removed, users+addons
 
-4) Sensitivity to # of add-ons per user: (>=2, >=3, ..)
+4) Sensitivity to # of addons per user: (>=2, >=3, ..)
 
 Can show results of multiple configurations as curves on the same graph.
 \fi
@@ -1263,8 +1265,8 @@ Can show results of multiple configurations as curves on the same graph.
 
 Throughout this section, we report results using query sets that include $Q=1000$ labeled examples of randomly sampled user-addon pairs per individial experiment. Each experiment was repeated using four sets of queries (4$\times$1000). Wherever possible, we report mean results alongside standard deviation.  
 
-Let us first consider the general scenario, in which the underlying graph contains all of the {\it add-ons}, including the most prevalent ones. Figure~\ref{fig:main} shows recall-at-k performance using PPR, comparing it against ranking-by-popularity and PageRank rankings. Full results, including standard deviation figures and MRR results are detailed in Table~\ref{tab:full}.
-As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable performance to the alternative methods. Recall-at-rank-10 using PPR is as high as .354, reaching recall of .660 and .801 at the top 50 and top 100 ranks, respectively. Compared with the non-personalized popularity-based ranking, recall-at-10 results improve at a high rate of 45.7\% using PPR (.354 vs. .243). Improvement rates at rank-50 and rank-100 measure 18.9\% and 12.7\%, respectively. These results indicate that PPR excels at recovering the missing add-on in general, and is more successful in ranking it at the top 10 ranks.  Interestingly, performance using the popularity- and PageRank-based rankings is nearly identical. This result is not very surprising as the most popular {\it add-ons} are likely to be prominent in terms of graph centrality. 
+Let us first consider the general scenario, in which the underlying graph contains all of the {\it addons}, including the most prevalent ones. Figure~\ref{fig:main} shows recall-at-k performance using PPR, comparing it against ranking-by-popularity and PageRank rankings. Full results, including standard deviation figures and MRR results are detailed in Table~\ref{tab:full}.
+As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable performance to the alternative methods. Recall-at-rank-10 using PPR is as high as .354, reaching recall of .660 and .801 at the top 50 and top 100 ranks, respectively. Compared with the non-personalized popularity-based ranking, recall-at-10 results improve at a high rate of 45.7\% using PPR (.354 vs. .243). Improvement rates at rank-50 and rank-100 measure 18.9\% and 12.7\%, respectively. These results indicate that PPR excels at recovering the missing addon in general, and is more successful in ranking it at the top 10 ranks.  Interestingly, performance using the popularity- and PageRank-based rankings is nearly identical. This result is not very surprising as the most popular {\it addons} are likely to be prominent in terms of graph centrality. 
 
 \begin{figure}[t]
 \centering
@@ -1282,7 +1284,7 @@ As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable
 %\caption{MRR}
 %\label{fig:minlen2remove500MRR}
 %\end{subfigure}
-	\caption{Main results: recall at top ranks for the full graph (a), and a graph excluding the most popular add-ons (b)}
+	\caption{Main results: recall at top ranks for the full graph (a), and a graph excluding the most popular addons (b)}
 	\label{fig:main}
 \end{figure}
 
@@ -1325,13 +1327,13 @@ Full path & POP & 	0.004 (0.003) & 0.019 (0.006) & 0.033 (0.007) & 0.003 (0.001)
 \end{tabular}
 \end{table}
 
-Next, we discuss our results using the graph variant, in which highly-connected addons have been removed (Sec.~\ref{sec:design}). This scenario is more challenging, as the queried disassociated {\it add-ons} are not highly-frequent in the global population. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular add-ons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This indicates that popular nodes occupying the top ranks `push' relevant yet less popular answer nodes to lower positions of the ranked list.  
+Next, we discuss our results using the graph variant, in which highly-connected addons have been removed (Sec.~\ref{sec:design}). This scenario is more challenging, as the queried disassociated {\it addons} are not highly-frequent in the global population. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular addons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This indicates that popular nodes occupying the top ranks `push' relevant yet less popular answer nodes to lower positions of the ranked list.  
 
-Overall, we conclude from these experiments that there indeed exists high structural semantic association between the add-ons installed on one's machine, to the extent that it is possible to predict one of these add-ons if removed randomly. Personalized PageRank is shown to provide an effective mechanism for this task, as it evaluates nodes by their structural joint similarity to the set of add-ons present at the specified environment. 
+Overall, we conclude from these experiments that there indeed exists high structural semantic association between the addons installed on one's machine, to the extent that it is possible to predict one of these addons if removed randomly. Personalized PageRank is shown to provide an effective mechanism for this task, as it evaluates nodes by their structural joint similarity to the set of addons present at the specified environment. 
 
 \subsubsection{Impact of term modeling}
 
-As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) add-on descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite, including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
+As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) addon descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite, including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
 
 We were interested in investigating the reasons for the relatively low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it addons} and {\it term} nodes only (i.e., without {\it users}); ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it addon} nodes are typically connected to a large number of {\it user} nodes, and only to a very few {\it term} nodes. To illustrate this, consider some arbitrary addon for which a short description is available. This {\it addon} node will link to a few (roughly, three) {\it term} nodes, and a medium user set neighborhood (roughly, 200) {\it user} nodes. Since the random walk distributes probability mass uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes (see~\citep{minkov2010improving}) will increase their traversal probability and increase their impact. We leave the exploration of this possibility for future work.
 
@@ -1407,7 +1409,7 @@ Finally, the performance of the popularity-based approach plummets in this setti
 
 \paragraph{Sensitivity to environment size}
 
-As mentioned earlier, we select users that have at least two add-ons installed on their machines. Figure~\ref{fig:addonsNumberGraph} shows recall performance at the top ranks using PPR per different sampled populations: users who have at least $N$ addons installed, having $N=2,4,5,10,15,20$. It is shown that recall levels decrease as the number of addons known to be installed at the user's machine grows. We believe that as more species co-exist on one machine, higher heterogeneity is introduced to the system, where sub-groups of addons cluster together. PPR may find addons that are semantically related to several such clusters. As a result, the position of the target addon in the ranked list will be lower on average. Nevertheless, PPR maintains high performance for users who have up to 5 addons installed, and yields meaningful results in general. 
+As mentioned earlier, we select users that have at least two addons installed on their machines. Figure~\ref{fig:addonsNumberGraph} shows recall performance at the top ranks using PPR per different sampled populations: users who have at least $N$ addons installed, having $N=2,4,5,10,15,20$. It is shown that recall levels decrease as the number of addons known to be installed at the user's machine grows. We believe that as more species co-exist on one machine, higher heterogeneity is introduced to the system, where sub-groups of addons cluster together. PPR may find addons that are semantically related to several such clusters. As a result, the position of the target addon in the ranked list will be lower on average. Nevertheless, PPR maintains high performance for users who have up to 5 addons installed, and yields meaningful results in general. 
 
 \begin{figure}[!htbp]
 \centering
@@ -1481,7 +1483,7 @@ To the best of our knowledge, this thesis is the first research study of the add
 \toprule
 {\bf Company name} & {\bf Example Product}               & {\bf Description}               \\ \midrule
 ASK                & Ask Toolbar                 & Advertisement/Search company    \\
-AVG                & AVG Safe Search add-on      & AntiVirus/Advertisement company \\
+AVG                & AVG Safe Search addon      & AntiVirus/Advertisement company \\
 Avira              & Avira Browser Safety        & AntiVirus company               \\
 Babylon            & Babylon Toolbar             & Advertisement/Search company    \\
 Blekko             & Blekko Toolbar              & Advertisement/Search company    \\
@@ -1503,7 +1505,7 @@ Zugo               & Search Toolbar              & Advertisement company        
 \end{table}
 
 \iffalse
-At first, we have tried to classify add-ons clash with Support Vector machine, but we saw no signal and the SVM could not converge. [Need much more info here - RON, UPDATE: did we actually use SVM for predicting clash? I think we used SVM to predict an addon survival which is mainly affected by the user behavior. Anyhow, I would love to see a paragraph explaning what we did back then.]
+At first, we have tried to classify addons clash with Support Vector machine, but we saw no signal and the SVM could not converge. [Need much more info here - RON, UPDATE: did we actually use SVM for predicting clash? I think we used SVM to predict an addon survival which is mainly affected by the user behavior. Anyhow, I would love to see a paragraph explaning what we did back then.]
 \fi
 
 \subsection{Preliminary Experimentation Efforts: Addon Survival Prediction}
@@ -1894,18 +1896,18 @@ Let us show a few other examples. \autoref{fig:ask_clash_trend} shows that when 
 \fi
 
 \iffalse
-After aggregating all add-ons for each for every company we have looked for what have happened to other company add-ons when PPR origin is a specific company.
+After aggregating all addons for each for every company we have looked for what have happened to other company addons when PPR origin is a specific company.
 For example, we have looked at HotSpot company and the impact it has on other companies.\\
 \includegraphics[scale=1.0]{hotspot.png}\\
-As we can see from the chart some companies like trendmicro has a symbiosis with hotspot add-ons. While other companies, like SnapDo, are clashing with HotSpot add-ons.
+As we can see from the chart some companies like trendmicro has a symbiosis with hotspot addons. While other companies, like SnapDo, are clashing with HotSpot addons.
 This analysis, is even more interesting in light of recent security breach with Superfish and Komodia. After this security breach was identified, security researches where looking for more companies that have cooperated with Komodia. We believe that given that data, our algorithm would identify these companies as having a symbiosis with Komodia.
 \fi
 
 \iffalse
-First, we needed some basic ranking of all add-ons from all companies, we believe that regular PageRank scores on this graph provide a good base line to all add-ons metrics. [Why do we need basic rankings? - RON][SELA] Basic ranking it is actually a baseline ranks, we were running a regular pagerank for this. It was used as a baseline, afterwards, for comparing how the rank of company addons has increased/decreased. BTW, this text is not in the thesis...
-Then, we identified add-ons belonging to a company by looking for the company's name in addon descriptions. But what if the addon does not contain the company's name, can we still identify it as related to the company? To solve this problem, we applied an approach similar to the one we used to identify a "missing" addon. We ran PPR from all known add-ons of a specific company (for example, Babylon), and looked at all add-ons that drastically improved its rank compared to its previous rank given by PageRank.
-By searching the addon names in the Web, many of them were found to be related to the company that originated the PPR (whose add-ons composed the PPR vector). For example,an  addon named tbmyba.dll, jumped from the 1200 rank position to the 15 rank position when running PPR from Babylon, and indeed we found that this addon is related to Babylon. 
-After identifying all company add-ons, we decided to remove add-ons that are installed at fewer than 100 users' machines: these add-ons seemed to have almost no impact on the results but have made more difficult to look for tendencies between firms. [Why is that? - RON] [SELA] There were many addons that was installed only on few machines, we wanted to try to look at the addons "manually" and understand what is going on. Since the addons on small amount of machines did not have any impact, we could just remove them.\\
+First, we needed some basic ranking of all addons from all companies, we believe that regular PageRank scores on this graph provide a good base line to all addons metrics. [Why do we need basic rankings? - RON][SELA] Basic ranking it is actually a baseline ranks, we were running a regular pagerank for this. It was used as a baseline, afterwards, for comparing how the rank of company addons has increased/decreased. BTW, this text is not in the thesis...
+Then, we identified addons belonging to a company by looking for the company's name in addon descriptions. But what if the addon does not contain the company's name, can we still identify it as related to the company? To solve this problem, we applied an approach similar to the one we used to identify a "missing" addon. We ran PPR from all known addons of a specific company (for example, Babylon), and looked at all addons that drastically improved its rank compared to its previous rank given by PageRank.
+By searching the addon names in the Web, many of them were found to be related to the company that originated the PPR (whose addons composed the PPR vector). For example,an  addon named tbmyba.dll, jumped from the 1200 rank position to the 15 rank position when running PPR from Babylon, and indeed we found that this addon is related to Babylon. 
+After identifying all company addons, we decided to remove addons that are installed at fewer than 100 users' machines: these addons seemed to have almost no impact on the results but have made more difficult to look for tendencies between firms. [Why is that? - RON] [SELA] There were many addons that was installed only on few machines, we wanted to try to look at the addons "manually" and understand what is going on. Since the addons on small amount of machines did not have any impact, we could just remove them.\\
 \fi
 
 
@@ -1926,8 +1928,8 @@ In \autoref{sec:clash_relations}, we looked for the opposite of symbiotic relati
 %In this chapter, we found and proved a methodology to find typically hidden relations between companies as well as related unknown addons to its manufactures.
 
 %We are comparing for each company its total weighted rank in PageRank with its total weighted rank in Personalized PageRank when another company is the PPR vector.
-%We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies add-ons rank.
-%We have also observed companies that cause other companies add-ons decline.
+%We have found that there are companies that co-exist well with other companies, there are even companies that improve greatly other companies addons rank.
+%We have also observed companies that cause other companies addons decline.
 
 \chapter{Summary}
 \label{chap:summary}
