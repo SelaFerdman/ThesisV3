@@ -31,7 +31,8 @@
 \usepackage{lscape}
 \usepackage{epstopdf}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-\geometry{top=3.5cm,bottom=2cm}
+%\geometry{top=3.5cm,bottom=2cm}
+\geometry{top=2cm, left=3cm, right=2cm, bottom=2cm}
 %\usepackage{txfonts}
 \usepackage{%
   pstricks,
@@ -130,6 +131,10 @@
 $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace}$
    \bigspace    Date:$\underline{\bigspace\bigspace}$
 \\ (supervisor)\bigspace
+\\ [3mm] Approved by:
+$\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace}$
+   \bigspace    Date:$\underline{\bigspace\bigspace}$
+\\ (supervisor)\bigspace
 \\ [3mm]Approved by:
 $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace}$
    \bigspace    Date:$\underline{\bigspace\bigspace}$
@@ -172,26 +177,91 @@ In this work we have developed and proved a methodology to find what addon any g
 \chapter{Introduction}
 \pagenumbering{arabic}
 
-Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday environment. As of today, some operating systems are based entirely on browsers (e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}). Browser extensions, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. An extension was developed, for example, that provides visually impaired users with access to the content of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. Toolbars are another kind of a browser extension. These are GUI widgets, which typically reside in the upper part of the browser's window. All major Web browsers support toolbar development as means of extending the browser's GUI and functionality. 
+Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday computing environment. As of today, some operating systems are based entirely on browsers, e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}. Browser {\it extensions}, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. There exists an extension, for example, that enables visually impaired users to access the contents of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. {\it Toolbars} are a particular kind of a browser extension--these are GUI widgets, which typically reside in the upper part of the browser's window, extending the browser's functionality. 
 
-A great number of extensions are installed by users on a daily basis nowadays. It was reported that more than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, may be installed following an explicit request by the user, addons are often `silently' installed by a third party as the user downloads some other program from the Web, or likewise are included in a 'software bundle'. There are several reasons why software companies are interested in having specific toolbars installed on the user's machine. First, toolbars are often used for collecting information about the browsing history of the user (e.g., Yahoo! Toolbar). In addition, it is often the case that once installed, toolbar software directs all of the user searches to some dedicated search portal (e.g. MyWebSearch.com). 
-The company which owns the Website (and typically also the toolbar) typically receives payments from ad providers (primary ad providers today are Google and Yahoo!), when user clicks on ads presented. Indeed, this model is used extensively nowadays to generate revenue by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
+A great number of extensions are installed by users on a daily basis nowadays. More than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, can be installed proactively, addons are often `silently' installed on one's machine by a third party, typically, as the user downloads some other program from the Web, or installs a 'software bundle'. While the user may be presented with an opt-out check box during installation, if she fails to notice the small font and clicks through the installation process, addons may get installed on her machine unintentionally.  
+
+Indeed, software companies are highly interested in distributing addons, and particularly toolbars, on users' machines. Toolbar software can collect information about the browsing history of the user (e.g., Yahoo! Toolbar). It can further direct the user's search activity to some specified search portal (e.g. MyWebSearch.com); crucially, the company which owns the search portal (and typically also the toolbar) receives payments from ad providers per user clicks on its presented adds (primary ad providers today are Google and Yahoo!). This revenue generation model is used extensively by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It has been estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
 \iffalse 
+
 Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular addon survives on the user's machine more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
 profiles and personalization of software services, there is no previous research, to the best of our knowledge, which used information about user browser extensions to similarly model user behavior. We will examine the hypothesis by which the existence of an extension on a user’s computer reflects something about the user's
 application download history, as well as about his or her general preferences. Specifically, we will evaluate whether clustering users using the underlying data allows one to improve prediction of future behavior. The main research questions and goals are stated in Section 3. An overview of related literature is given below. In addition to previous works on user profiling, we discuss recent learning methods used in large-scale recommendation systems, relating in detail to clustering techniques, which are used to alleviate data sparsity
 issues. Finally, descriptions of the prediction models that we plan to use, and an account of the special characteristics and challenges involved with the dataset.
 \fi
 
-Often, addons are distributed through the installation process of third-party software products, such as, for example, Adobe Reader. Most of the time, during the software installation process, an opt-out check box is presented to the user per addon to be installed. If the user chooses to uncheck the box, the addon will not get installed. However, many users click through the installation process without reading the small font, and when the process is completed the users discover they installed something they did not intend to. 
+\section{The ecosystem of addons}
 
-Companies that distribute browser addons are engaged in partnerships or compete with each other, such that the Web browser becomes a complex ecosystem similar in its characteristics to the biological environment of the nature. To illustrate this analogy, let us say that addon distributors correspond to biological species. An instance of an addon distributed by company $A$ can be viewed as a subject of species $A$ that coexists in the browser ecosystem with other subjects of the same or different species. Naturally, those subjects can live in symbiosis or in conflict with each other. We observe situations when addons of some companies get installed on a machine together with addons of other companies, which is analogous to a natural migration process when subjects of different species drift together. We also observe clash situations when an addon gets installed on a machine and ``kicks out'' addons of other companies, similarly to a competition phenomenon between different species in the nature. The user (the computer owner) is also playing an important role in the addon ecosystem: some users ``hunt down'' and remove addons that occasionally appear in the computer's browser; other users are more tolerant --- they let addons live in the browser for a long time and do not mind more addons to be installed over time.
+The Web browser is a complex ecosystem: addons are being installed and uninstalled on user machines, new addons are introduced by software companies over time, become prevalent and fade. As new addon companies are fighting their way to recognition, old players are gaining or losing their power. Addon companies are being engaged in partnerships or competing with each other (and sometimes both), etc.---all this happening on a daily basis, and is mostly hidden from the user, who is not always aware of the vibrant life of his/her Web browser. These developments are occurring globally within the digital media---addons being software executables---however, each addon has a lifecycle full of events, and a spectrum of interactions with its environment, such that the Web browser's ecosystem strikingly resembles the biological ecosystem of the nature.
 
+To illustrate this analogy, let us say that an addon manufacturer corresponds to a biological \emph{species}. An instance of an addon developed by company $c$ can be viewed as a \emph{subject} of species $c$ that coexists in the browser ecosystem with other subjects of the same or different species. We assume that, in many cases, addons that coexist in the Web browser do not affect each other. This assumption is no more than a modeling simplification, because---apparently---all addons seek the user's attention which is a limited (natural) resource; nevertheless, the influence of one addon on another is often negligible and thus ignored. However, some subjects (that is, addons) may live in \emph{symbiosis} or may \emph{clash} with each other in the Web browser \emph{habitat}.
+
+Two subjects are in a symbiotic relationship when at least one of the two subjects benefits from the other. Consider, for example, situations when some addons get installed on a user's machine during (or following) the installation process of another addon. This can be considered a direct benefit to the addon, as it would not have reached the machine if the other addon was not installed on it. Often, addons of the same company are being installed together. Moreover, in some cases, two addon companies have a distribution agreement such as one company provides means for installing other company's addons. Generally speaking, the symbiosis relationship can occur on a local level (between two addons installed on the same machine), as well as on a global level (e.g., two addon companies engaged in a partnership).
+
+We also observe situations when an addon ``kicks out'' other addons, similarly to a competition phenomenon between different biological species in nature. We call it a \emph{clash} situation. There are a variety of reasons for a clash. A pretty obvious example is two antivirus companies that develop Web browser addons---if one company's product gets installed on a machine, the other company's product often gets removed as two antivirus products cannot coexist with each other. Some reasons for a clash are not that straightforward and recognizing those clash situations is not trivial.
+
+The user (i.e.~the computer owner) is also playing an important role in the addon ecosystem: some users ``hunt down'' and remove addons that occasionally appear in the computer's browser; other users are more tolerant---they let addons live in the browser for a long time and do not mind more addons to be installed over time. An interesting question is who dominates the dynamics of the Web browser: is it a user who cares about the \emph{digital hygiene} of his/her computer, or are those addon companies that compete with each other? While we are not investigating this question in depth in this work, one should not exclude the user from the equation.
+
+The analogy between computer and biological systems is not novel. The term \emph{computer virus} and the consequent term \emph{antivirus} come from exactly the same analogy. However, to the best of our knowledge, this work is the first attempt to investigate the digital ecosystem in a comprehensive way, beyond the notion of \emph{virality} that has been in the focus of research community for decades.
+
+\section{Research goals}
+
+As discussed above, there are two views on the Web browser ecosystem. One is a micro-level view, considering specific browsers installed on a user's machine. Addons (as subjects of various species) live and interact with the user as well as between themselves within the browser, and we are interested in modeling those interactions. The addon ecosystem can be further viewed at the macro-level, where millions of Web browsers carry thousands of addons that belong to many species (i.e.~addon companies). The companies stay in an interaction with each other and we are interested in modeling these interactions as well.
+
+A major characteristic of a habitat is its \emph{ecological stability}: a non-disturbed habitat preserves the least energy state in which no significant change is initiated from inside. When disturbed from outside, the habitat tends to recover and bring itself back to the steady state. In the ecological parlance, the regenerative feature of the habitat is called \emph{resilience}. 
+
+\iffalse 
+[RON: moved here]
+The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
+nodes are the addons of a specific user, that is, the 
+members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
+				\label{eq:pr}
+			\end{equation}
+the PageRank equation is adapted as follows to compute the Personalized PageRank ~(\ref{eq:ppr_related_work}):
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
+				\label{eq:ppr_related_work}
+			\end{equation}
+\fi
+
+We therefore investigate the browser ecosystem from two points of view, addressing the following questions:\\
+\begin{enumerate}
+\item \textbf{At the micro-level, is the Web browser habitat resilient?} We simulate an artificial disturbance: the extraction of an addon from the Web browser, and see whether the rest of the habitat works to bring the addon back.
+\item \textbf{At the macro-level, which addon species are in symbiosis with each other?}
+\item \textbf{Which addon species clash with each other?}
+\end{enumerate}
+%3. We observe how the browser ecosystem evolves over time.\\
+
+As for the second problem we were investigating, these days it becomes more and more relevant. See, for example, recent discovery about SuperFish security breach is a good example about two companies having a major symbiosis (SuperFish and Komodia) and SuperFish and all major anti-viruses addons is a good example of a clash between two companies.\\
+It is also interesting to see how the addons in browser ecosystem evolve day by day.
+
+%In Chapter~\ref{chap:user_ecosystem}
+We will address the first research question through the task of {\it missing addon prediction.} To the extent that there exists a steady addon ecosystem at a given machine, we expect to be able to infer which addon is "missing" in the addon ecosystem. In our experiments, we simulate such a situation by artificially removing one of the addons from its environment. Given information about remaining species in the habitat (i.e., the remaining addons on the user's machine), we then wish to recover the identity of the missing addon. If no relationships existed between individual addons, then we would expect `one-fit-all' methods, such as predicting the missing addon based on their general addon popularity among users, to perform best. In our experiments, we show that knowledge about the habitat is essential for inferring the missing species. 
+
+Throughout this thesis, we model addon habitats using a relational graph. A single habitat can be represented as a graph, in which a single \emph{user} is linked to the \emph{addon} entities that co-exist on his machine, in a star-like configuration. The various habitats observed in multiple machines can naturally linked in a joint graph. In this graph, each {\it addon} is directly connected to all users that have it insalled in their habitat. 
+
+We use historical data to identify highly probable addons given the collection of addons of a specific user.
+
+and thus predict/recommend an additional addon.\\
+
+Given a successful resolution of first problem, the system can infer what addon is "missing" in current user addons ecosystem and thus predict/recommend an additional addon.\\
+
+f the thesis, we operate on the user level.  In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.
+
+\iffalse
 [RON: The outline of our findings: In first half of the thesis, we operate on the user level. We use historical data to identify highly probable addons given the collection of addons of a specific user. In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.]
 
 [RON: a paragraph about human factor. After all, we are mostly interested in the user who owns the machine and either installs lots of garbage on it or tries to keep it as clean as possible. Who's is more important here - the user who cares about his/her machine hygiene or the bunch of companies that are trying to push stuff on the user's machine? Who's winning?]
+\fi
 
-[RON: the term ``computer virus'' has existed for a while - the connection between a hardware system (a computer) with a biological system is quite intuitive. However, we go far beyond this - we're investigating biological \_processes\_ in an artificial environment, which sounds pretty novel]
+\section{Main contributions}
+
+
+\section{Roadmap}
 
 
 \chapter{Related Research}
@@ -437,35 +507,6 @@ description of the Comraf model is given in \citep{bekkerman2006semi}, and
 the underlying clustering algorithm (MDC) is described in \citep{bekkerman05}. Some modalities do not have to be clustered, as explained
 in \citep{bekkerman2007multi}. 
 
-\chapter{Problem definition}
-
-\iffalse 
-[RON: moved here]
-The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
-nodes are the addons of a specific user, that is, the 
-members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
-			\begin{equation}
-				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
-				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
-				\label{eq:pr}
-			\end{equation}
-the PageRank equation is adapted as follows to compute the Personalized PageRank ~(\ref{eq:ppr_related_work}):
-			\begin{equation}
-				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
-				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
-				\label{eq:ppr_related_work}
-			\end{equation}
-\fi
-
-This is essentially equivalent to the research goals.\\
-We have decided to investigate the browser ecosystem from three points of view:\\
-1. We simulated an artificial extraction of an addon from its habitat, and we see that the rest of the system works to bring it back.\\
-2. We see that some addon "species" (i.e. companies) compose a symbiosis, while others clash with each other (which results in extinction of one of the species).\\
-3. We observe how the browser ecosystem evolves over time.\\
-Given a successful resolution of first problem, the system can infer what addon is "missing" in current user addons ecosystem and thus predict/recommend an additional addon.\\
-As for the second problem we were investigating, these days it becomes more and more relevant. See, for example, recent discovery about SuperFish security breach is a good example about two companies having a major symbiosis (SuperFish and Komodia) and SuperFish and all major anti-viruses addons is a good example of a clash between two companies.\\
-It is also interesting to see how the addons in browser ecosystem evolve day by day.
-
 
 
 \chapter{Data}
@@ -483,59 +524,7 @@ addons, in particular, in version number, but essentially it is the
 same addon.}}
 \fi
 
-We experiment in this study with large-scale authentic data.  The data includes the list of addons installed on real users' computers over time, collected from users all over the world that have agreed to anonymously share this information.  The list of browser addons installed on every user's machine is reported in a daily resolution.  This large-scale data is stored using a relational database in cloud at Amazon RDS, and included over 1.5 billion records in 2013. The database is comprehensive, in the sense that it  reports the addons installed in multiple browsers, including Microsoft Internet  Explorer, Mozilla Firefox and Google Chrome. It  is a common scenario that user has more than one browser. Since Microsoft Internet Explorer usually comes pre-installed, many users install an additional browser (typically Chrome or Firefox).
-
-Our focus is on {\it user}, and {\it addon} tables. Following is a description of the main attributes known for these objects:
-
-{\it Users.} A user record specifies his origin: IP, ISP and Country, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.).
-
-{\it Addon.} The installed addons are listed per user. Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} include the records per an individual user on a specific date, in which he had Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons installed. As shown in the figures, the following attributes are specified for each addon:
-\begin{itemize}
-\item Addon type: extension, bho (Internet Explorer addon), toolbar, etc. (see Type column in the table)
-\item The name of the program. (Name column)
-\item The full path where it resides on the user's machine. (FileName column)
-\item A textual description of the addon. (Description column)
-\end{itemize}
-
-\begin{figure}[t]
-\centering
-\begin{small}
-\includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot.png}
-\end{small}
-\caption{User addons record}
-\label{fig:db_addons_snapshot}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\begin{small}
-\includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot_desc.png}
-\end{small}
-\caption{User addons record}
-\label{fig:db_addons_snapshot_desc}
-\end{figure}
-
-The field values correspond to raw information extracted from the users' machines. Accordingly, it lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. As shown, there are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as the version number (e.g., 1.8.7.2 vs. 1.8.4.9 in the \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual.   Typically an addon in Internet Explorer has at least a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
-
-\begin{figure}[t]
-\centering
-\begin{small}
-\includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot.png}
-\end{small}
-\caption{Addon with different versions in user record}
-\label{fig:addons_versioning_snapshot}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\begin{small}
-\includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot_desc.png}
-\end{small}
-\caption{Addon with different versions in user record}
-\label{fig:addons_versioning_snapshot_desc}
-\end{figure}
-
-Finally, we note another characteristic of interest of this data.  Since the addons lists per user are updated on a daily basis, it is straightforward to derive addon changes (installation and removal) over time. However, there is no tracking of user actions or other programs actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, by hostile/protecting program. 
+We experiment in this study with large-scale authentic data.  The data includes the record  of browser addons installed on real users' computers over time, collected on a daily basis from users all over the world who have agreed to anonymously share this information. It is a common scenario that users maintain multiple browsers; for example, Microsoft Internet Explorer is pre-installed on Windows machines, and many users install an additional browser. The database is comprehensive, in the sense that it lists the addons installed in multiple browsers, including Microsoft Internet Explorer, Mozilla Firefox and Google Chrome. This large-scale data is stored using a relational database on the cloud at Amazon RDS. As of 2013, the dataset included over 1.5 billion records. 
 
 \section{Experimental data}
 
@@ -559,8 +548,59 @@ For the purposes of this study, we consider a subset of the data, including all 
 \label{fig:user_addons_histogram}
 \end{figure}
 
-In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each addon mention into a Bag-Of-Words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
+Our focus is on {\it users} and {\it addons}. Following is a description of the main attributes of these objects in the database:
 
+{\it Users.} A user record specifies his origin: IP, ISP and Country, as well as the Operating System installed on his computer (i.e. Windows XP, Vista, etc.).
+
+{\it Addon.} Addons records are listed per user, specifying the following attributes: 
+\begin{itemize}
+\item Type: common types are `extension', `bho' (Internet Explorer addon), `toolbar', etc. 
+\item File name: the full path where it resides on the user's machine. (FileName column)
+\item Name: the name of the program. 
+\item Description: a textual field. 
+\end{itemize}
+
+Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} each show the records of addons installed at an individual machine on a specific date. As shown, Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons are installed at these machines. The file path and description are not always populated--path information is available for the first user, but is missing for the second; addon descriptions are only available for the second user. Typically, an addon in Internet Explorer has at least a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
+
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot.png}
+\end{small}
+\caption{User addons record: user A}
+\label{fig:db_addons_snapshot}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/db_addons_snapshot_desc.png}
+\end{small}
+\caption{User addons record: user B}
+\label{fig:db_addons_snapshot_desc}
+\end{figure}
+
+The field values contain raw information extracted from the users' machines. Accordingly, they lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. There are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as  version numbers (e.g., 1.8.7.2 vs. 1.8.4.9 in \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual. 
+
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot.png}
+\end{small}
+\caption{Addon with different versions in user record}
+\label{fig:addons_versioning_snapshot}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot_desc.png}
+\end{small}
+\caption{Addon with different versions in user record}
+\label{fig:addons_versioning_snapshot_desc}
+\end{figure}
+
+Finally, we note another characteristic of interest of this data.  Since the addons lists per user are updated on a daily basis, it is straightforward to derive addon changes (installation and removal) over time. However, there is no tracking of user actions or other programs' actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, or by a hostile/protecting program. 
 
 \section{Graph representation}
 \label{tab:graph_representation}
@@ -593,10 +633,10 @@ We compactly represent the dataset using a relational graph. Each node in the gr
 \end{itemize}
 Bi-directional edges link node pairs.
 Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
-First, we represent the structural relationship between each user and the {\it addons} installed on his PC via the {\it has-addon} edge type, originating at the {\it user} node. An inverse relation exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
-In addition, as described above, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation.
+First, we represent the structural relationship between each user and the {\it addons} installed on his PC via the {\it has-addon} edge type, originating at the {\it user} node. An inverse relation over the same edge exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
+In addition, as described above, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, over the same egde, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation. 
 
-
+In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each addon mention into a Bag-Of-Words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
 
 \iffalse
 \begin{small}
@@ -1995,10 +2035,12 @@ We discovered hidden relationships between addon manufacturing companies.
 \end{figure}
 \fi
 
-
+\newpage
+\phantomsection \label{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{apalike}
 \bibliography{thesisdraft}
-\addcontentsline{toc}{chapter}{Bibliography}
+
 
 \end{document}
 
