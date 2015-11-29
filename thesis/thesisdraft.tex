@@ -96,7 +96,7 @@
 \def\ignore#1{}
 
 \begin{document}
-\title{\Huge{The ecology of Web browser}
+\title{\Huge{The ecology of the Web browser}
                 \huge
              \\[10mm] Sela Ferdman
              \\[25mm] \Large THESIS SUBMITTED IN PARTIAL FULFILLMENT OF THE
@@ -116,7 +116,7 @@
 
 \begin{center}
 \Huge
-     The ecology of Web browser
+     The ecology of the Web browser
 \huge
 \\[10mm] By: Sela Ferdman
 \\[3mm] Supervised By: Dr. Einat Minkov and Dr. Ron Bekkerman
@@ -157,7 +157,7 @@ $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigs
 \addcontentsline{toc}{chapter}{Abstract}
 \begin{center}
 \title{\huge{
- The ecology of Web browser
+ The ecology of the Web browser
 \\[5mm]  Sela Ferdman\\
 }}
 \LARGE{Abstract}
@@ -204,7 +204,7 @@ The user (i.e.~the computer owner) is also playing an important role in the addo
 
 The analogy between computer and biological systems is not novel. The term \emph{computer virus} and the consequent term \emph{antivirus} come from exactly the same analogy. However, to the best of our knowledge, this work is the first attempt to investigate the digital ecosystem in a comprehensive way, beyond the notion of \emph{virality} that has been in the focus of research community for decades.
 
-\section{Research goals}
+\section{Research outline}
 
 As discussed above, there are two views on the Web browser ecosystem. One is a micro-level view, considering specific browsers installed on a user's machine. Addons (as subjects of various species) live and interact with the user as well as between themselves within the browser, and we are interested in modeling those interactions. The addon ecosystem can be further viewed at the macro-level, where millions of Web browsers carry thousands of addons that belong to many species (i.e.~addon companies). The companies stay in an interaction with each other and we are interested in modeling these interactions as well.
 
@@ -236,21 +236,18 @@ We therefore investigate the browser ecosystem from two points of view, addressi
 \end{enumerate}
 %3. We observe how the browser ecosystem evolves over time.\\
 
+
+We address these questions empirically using authentic data, describing user-addon associations collected from anonymous users all over the world. The available data is semi-structured, including also textual description of addons and their installation paths. We represent this data as a relational graph, in which typed nodes denote distinct {\it user}, {\it addon} and {\it term} objects. 
+
+Consider a habitat observed at a single user---it corresponds to a star-shaped graph, in which a node denoting the \emph{user} is linked to nodes denoting the \emph{addons} that reside on the user's machine; {\it addon} nodes may be further linked to descriptive {\it terms}. Multiple habitats can be naturally represented in a joint graph, e.g., each {\it addon} is directly connected to all {\it users} that have it installed. The graph representation is compact, supporting efficient processing of large-scale data. In particular, graph based measures can be employed that assess structural inter-node relatedness. 
+
+We evaluate the first research question stated above through the task of {\it missing addon prediction.} To the extent that there exists a steady ecosystem at the habitat, we expect to be able to infer a species that is "missing" from that ecosystem. In our experiments, we simulate such a setting by artificially disassociating a randomly sampled addon from its habitat. Given the identity of the remaining species in the habitat (i.e., the other addons that exist on that user's machine), we wish to recover the missing addon. If no relations existed between individual species at the habitat, then one would expect `one-fit-all' methods, e.g., preference of popular addons, to perform best on this task on average. Otherwise, addon prediction would benefit from the modeling of  structural similarities among habitats in the general population. In our experiments, we show that predicting the missing addon using Personalized PageRank, a random-walk based similarity metric, dramatically outperforms habitat-agnostic methods such as popularity-guided prediction, or PageRank centrality scoring. Our answer to the first research question is therefore a definitive yes.
+
+The subsequent problems abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.
+
 As for the second problem we were investigating, these days it becomes more and more relevant. See, for example, recent discovery about SuperFish security breach is a good example about two companies having a major symbiosis (SuperFish and Komodia) and SuperFish and all major anti-viruses addons is a good example of a clash between two companies.\\
+
 It is also interesting to see how the addons in browser ecosystem evolve day by day.
-
-%In Chapter~\ref{chap:user_ecosystem}
-We will address the first research question through the task of {\it missing addon prediction.} To the extent that there exists a steady addon ecosystem at a given machine, we expect to be able to infer which addon is "missing" in the addon ecosystem. In our experiments, we simulate such a situation by artificially removing one of the addons from its environment. Given information about remaining species in the habitat (i.e., the remaining addons on the user's machine), we then wish to recover the identity of the missing addon. If no relationships existed between individual addons, then we would expect `one-fit-all' methods, such as predicting the missing addon based on their general addon popularity among users, to perform best. In our experiments, we show that knowledge about the habitat is essential for inferring the missing species. 
-
-Throughout this thesis, we model addon habitats using a relational graph. A single habitat can be represented as a graph, in which a single \emph{user} is linked to the \emph{addon} entities that co-exist on his machine, in a star-like configuration. The various habitats observed in multiple machines can naturally linked in a joint graph. In this graph, each {\it addon} is directly connected to all users that have it insalled in their habitat. 
-
-We use historical data to identify highly probable addons given the collection of addons of a specific user.
-
-and thus predict/recommend an additional addon.\\
-
-Given a successful resolution of first problem, the system can infer what addon is "missing" in current user addons ecosystem and thus predict/recommend an additional addon.\\
-
-f the thesis, we operate on the user level.  In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.
 
 \iffalse
 [RON: The outline of our findings: In first half of the thesis, we operate on the user level. We use historical data to identify highly probable addons given the collection of addons of a specific user. In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.]
@@ -260,9 +257,12 @@ f the thesis, we operate on the user level.  In the second half of the thesis, w
 
 \section{Main contributions}
 
+[Einat: We claim that browser addons behave like species in a biological ecosystem; this is probably the first work to study this domain beyond the anecdotal level; while Personalized PageRank is a well-studied similarity metric in graphs, relatively few works have applied it to link prediction in heterogeneous graphs; the PPR-PR ratio, which is use to identify symbiosis and clash phenomena is quite novel---it deserves further analysis, and may be applied to other problems that involve ecosystems. The second part of the work forms a tool for detecting hidden business alliances and rivalries in digital media, for which only bits and pieces are known to the public.]
+
 
 \section{Roadmap}
 
+In what follows, we first discuss related work (Chapter~\ref{sec:related}). Chapter~\ref{sec:datasets} described the experimental corpus, and design issues concerning its representation as relational graph. Chapter~\ref{chap:user_ecosystem} presents our study on addon prediction, and Chapter~\ref{chap:Symbiosis}---our analysis of symbiosis and clash phenomena among addon companies. The thesis concludes with a summary and discussion (Chapter~\ref{chap:summary}).
 
 \chapter{Related Research}
 \label{sec:related}
@@ -1971,6 +1971,7 @@ In \autoref{sec:clash_relations}, we looked for the opposite of symbiotic relati
 
 \chapter{Summary}
 \label{chap:summary}
+
 The ecosystem of the Web browser is an unexplored research area. Thousands of browser addons fight their way to recognition and profitability. Addon manufacturers engage in partnerships or compete with each other. Most of this dynamics is hidden from the eyes of Web users. The goal of this work was to develop tools and methodologies for analyzing this complex ecosystem.
 
 We were provided with a unique dataset of addons installed on almost a million machines. We tested different types of data representation, and applied a few machine learning algorithms, until we came up with the final decision about how to organize the data for future analysis. This process is described in \autoref{sec:datasets}.
