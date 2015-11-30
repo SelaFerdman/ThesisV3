@@ -163,10 +163,13 @@ $\underline{\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigspace\bigs
 \LARGE{Abstract}
 \end{center}
 
-Web browsers are the users window to the World Wide Web. All the web browsers extend their features via addons. There is enormous amount of different addons in the Internet world. A decision whether to install a particular addon is typically in user hands, thus the collection of the user addons is somewhat reflecting the user tastes, domains of interests and other user aspects. And since the collection of addons reflects the user, we can learn the users and try to predict what are the addons that he might have had or what are the addons that are missing in his environment to complete his "personality" profile.
-We may call it a user habitat. Given this habitat, we have noticed that the addons have some relations between them and we have hypothesized that by looking at the whole net of users and addons we may find what are the missing elements to complete/stabilize the user habitat. Somewhat like predicting the missing elements in the Mendeleev's table.
-Given the data we have about the user,addons and their connections we constructed a big graph with nodes as users, addons and its terms. We have used the Personalized PageRank random walks to traverse the graph and predict the missing addon in the user eco-system. After seeing that our hypothesize is proved correct, we have noticed that there are special relations between addons by some well known companies, like Google, AVG, etc. It turned out that some companies are benefiting from each other - we've indicated this as a symbiotic relations, while other companies are hurt by being in a company with specific company - we've called this a clash relation.
-In this work we have developed and proved a methodology to find what addon any given user would be missing. Moreover, we've found a way to uncover hidden relations between companies using the methodology described above.
+The Web browser is the user's window to the World Wide Web. All the web browsers extend their offerings via browser addons. There is an enormous amount of various addons available on the Web. A decision whether to install a particular addon is usually in the user's hands, so that the set of addons installed on the user's machine is partially reflecting the user's tastes, interests, and needs. Therefore, we can learn the user's ``personality'' profile and attempt to predict which addons might be missing and which addons are likely to be removed soon.
+
+Not all decisions about installing or removing addons are up to the user. Some addons ``sneak in'' the user's machine via third party installations, while some installed addons ``kick out'' their competitors without the user's involvement. Most often, these processes follow business decisions of addon manufacturing companies that engage in partnerships with each other or compete over the user's attention. Users with their preferences and addon companies with their business goals make the Web browser a complex ecosystem which we study in this thesis.
+
+Our research goals are two fold. First, we investigate the Web browser ecosystem at the micro-level, i.e.~at the level of an individual user's machine. We empirically prove that the Web browser ecosystem bears characteristics of a biological ecosystem. Provided with a unique dataset of addons installed on almost a million of real users' machines, we construct a large-scale graph with nodes corresponding to users, addons, and terms extracted from the addons' attributes. We use the Personalized PageRank (PPR) random walk to traverse the graph and prove the resilience of the individual Web browser ecosystem. We show that our PPR-based model significantly outperforms non-personalized models.
+
+Next, after demonstrating the success of our PPR-based model at the micro-level, we adapt it to analyzing the Web browser ecosystem at the macro-level, i.e.~at the level of addon companies involved in business activities. We hypothesize that some addon companies live in symbiosis or clash with each other. We apply our adapted PPR-based model to a dataset of nineteen prominent addon manufacturers and their addons installed on users' machines. We construct this dataset from our original dataset by mapping addons to their manufacturers. We identify symbiotic and clash relationships between a few of the nineteen companies. We validate some of our results in the online media, while the rest of them shed light at well hidden wars in the Web browser ecosystem.
 
 \listoffigures
 \addcontentsline{toc}{chapter}{List of Figures}
@@ -177,11 +180,11 @@ In this work we have developed and proved a methodology to find what addon any g
 \chapter{Introduction}
 \pagenumbering{arabic}
 
-Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday computing environment. As of today, some operating systems are based entirely on browsers, e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}. Browser {\it extensions}, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. There exists an extension, for example, that enables visually impaired users to access the contents of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each Website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. {\it Toolbars} are a particular kind of a browser extension--these are GUI widgets, which typically reside in the upper part of the browser's window, extending the browser's functionality. 
+Web browsers, a software application for retrieving and presenting resources on the World Wide Web, have become a major component of our everyday computing environment. As of today, some operating systems are based entirely on browsers, e.g., ChromeOS by Google\footnote{\url{http://www.chromium.org/chromium-os}}. Browser {\it extensions}, also called {\it addons}, are computer programs that (as the name suggests) extend, improve and personalize browser capabilities. There exists an extension, for example, that enables visually impaired users to access the contents of bar charts on the Web \citep{elzer2007browser}. Another example addon addresses security concerns, transparently producing a different password for each website, and by that defending the user against password phishing and other attacks \citep{ross2005stronger}. {\it Toolbars} are a particular kind of a browser extension--these are GUI widgets, which typically reside in the upper part of the browser's window, extending the browser's functionality. 
 
-A great number of extensions are installed by users on a daily basis nowadays. More than 750 million (non-unique) extensions have been downloaded and installed by users of Google Chrome alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, can be installed proactively, addons are often `silently' installed on one's machine by a third party, typically, as the user downloads some other program from the Web, or installs a 'software bundle'. While the user may be presented with an opt-out check box during installation, if she fails to notice the small font and clicks through the installation process, addons may get installed on her machine unintentionally.  
+A great number of extensions are installed by users on a daily basis nowadays. More than 750 million (non-unique) extensions were downloaded and installed by users of the Google Chrome browser alone as of June 2012\footnote{\url{http://goo.gl/ggfqxY}}. While browser extensions in general, and toolbars in particular, can be installed proactively, addons are often `silently' installed on one's machine by a third party, typically, as the user downloads some other program from the Web, or installs a 'software bundle'. While the user may be presented with an opt-out check box during installation, if he/she fails to notice the small font and clicks through the installation process, addons may get installed unintentionally.  
 
-Indeed, software companies are highly interested in distributing addons, and particularly toolbars, on users' machines. Toolbar software can collect information about the browsing history of the user (e.g., Yahoo! Toolbar). It can further direct the user's search activity to some specified search portal (e.g. MyWebSearch.com); crucially, the company which owns the search portal (and typically also the toolbar) receives payments from ad providers per user clicks on its presented adds (primary ad providers today are Google and Yahoo!). This revenue generation model is used extensively by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It has been estimated that Google, the biggest Web advertising firm, may lose \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
+Indeed, software companies are highly interested in distributing addons, and particularly toolbars, on users' machines. Toolbar software can collect information about the browsing history of the user (e.g., Yahoo! Toolbar). It can further direct the user's search activity to some specified search portal (e.g. MyWebSearch.com); crucially, the company which owns the search portal (and typically also the toolbar) receives payments from ad providers per user clicks on its presented adds (primary ad providers today are Google and Yahoo!). This revenue generation model is used extensively by software companies, which otherwise distribute freeware products \citep{leontiadis2012don}. For example, 45\% of AVG Technologies sales were due to its browser toolbar\footnote{\url{http://goo.gl/ONZ9u}}.  It was estimated that Google, the biggest Web advertising firm, might have lost \$1.3 billion in 2013 revenue  due to its toolbar policy changes, which might cause some of the companies to shift to its competitors\footnote{\url{http://finance.yahoo.com/news/google-may-miss-2013-revenue-113926474.html}}\footnote{\url{https://support.google.com/adwordspolicy/answer/50423?hl=en}}.
 \iffalse 
 
 Importantly, a user serves as a source of income to the installing party as long as he or she actively uses the toolbar, where users may choose to remove the software from their system anytime. The ability to estimate the period of toolbar ‘survival’ is therefore critical in considering a business model for companies that distribute their software as freeware, counting on revenue generated due to installed toolbars. For example, when a user installs Babylon's translation software , he is offered to install also AVG toolbar, where AVG pays Babylon for these installations. If AVG could estimate whether a specific user would keep its toolbar, it could apply a differential payment model to Babylon according to estimated 'user value'.  In the proposed research, we will consider a large-scale authentic data that tracks browser extensions installed at users' machines on a daily basis. In addition to daily 'reporting', events of adding new browser toolbars are explicitly recorded. Removal of toolbars can be inferred. We are interested in exploring trends in this large-scale data, and in answering specific questions, such as 'can one predict if a particular addon survives on the user's machine more than K days'. Providing a prediction model of good quality in response to this question is highly valuable to the industry, as discussed above. We will explore machine learning techniques to create prediction models of interest. While many academic studies have used information about user environment towards the creation of user
@@ -192,27 +195,29 @@ issues. Finally, descriptions of the prediction models that we plan to use, and 
 
 \section{The ecosystem of addons}
 
-The Web browser is a complex ecosystem: addons are being installed and uninstalled on user machines, new addons are introduced by software companies over time, become prevalent and fade. As new addon companies are fighting their way to recognition, old players are gaining or losing their power. Addon companies are being engaged in partnerships or competing with each other (and sometimes both), etc.---all this happening on a daily basis, and is mostly hidden from the user, who is not always aware of the vibrant life of his/her Web browser. These developments are occurring globally within the digital media---addons being software executables---however, each addon has a lifecycle full of events, and a spectrum of interactions with its environment, such that the Web browser's ecosystem strikingly resembles the biological ecosystem of the nature.
+The Web browser is a complex ecosystem: addons are being installed and uninstalled on user machines, new addons are introduced by software companies over time, become prevalent and fade. As new addon companies are fighting their way to recognition, old players are gaining or losing their power. Addon companies establish partnerships or compete with each other (and sometimes both), etc.---all this happening on a daily basis, and mostly hidden from the user, who is not always aware of the vibrant life of his/her Web browser. These developments occur solely within the digital media---addons being software executables---however, each addon has a lifecycle full of events, and a spectrum of interactions with its environment, such that the Web browser's ecosystem strikingly resembles the biological ecosystem of the nature.
 
-To illustrate this analogy, let us say that an addon manufacturer corresponds to a biological \emph{species}. An instance of an addon developed by company $c$ can be viewed as a \emph{subject} of species $c$ that coexists in the browser ecosystem with other subjects of the same or different species. We assume that, in many cases, addons that coexist in the Web browser do not affect each other. This assumption is no more than a modeling simplification, because---apparently---all addons seek the user's attention which is a limited (natural) resource; nevertheless, the influence of one addon on another is often negligible and thus ignored. However, some subjects (that is, addons) may live in \emph{symbiosis} or may \emph{clash} with each other in the Web browser \emph{habitat}.
+To illustrate this analogy, let us say that an addon manufacturer corresponds to a biological \emph{species}. An instance of an addon developed by company $c$ can be viewed as a \emph{subject} of species $c$ that coexists in the browser ecosystem with other subjects of the same or different species. We assume that, in many cases, addons that coexist in the Web browser do not affect each other. This assumption is no more than a modeling simplification, because---apparently---all addons seek the user's attention which is a limited (natural) resource; nevertheless, the influence of one addon on another is often negligible and can be ignored. However, some subjects (that is, addons) may stay in a close interaction with each other: they live in \emph{symbiosis} or they \emph{clash} with each other in the Web browser.
 
-Two subjects are in a symbiotic relationship when at least one of the two subjects benefits from the other. Consider, for example, situations when some addons get installed on a user's machine during (or following) the installation process of another addon. This can be considered a direct benefit to the addon, as it would not have reached the machine if the other addon was not installed on it. Often, addons of the same company are being installed together. Moreover, in some cases, two addon companies have a distribution agreement such as one company provides means for installing other company's addons. Generally speaking, the symbiosis relationship can occur on a local level (between two addons installed on the same machine), as well as on a global level (e.g., two addon companies engaged in a partnership).
+Two subjects are in a symbiotic relationship when at least one of them benefits from the other. Consider, for example, situations when some addons get installed on a user's machine during (or following) the installation process of another addon. This can be considered a direct benefit to the addon, as it would not have reached the machine if the other addon was not installed on it. Often, addons of the same company are being installed together. Moreover, in some cases, two addon companies have a distribution agreement such as one company provides means for installing the other company's addons. Generally speaking, the symbiosis relationship can occur on a local level (between two addons installed on the same machine), as well as on a global level (e.g., two addon companies engaged in a partnership).
 
 We also observe situations when an addon ``kicks out'' other addons, similarly to a competition phenomenon between different biological species in nature. We call it a \emph{clash} situation. There are a variety of reasons for a clash. A pretty obvious example is two antivirus companies that develop Web browser addons---if one company's product gets installed on a machine, the other company's product often gets removed as two antivirus products cannot coexist with each other. Some reasons for a clash are not that straightforward and recognizing those clash situations is not trivial.
 
-The user (i.e.~the computer owner) is also playing an important role in the addon ecosystem: some users ``hunt down'' and remove addons that occasionally appear in the computer's browser; other users are more tolerant---they let addons live in the browser for a long time and do not mind more addons to be installed over time. An interesting question is who dominates the dynamics of the Web browser: is it a user who cares about the \emph{digital hygiene} of his/her computer, or are those addon companies that compete with each other? While we are not investigating this question in depth in this work, one should not exclude the user from the equation.
+The user (i.e.~the computer owner) is also playing an important role in the addon ecosystem: some users ``hunt down'' and remove addons that occasionally appear in the computer's browser; other users are more tolerant---they let addons live in the browser for a long time and do not mind more addons to be installed over time. An interesting question is who dominates the dynamics of the Web browser: is this the user who cares about the \emph{digital hygiene} of his/her computer, or are those addon companies that compete with each other? While we do not investigate this question in depth in this work, one should not exclude the user from the equation.
 
 The analogy between computer and biological systems is not novel. The term \emph{computer virus} and the consequent term \emph{antivirus} come from exactly the same analogy. However, to the best of our knowledge, this work is the first attempt to investigate the digital ecosystem in a comprehensive way, beyond the notion of \emph{virality} that has been in the focus of research community for decades.
 
 \section{Research outline}
 
-As discussed above, there are two views on the Web browser ecosystem. One is a micro-level view, considering specific browsers installed on a user's machine. Addons (as subjects of various species) live and interact with the user as well as between themselves within the browser, and we are interested in modeling those interactions. The addon ecosystem can be further viewed at the macro-level, where millions of Web browsers carry thousands of addons that belong to many species (i.e.~addon companies). The companies stay in an interaction with each other and we are interested in modeling these interactions as well.
+As discussed above, there are two views on the Web browser ecosystem. One is the micro-level view, which considers specific browsers operating on a user's machine. Addons (as subjects of various species) live and interact with the user as well as between themselves within the browser, and we are interested in modeling those interactions. We call this the Web browser \emph{habitat}. 
 
-A major characteristic of a habitat is its \emph{ecological stability}: a non-disturbed habitat preserves the least energy state in which no significant change is initiated from inside. When disturbed from outside, the habitat tends to recover and bring itself back to the steady state. In the ecological parlance, the regenerative feature of the habitat is called \emph{resilience}. 
+The addon ecosystem can be further viewed at the macro-level, where millions of Web browsers carry thousands of addons that belong to many species (i.e.~addon companies). The companies stay in a relation with each other and we are interested in modeling these interactions as well.
+
+A major characteristic of a (biological) habitat is its \emph{ecological stability}: a non-disturbed habitat preserves the least energy state in which no significant change is initiated from inside. When disturbed from outside, the habitat tends to recover and bring itself back to the stable state. In the ecological parlance, the regenerative feature of the habitat is called \emph{resilience}. 
 
 \iffalse 
 [RON: moved here]
-The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\cite{haveliwala2003topic}. In our particular case, these 
+The main difference between PageRank and Personalized PageRank is that, instead of relying on a uniform damping vector, PPR is relies on a non-uniform damping vector, to put more importance to a given set of nodes~\citep{haveliwala2003topic}. In our particular case, these 
 nodes are the addons of a specific user, that is, the 
 members of personalized vector $b$. In practice, given PageRank as in equation~(\ref{eq:pr})
 			\begin{equation}
@@ -228,28 +233,27 @@ the PageRank equation is adapted as follows to compute the Personalized PageRank
 			\end{equation}
 \fi
 
-We therefore investigate the browser ecosystem from two points of view, addressing the following questions:\\
+We investigate the browser ecosystem from both the micro-level and macro-level points of view, addressing the following questions:\\
 \begin{enumerate}
-\item \textbf{At the micro-level, is the Web browser habitat resilient?} We simulate an artificial disturbance: the extraction of an addon from the Web browser, and see whether the rest of the habitat works to bring the addon back.
+\item \textbf{At the micro-level, is the Web browser habitat resilient?} We simulate an artificial disturbance and see whether the habitat ``works'' to bring itself back to the stable state.
 \item \textbf{At the macro-level, which addon species are in symbiosis with each other?}
 \item \textbf{Which addon species clash with each other?}
 \end{enumerate}
 %3. We observe how the browser ecosystem evolves over time.\\
 
+We address these questions empirically using authentic data, describing user-addon associations collected from anonymous users all over the world. The available data is semi-structured, including both textual description of addons and their installation paths. We represent this data as a relational graph, in which typed nodes correspond to distinct {\it user}, {\it addon} and {\it term} objects. 
 
-We address these questions empirically using authentic data, describing user-addon associations collected from anonymous users all over the world. The available data is semi-structured, including also textual description of addons and their installation paths. We represent this data as a relational graph, in which typed nodes denote distinct {\it user}, {\it addon} and {\it term} objects. 
+Consider a habitat observed on an individual user's machine---it can be represented as a star-shaped graph, in which a node corresponding to the \emph{user} is linked to nodes corresponding to the \emph{addons} that reside on the user's machine; {\it addon} nodes may be further linked to descriptive {\it terms}. Multiple habitats can be naturally represented in a joint graph, e.g., each {\it addon} is directly connected to all {\it users} that have it installed. The graph representation is compact, supporting efficient processing of large-scale data. In particular, graph-based measures can be employed that assess structural inter-node relatedness. 
 
-Consider a habitat observed at a single user---it corresponds to a star-shaped graph, in which a node denoting the \emph{user} is linked to nodes denoting the \emph{addons} that reside on the user's machine; {\it addon} nodes may be further linked to descriptive {\it terms}. Multiple habitats can be naturally represented in a joint graph, e.g., each {\it addon} is directly connected to all {\it users} that have it installed. The graph representation is compact, supporting efficient processing of large-scale data. In particular, graph based measures can be employed that assess structural inter-node relatedness. 
+We evaluate the first research question stated above through the task of {\it missing addon prediction.} To the extent that there exists a stable state of the habitat, we expect to be able to infer an addon that is "missing" from that ecosystem. In our experiments, we simulate such a setting by artificially disassociating a randomly sampled addon from its habitat. Given the identity of the remaining species in the habitat (i.e., the other addons that exist on that user's machine), we wish to recover the missing addon. If addons do not compose a resilient habitat, then one would expect `one-fit-all' methods (e.g., preference of popular addons) to perform best on this task on average. Otherwise, addon prediction would benefit from the modeling of  structural similarities among habitats in the general population. In our experiments, we use \emph{Personalized PageRank (PPR)}, a random-walk based similarity metric, to predict the missing addon. We show that PPR dramatically outperforms habitat-agnostic methods such as popularity-guided prediction, or non-personalized PageRank centrality scoring. Our answer to the first research question is therefore a definitive yes.
 
-We evaluate the first research question stated above through the task of {\it missing addon prediction.} To the extent that there exists a steady ecosystem at the habitat, we expect to be able to infer a species that is "missing" from that ecosystem. In our experiments, we simulate such a setting by artificially disassociating a randomly sampled addon from its habitat. Given the identity of the remaining species in the habitat (i.e., the other addons that exist on that user's machine), we wish to recover the missing addon. If no relations existed between individual species at the habitat, then one would expect `one-fit-all' methods, e.g., preference of popular addons, to perform best on this task on average. Otherwise, addon prediction would benefit from the modeling of  structural similarities among habitats in the general population. In our experiments, we show that predicting the missing addon using Personalized PageRank, a random-walk based similarity metric, dramatically outperforms habitat-agnostic methods such as popularity-guided prediction, or PageRank centrality scoring. Our answer to the first research question is therefore a definitive yes.
+The subsequent problems abstract the user data into insights at the addon company level. We identify which addon companies tend to benefit from each other or clash with each other. Both analyses (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as the addon industry evolves.
 
-The subsequent problems abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.
-
+\iffalse
 As for the second problem we were investigating, these days it becomes more and more relevant. See, for example, recent discovery about SuperFish security breach is a good example about two companies having a major symbiosis (SuperFish and Komodia) and SuperFish and all major anti-viruses addons is a good example of a clash between two companies.\\
 
 It is also interesting to see how the addons in browser ecosystem evolve day by day.
 
-\iffalse
 [RON: The outline of our findings: In first half of the thesis, we operate on the user level. We use historical data to identify highly probable addons given the collection of addons of a specific user. In the second half of the thesis, we abstract the user data into insights at the addon company level. We identify which addon companies tend to coexist or clash with each other. Both analysis (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as their addons are evolving.]
 
 [RON: a paragraph about human factor. After all, we are mostly interested in the user who owns the machine and either installs lots of garbage on it or tries to keep it as clean as possible. Who's is more important here - the user who cares about his/her machine hygiene or the bunch of companies that are trying to push stuff on the user's machine? Who's winning?]
@@ -257,7 +261,16 @@ It is also interesting to see how the addons in browser ecosystem evolve day by 
 
 \section{Main contributions}
 
-[Einat: We claim that browser addons behave like species in a biological ecosystem; this is probably the first work to study this domain beyond the anecdotal level; while Personalized PageRank is a well-studied similarity metric in graphs, relatively few works have applied it to link prediction in heterogeneous graphs; the PPR-PR ratio, which is use to identify symbiosis and clash phenomena is quite novel---it deserves further analysis, and may be applied to other problems that involve ecosystems. The second part of the work forms a tool for detecting hidden business alliances and rivalries in digital media, for which only bits and pieces are known to the public.]
+To the best of our knowledge, this thesis is the first research work that has the following contributions:\\
+\begin{enumerate}
+\item We study the Web browser ecosystem beyond the level of anecdotal evidence.
+\item On an example of the Web browser ecosystem, we empirically prove that a digital ecosystem has characteristics of a biological ecosystem.
+\item We apply Personalized PageRank to link prediction in heterogeneous graphs.
+\item We propose Personalized PageRank to non-personalized PageRank score ratios to identify symbiosis and clash phenomena within the digital ecosystem.
+\item We construct an algorithmic tool for detecting hidden business alliances and rivalries in digital media.
+\end{enumerate}
+
+%[Einat: We claim that browser addons behave like species in a biological ecosystem; this is probably the first work to study this domain beyond the anecdotal level; while Personalized PageRank is a well-studied similarity metric in graphs, relatively few works have applied it to link prediction in heterogeneous graphs; the PPR-PR ratio, which is use to identify symbiosis and clash phenomena is quite novel---it deserves further analysis, and may be applied to other problems that involve ecosystems. The second part of the work forms a tool for detecting hidden business alliances and rivalries in digital media, for which only bits and pieces are known to the public.]
 
 
 \section{Roadmap}
@@ -273,7 +286,7 @@ In what follows, we first discuss related work (Chapter~\ref{sec:related}). Chap
 
 User profiles characterize users according to their personal
 preferences and skills, as reflected by raw material gathered from
-their interaction histories with the system \citep{koch2001software},\citep{gauch2007user}. According to \citep{gauch2007user}, User profiling is typically either knowledge-based or
+their interaction histories with the system \citep{koch2001software,gauch2007user}. According to \cite{gauch2007user}, User profiling is typically either knowledge-based or
 behavior-based. Knowledge-based approaches engineer static models of
 users and dynamically match users to the closest model. In this
 paradigm, questionnaires and interviews are often employed to obtain
@@ -281,14 +294,14 @@ relevant information about the user. Behavior-based approaches model
 user behavior directly, typically using machine-learning techniques,
 to discover useful patterns from behavioral data. In particular,
 various aspects of user behavior at the desktop are reflected by
-browser usage \citep{benevenuto2009characterizing},\citep{bilenko11}. \citep{lieberman1995letizia} and \citep{joachims97} have inferred user preferences given user-browsing behavior. \citep{sugiyama2004adaptive} constructed user profiles based on pure browsing history,
-comparing their model with collaborative filtering.  \citep{lu2011learning} developed a set of algorithms to support efficient
+browser usage \citep{benevenuto2009characterizing,bilenko11,lieberman1995letizia,joachims97} have inferred user preferences given user-browsing behavior. \cite{sugiyama2004adaptive} constructed user profiles based on pure browsing history,
+comparing their model with collaborative filtering.  \cite{lu2011learning} developed a set of algorithms to support efficient
 learning of user preferences, where the observed data consists of
 pairwise comparisons of items.  A general overview of user modeling
-techniques can be found in \citep{leontiadis2012don}. \citep{sebastiani02} provides a survey of current machine learning
+techniques can be found in \cite{leontiadis2012don}. \cite{sebastiani02} provides a survey of current machine learning
 approaches used for user profiling.  Various learning approaches may
 be applied, including Bayesian classifiers clustering, decision trees
-and artificial neural networks \citep{pazzani97}, multi-class classification \cite{bauer2014analyzing},
+and artificial neural networks \citep{pazzani97}, multi-class classification \citep{bauer2014analyzing},
 and so forth.  While browsing behavior has been studied in the context
 of user profiling, in the proposed research we are interested in using
 of a different type of `behavioral logs'. In particular, we believe
@@ -332,7 +345,7 @@ attempts to tag massive amounts of data was the site del.icio.us,
 later bought by Yahoo!, which invited users to tag Web pages. Notably,
 browser extensions are often assigned tags by its developers, tags
 like Sports, Weather Forecasts, Games and Entertainment.
-Collaborative-Filtering (CF) systems (term coined by \citep{goldberg1992using}) focus on the relationship between users and items. They
+Collaborative-Filtering (CF) systems (term coined by \cite{goldberg1992using}) focus on the relationship between users and items. They
 use the known preferences of a group of users to make recommendations
 or predictions for other users, based on their similarity to the
 identified user groups. That is, past actions of a group of users are
@@ -351,13 +364,13 @@ are few. In order to overcome these shortcomings, model-based CF
 approaches have been developed. Model-based techniques use the
 collected data to estimate, or learn, a model to make predictions
 \citep{breese98}. Well-known model-based CF techniques include Bayesian belief
-nets (BNs) \citep{breese98}, as well as use of clustering \citep{ungar1998clustering},\citep{zhu2009analyzing} and latent
+nets (BNs) \citep{breese98}, as well as use of clustering \citep{ungar1998clustering,zhu2009analyzing} and latent
 semantic analysis \citep{hofmann2004latent}. While memory-based techniques alleviate data
 sparsity issues, they involve an additional expense of model-building.
 Hybrid techniques, such as the content-boosted CF algorithm [28] and
-the approach by \citep{gong2009combining}, combine collaborative filtering and
+the approach by \cite{gong2009combining}, combine collaborative filtering and
 content-based techniques, hoping to avoid the limitations of either
-approach and thereby improve recommendation performance. \citep{breese98} proposed a probabilistic approach to collaborative filtering,
+approach and thereby improve recommendation performance. \cite{breese98} proposed a probabilistic approach to collaborative filtering,
 which computes the probability that user u give a particular rating to
 item s given the user’s ratings of the previously rated items. Two
 alternative probabilistic models were considered: clustering models
@@ -369,14 +382,14 @@ as a node in a Bayesian network, where the states of each node
 correspond to the possible rating values. Both the structure of the
 network and the conditional probabilities were learned from the
 data. Another interesting methodology of adapting the user profile in
-a dynamic and automatic way is presented in \citep{marin2013dynamic}.
+a dynamic and automatic way is presented in \cite{marin2013dynamic}.
 
 \section{PageRank}
 \label{sec:pagerank_related}
 PageRank was originally proposed by Page and Brin~\citep{page1999pagerank} as a ranking system
 for Web pages. Over the last decade, PageRank has gained popularity  in a wide range of applications and domains, ever since it first proved to be  effective in determining node importance in large graphs (which was the pioneering idea behind Google's search engine). Page and Brin considered PageRank as a model of user behavior.
 \noindent
-A simplified definition of PageRank as proposed in \citep{page1999pagerank} is:
+A simplified definition of PageRank as proposed in \cite{page1999pagerank} is:
 \begin{equation}
  PR(u)=\sum_{v\in B_u}\frac{PR(v)}{N_v}
 \end{equation}
@@ -390,11 +403,11 @@ where $N$ is the number of nodes in the hyperlink graph. The parameter $d$ is a 
 Although PageRank models a random surfer on the web and computes the probability of finding the surfer at any given page, PageRank exists for any graphs and not just the Web graph. When applied to a specific graph, PageRank produces an importance score for each node. Instead of looking at a \textit{random surfer} on the Web, the non-Web PageRank models a random walk on the graph. Random walks are a common technique to analyze graphs, with a rich history predating PageRank \citep{spitzer2013principles}.
 
 PageRank has found a wide range of applications in a variety of domains within computer science such as computer networking, data mining, web algorithms, and distributed computing \citep{cook04,Bianchini05,LangvilleM03}.
-PageRank was used in many recommender systems. Given a set of users and a set of items the users can be interested in, a recommender system learns user's personal preferences and suggests items to users based on those preferences. \citep{gori2006random} propose a random-walk based scoring algorithm called Item-Rank, which is then used in a recommender system.
+PageRank was used in many recommender systems. Given a set of users and a set of items the users can be interested in, a recommender system learns user's personal preferences and suggests items to users based on those preferences. \cite{gori2006random} propose a random-walk based scoring algorithm called Item-Rank, which is then used in a recommender system.
 
-As \citep{franceschet2011pagerank} explains, the purpose of the PageRank ranking technique is to recursively measure the importance of a node in terms of the importance assigned to the nodes linking to it. In \citep{gyongyi2004combating}, the authors propose a TrustRank method based on PageRank to identify web spam. The authors of \citep{morrison2005generank} paper, find PageRank useful for microarray analysis in bioinformatics. The GeneRank method proposed in \citep{morrison2005generank} produces lists of genes that may be relevant to a microarray experiment. GeneRank uses a surfer over known relationships between genes, while the surfer \textit{restarts} with probability proportional to the activation level of the genes in the experiment. Its output is a set of genes \textit{near} the genes with high activation levels. \citep{freschi2007protein} use similar approach to develop ProteinRank, to predict protein functions. \citep{singh2007pairwise} introduces the IsoRank algorithm to identify functionally similar nodes in two different graphs. The usage of PageRank stretches out to non-computer science areas. The authors of \citep{govan2009offense}, for example,  extended the ideas of \citep{keener1993perron} by using PageRank to compute a rank of sports teams.
+As \cite{franceschet2011pagerank} explains, the purpose of the PageRank ranking technique is to recursively measure the importance of a node in terms of the importance assigned to the nodes linking to it. In \cite{gyongyi2004combating}, the authors propose a TrustRank method based on PageRank to identify web spam. The authors of \cite{morrison2005generank} paper, find PageRank useful for microarray analysis in bioinformatics. The GeneRank method proposed in \cite{morrison2005generank} produces lists of genes that may be relevant to a microarray experiment. GeneRank uses a surfer over known relationships between genes, while the surfer \textit{restarts} with probability proportional to the activation level of the genes in the experiment. Its output is a set of genes \textit{near} the genes with high activation levels. \cite{freschi2007protein} use similar approach to develop ProteinRank, to predict protein functions. \cite{singh2007pairwise} introduces the IsoRank algorithm to identify functionally similar nodes in two different graphs. The usage of PageRank stretches out to non-computer science areas. \cite{govan2009offense}, for example,  extended the ideas of \cite{keener1993perron} by using PageRank to compute a rank of sports teams.
 
-The exact computation of PageRank vectors requires solving a system of linear equations, which can be computationally intractable for large graphs. There are iterative methods based on matrix multiplication, but for graphs as vast as the Web, this is still unfeasible. Instead, PageRank related methods often use fast approximation algorithms for PageRank, first developed by \citep{andersen2006local} and tightened by \citep{chung2010sharp}.
+The exact computation of PageRank vectors requires solving a system of linear equations, which can be computationally intractable for large graphs. There are iterative methods based on matrix multiplication, but for graphs as vast as the Web, this is still unfeasible. Instead, PageRank related methods often use fast approximation algorithms for PageRank, first developed by \cite{andersen2006local} and tightened by \cite{chung2010sharp}.
 
 \section{Personalized PageRank}
 Personalized PageRank is an extension of the PageRank algorithm \citep{page1999pagerank}, both of which are based on a random surfer model. In PageRank, the random surfer starts at any node on the graph. At each step, with a probability of $(1-d)$ the surfer moves to one of neighboring nodes, and with probability $d$ teleports to a random node in the graph. This process is repeated until the walk converges to a steady-state. The stationary probability of the surfer reaching a node is taken as the normalized PageRank score of the node. This form of scoring is the most natural case, which does not artificially prefer some nodes over the others.
@@ -414,20 +427,20 @@ personalize Web search
 
 The important task of identifying influential users in social media was solved using Personalized PageRank, both on Twitter \citep{weng2010twitterrank} and on LinkedIn \citep{budalakoti2012}. \cite{weng2010twitterrank} discovered that the Personalized PageRank produces better results whenever graph edges are weighted by the similarity of user’s interests, rather than whenever graph nodes are weighted according to user's interests. \cite{budalakoti2012} found out that the Personalized PageRank in LinkedIn's graph of connection invites is more effective when discounted by the node outdegree.
 
-\cite{berkhin2006bookmark} use Personalized PageRank for computing what they call a \textit{bookmark-coloring} model. This model computes authority weights of web pages utilizing the web hyperlink structure. ScaleRank, proposed in \citep{hristidis2014efficient}, efficiently computes edge-weighted personalized PageRank and provides personalized ranking of typed entity-relationship graphs. It was also noted \citep{sarkar2008fast} that Personalized PageRank can be adopted to become a good similarity measure on the Web.
+\cite{berkhin2006bookmark} use Personalized PageRank for computing what they call a \textit{bookmark-coloring} model. This model computes authority weights of web pages utilizing the web hyperlink structure. ScaleRank, proposed in \cite{hristidis2014efficient}, efficiently computes edge-weighted personalized PageRank and provides personalized ranking of typed entity-relationship graphs. It was also noted \citep{sarkar2008fast} that Personalized PageRank can be adopted to become a good similarity measure on the Web.
 \iffalse
 MOVED HERE: As mentioned before, the algorithms of PageRank and Personalized
 PageRank algorithm have been designed so as to improve Web page
 rankings. The Personalized Pagerank variant was first suggested in
-\citep{brin1998can}, and shortly after, has been explored to
+\cite{brin1998can}, and shortly after, has been explored to
 personalize Web search
-(\citep{haveliwala2002topic},\citep{haveliwala2003topic},\citep{haveliwala2003analytical}). Nevertheless,
+\citep{haveliwala2002topic,haveliwala2003topic,haveliwala2003analytical}). Nevertheless,
 PageRank may be readily applied to arbitrary graphs to produce node
 importance scores, and this places PageRank amongst a class of network
 analysis techniques \citep{brandes2005network} known as centrality
 measures or indices \citep{koschutzki2005centrality}. Similarly,
 Personalized PageRank is a general similarity measure in graphs, used
-in multiple domains. For example, in \citep{freschi2007protein}, the
+in multiple domains. For example, in \cite{freschi2007protein}, the
 authors used the Personalized PageRank model, which they call
 ProteinRank, to predict protein functions. ALSO: In Keren's thesis, we have shown that PPR's random walk similarity metric outperforms classical collaborative
 filtering and content-based recommendation methods.
@@ -437,17 +450,18 @@ filtering and content-based recommendation methods.
 \label{sec:ppr_high_degree}
 Studying large-scale networks is a fairly recent development---many phenomena have shown to be appearing in real-world large-scale datasets. One important property is the small-world phenomenon \citep{watts1998collective}: the existence of short paths between any randomly-chosen pair of vertexes. Many real-world networks exhibit small-world behavior, and they are characterized by having a low average shortest path length and many dense subgraphs.
 
-Another hallmark of large graphs is the power-law degree distribution. Several groups of authors independently discovered that virtually every large network found in nature exhibits a power-law degree distribution \citep{albert1999internet,aiello2001random}. Our graph also stands in these standards, as shown in \autoref{tab:node_types} and \autoref{fig:power_law_addons}: the addon nodes degree has a power-law distribution and also the small small-world phenomenon holds. In our research, we experiment with removing high-degree nodes from the graph. \cite{sarkar2010tractable} proves that removing high-degree nodes from an undirected power-law graph leads to a very small penalty. The main intuition behind their analysis is that a very-high-degree node passes a very small fraction of its probability mass to its out-neighbors,
+Another property of graphs is the power-law degree distribution. The authors \cite{albert1999internet} discovered that many of the networks found in nature exhibits a power-law degree distribution. Our graph also stands in these standards, as shown in \autoref{tab:node_types} and \autoref{fig:power_law_addons}: the addon nodes degree has a power-law distribution and also the small small-world phenomenon holds. In our research, we experiment with removing high-degree nodes from the graph. \cite{sarkar2010tractable} proves that removing high-degree nodes from an undirected power-law graph leads to a very small penalty. The main intuition behind their analysis is that a very-high-degree node passes a very small fraction of its probability mass to its out-neighbors,
 which might not be significant enough to invest computing resources. The authors argue that stopping a random walk at a high degree node does not change the personalized PageRank scores of other nodes which have relatively smaller degree. Similarly to our approach, they transform high-degree
 nodes into sinks by removing all their outgoing edges (while not touching any incoming edges).
 
 
 \section{Link Prediction in Graphs}
 \label{sec:link_prediction}
-Link prediction in complex networks has attracted increasing attention from computer science community. Many social, biological, and information systems can be well described by
-networks, where nodes represent individuals, and links denote the relations or interactions between nodes. \textit{Link Prediction} attempts to estimate the likelihood of the existence of a link between two nodes, based on observed links and the attributes of nodes \citep{getoor2005link}.
-Social network analysis comes up against the missing data problem \citep{kossinets2006effects}, where link prediction algorithms may play a role.In addition, the data in constructing biological and social networks may contain inaccurate information, resulting in spurious links \citep{von2002comparative, butts2003network}. Link prediction algorithms can be applied in identifying these spurious links \citep{guimera2009missing}.Besides helping in analyzing networks with missing data, the link prediction algorithms can be used to predict the links that may appear in networks. For example, in online social networks, very likely but not yet existent links can be recommended as promising friendships. Similar techniques can be applied to evaluate the evolving mechanism for given networks or finding a missing user addon.
-A learning algorithm for link prediction, presented in \citep{lao2010relational}, uses random walk processes to define a distribution, rather than some other forms of logical inference, such as belief propagation.It was shown that also personalized PageRank can be used to approximate belief propagation on certain graphs \citep{cohen2010graph}. \textit{Link analysis} exploits the relationship between resources through links and is a well-researched area \citep{henzinger2000link}. In \citep{gyongyi2006link}, link analysis link analysis has been suggested to help fight web spam. The authors of this paper introduced a measurement called \textit{Spam Mass}. It indicates how much PageRank a page accumulates through being linked to by spam pages. The spam mass is computed  by combining two PageRank scores: the regular PageRank score and a biased one. The biased one is computed by assigning a higher weight to a large group of known reputable pages. The absolute mass estimation can then be calculated by taking the difference between the regular PageRank score and the biased one. The relative spam mass estimation becomes the ratio between the absolute estimation and the total PageRank score. This estimation is similar to our estimations that we use in \autoref{chap:Symbiosis}, when looking for sharp changes between companies PageRank scores.
+Link prediction in complex networks attracts an increasing attention of the computer science community. Many social, biological, and information systems can be described by
+networks, where nodes represent subjects, and links denote the relations or interactions between the nodes. \textit{Link Prediction} aims to estimate the likelihood of the existence of a link between two nodes, based on observed links and the attributes of nodes \citep{getoor2005link}.
+%Social network analysis comes up against the missing data problem \citep{kossinets2006effects}, where link prediction algorithms play an important role. In addition, the underlying data in biological and social networks may contain inaccurate information, resulting in spurious links \citep{von2002comparative, butts2003network}. Link prediction algorithms can be applied in identifying these spurious links \citep{guimera2009missing}.
+Besides helping in analyzing networks with missing data, the link prediction algorithms can be used to predict the links that may appear in networks. For example, in online social networks, very likely but not yet existent links can be recommended as promising friendships. Similar techniques can be applied to evaluate the evolving mechanism for given networks or finding a missing user addon.
+A learning algorithm for link prediction, presented in \cite{lao2010relational}, uses random walk processes to define a distribution, rather than some other forms of logical inference, such as belief propagation.It was shown that also personalized PageRank can be used to approximate belief propagation on certain graphs \citep{cohen2010graph}. \textit{Link analysis} exploits the relationship between resources through links and is a well-researched area \citep{henzinger2000link}. In \cite{gyongyi2006link}, link analysis link analysis has been suggested to help fight web spam. The authors of this paper introduced a measurement called \textit{Spam Mass}. It indicates how much PageRank a page accumulates through being linked to by spam pages. The spam mass is computed  by combining two PageRank scores: the regular PageRank score and a biased one. The biased one is computed by assigning a higher weight to a large group of known reputable pages. The absolute mass estimation can then be calculated by taking the difference between the regular PageRank score and the biased one. The relative spam mass estimation becomes the ratio between the absolute estimation and the total PageRank score. This estimation is similar to our estimations that we use in \autoref{chap:Symbiosis}, when looking for sharp changes between companies PageRank scores.
 
 \section{Clustering}
 
@@ -456,7 +470,7 @@ one another within the same cluster and are dissimilar to the objects
 in other clusters \citep{han2006data}. When applied to the domain of Web browsing
 history, clustering can group together a set of Web pages with similar
 contents, and users with similar navigation behavior or navigation
-sessions. Ungar and Foster \citep{ungar1998clustering} clustered users and items separately
+sessions. \cite{ungar1998clustering} clustered users and items separately
 using variations of k-means and Gibbs sampling \citep{geman1984stochastic}, grouping users
 based on the items they rated and items based on the users that rated
 them. Using to their model, users were re-clustered based on the
@@ -501,11 +515,11 @@ data. (iii) Most existing clustering algorithms are either
 agglomerative (start with small clusters and merge them to compose
 larger clusters), divisive (start with one large cluster and split it
 to obtain smaller clusters), or flat, such as k-means (start with $k$
-clusters and rearrange data within these clusters). \citep{bekkerman05} propose to combine all the three approaches together, while
+clusters and rearrange data within these clusters). \cite{bekkerman05} proposed to combine all the three approaches together, while
 choosing the most appropriate one for each data modality. A detailed
-description of the Comraf model is given in \citep{bekkerman2006semi}, and
-the underlying clustering algorithm (MDC) is described in \citep{bekkerman05}. Some modalities do not have to be clustered, as explained
-in \citep{bekkerman2007multi}. 
+description of the Comraf model is given in \cite{bekkerman2006semi}, and
+the underlying clustering algorithm (MDC) is described in \cite{bekkerman05}. Some modalities do not have to be clustered, as explained
+in \cite{bekkerman2007multi}. 
 
 
 
@@ -560,7 +574,7 @@ Our focus is on {\it users} and {\it addons}. Following is a description of the 
 \item Description: a textual field. 
 \end{itemize}
 
-Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} each show the records of addons installed at an individual machine on a specific date. As shown, Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons are installed at these machines. The file path and description are not always populated--path information is available for the first user, but is missing for the second; addon descriptions are only available for the second user. Typically, an addon in Internet Explorer has at least a path attribute, while addons in Mozilla Firefox and Google Chrome browsers have at least a name attribute. In most cases one of the addon attributes is reported empty.
+Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} each show the records of addons installed at an individual machine, of user $A$ and user $B$, on a specific date. As shown, Conduit, Skype, Babylon, TrendMicro, Norton and AVG addons are installed on these machines. The file path and description are not always populated--path information is available for user $A$, but is missing for user $B$; addon descriptions are only available for user $B$. Typically, addons for Internet Explorer have path information specified, and addons for Mozilla Firefox and Google Chrome browsers have the name attribute always populated. In most cases, at least one of the addon attribute values is empty.
 
 \begin{figure}[t]
 \centering
@@ -580,17 +594,19 @@ Figures \ref{fig:db_addons_snapshot} and \ref{fig:db_addons_snapshot_desc} each 
 \label{fig:db_addons_snapshot_desc}
 \end{figure}
 
-The field values contain raw information extracted from the users' machines. Accordingly, they lacks normalization. Figures \ref{fig:addons_versioning_snapshot} and \ref{fig:addons_versioning_snapshot_desc} illustrate the variability across records, which we consider to be co-referent as they describe the same addon. There are differences across individual records with respect to the path in which the addon is installed on the local machine, as well as  version numbers (e.g., 1.8.7.2 vs. 1.8.4.9 in \autoref{fig:addons_versioning_snapshot}), name and description. Furthermore, the user base is international, and is accordingly multi-lingual. 
+The field values contain raw information extracted from the users' machines. Accordingly, they lacks normalization. Figure \ref{fig:addons_versioning_snapshot} illustrate the variability across records, which we consider to be co-referent. The first and third records are identical, however the paths in which the addons are installed on the local machine vary with respect to the software version number (1.8.7.2 vs. 1.6.4.6 in \autoref{fig:addons_versioning_snapshot}). Furthermore, the user base is international, and is therefore multi-lingual. 
 
 \begin{figure}[t]
 \centering
 \begin{small}
 \includegraphics[scale=.8,angle=0]{figures/addons_versioning_snapshot.png}
 \end{small}
-\caption{Addon with different versions in user record}
+\caption{Example of coreferent addon records, which differ on software version number}
 \label{fig:addons_versioning_snapshot}
 \end{figure}
 
+% bring this example back later, in a journal version.
+\iffalse
 \begin{figure}[t]
 \centering
 \begin{small}
@@ -599,6 +615,7 @@ The field values contain raw information extracted from the users' machines. Acc
 \caption{Addon with different versions in user record}
 \label{fig:addons_versioning_snapshot_desc}
 \end{figure}
+\fi
 
 Finally, we note another characteristic of interest of this data.  Since the addons lists per user are updated on a daily basis, it is straightforward to derive addon changes (installation and removal) over time. However, there is no tracking of user actions or other programs' actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, or by a hostile/protecting program. 
 
@@ -629,14 +646,12 @@ We compactly represent the dataset using a relational graph. Each node in the gr
 \renewcommand{\labelitemi}{$\bullet$} 
 \item {\it User} - this node represents user by his unique user id. 
 \item {\it Addon} - this node represents unique addons, where an {\it addon} is defined as the concatenation of all its attributes, namely, file path, addon name and description.
-\item {\it Term} 
+\item {\it Terms} - We process the text string that comprises addon names into individual terms, having distinct terms represented as graph nodes. 
 \end{itemize}
-Bi-directional edges link node pairs.
-Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
-First, we represent the structural relationship between each user and the {\it addons} installed on his PC via the {\it has-addon} edge type, originating at the {\it user} node. An inverse relation over the same edge exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
-In addition, as described above, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, over the same egde, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation. 
+Bi-directional edges link node pairs that are directly related according to the input data records. Table \ref{tab:graph_structure} details the types of edges, representing a variety inter-object relationships, which are derived directly from the relational database structure.
 
-In order to enable assessment of textual similarity for record co-reference purposes, we further processed the fields describing each addon mention into a Bag-Of-Words. These words are represented using {\it terms}, a lexical object type. Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.
+First, we represent the structural relationship between each user and the {\it addons} installed on his PC via an {\it has-addon} edge type, originating at the {\it user} node. An inverse relation over the same edge exists between each {\it addon} node and the {\it users} that it is known to be installed at. 
+In addition, each {\it addon} is associated with its bag of terms representation. Concretely, each {\it addon} node is linked to {\it terms} contained in either of its attributes over the {\it has-term} relation. Inversely, each {\it term} node is linked to {\it addons} that contain it over {\it has-term$^{-1}$} relation. 
 
 \iffalse
 \begin{small}
@@ -811,13 +826,23 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
-Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplfy the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path information is available, where the respective node name is\\
+Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplify the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path information is available, and the respective node name is\\
 `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it addon} \\
-node is mapped to {\it term} nodes. The term nodes start with the prefix "w-"., for example, the {\it addon} node in the figure is linked to six term nodes, which resulted from the string tokenization and processing. 
-  
-The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it addons} named `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same addon. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two addons are linked over a path that traverses the "Skype" term node.
+node is mapped to {\it term} nodes: the fields describing the addon record are split into a Bag-Of-Words, having the unique words mape to {\it term} nodes. The term nodes start with the prefix "w-"., for example, the {\it addon} node in the figure is linked to six term nodes, which resulted from the string tokenization and processing.
 
-\begin{figure}[!htbp]
+\iffalse
+[EINAT: Commenting this out for now, as this paragraph needs to be removed someplace else]
+Given a text string, it is first tokenized, and text cleanup and normalization steps are then applied. For example, we remove non-ASCII characters that serve for encryption purposes on the server. Likewise,  Windows shortcuts for full paths are removed (e.g., VIDEOD$\sim$1 and VIDEOD$\sim$2 and VIDEOD denote the same path), and so forth. Finally, all strings are transformed to lower case, since capitalization is meaningless in this context. Overall, 167,512 unique terms were identified in this process.  
+\fi
+  
+The graph representation of this data has several advantages. Besides being compact, we expect similar entities to reside in high proximity to each other in the graph. For example, the {\it addons} `Skype-US' and `Skype-UK' have non-identical names; however, they share the term `skype', indicating in this case that they are variants of the same addon. Figure \ref{fig:terms_layer} illustrates how the representation of the full strings results in isolated graph segments, whereas adding the terms nodes yields a connected graph, where the two addons are linked over a path that traverses the "Skype" term node.
+  
+Figure \ref{fig:sample_graph2} shows another toy graph, demonstrating inter-user similarity as manifested by the connectivity patterns in the graph. This graph includes eight users, named shortly as `u-1',`u-2', etc. The eight users are similar in that they share some of the addons, `a-1',`a-2', etc. In addition, while {\it addons} `a-3' and `a-2' are distinct from each other, these addon nodes are connected via the common term node `w-skype'. 
+
+We will apply random walks in the graph in order to assess similarity, or relatedness, between users and addons.  
+
+%\begin{figure}[!htbp]
+\begin{figure}[t]
 \centering
 \begin{subfigure}[b]{0.49\textwidth}
 	\centering
@@ -834,21 +859,17 @@ The graph representation of this data has several advantages. Besides being comp
 	\caption{Terms layer example}
 	\label{fig:terms_layer}
 \end{figure}
-  
-Figure \ref{fig:sample_graph2} shows another toy graph, demonstrating another aspect of inter-user similarity reflected as connectivity patterns in the graph. This graph includes eight users named shortly as `u-1',`u-2', etc. The eight users are similar in that they share some of the addons, `a-1',`a-2', etc. In addition, while {\it addons} `a-3' and `a-2' are distinct from each other, these addon nodes are connected via the common term node `w-skype'. 
-
-We will apply random walks in the graph in order to assess similarity, or relatedness, between users and addons.  
 
 \subsection{Data statistics}
 
 The experimental dataset corresponds to a graph that consists of 1,331,814 nodes and 18,552,622
-edges. The node and edges types are described at \autoref{tab:node_types}
+edges. Detailed statistics are provided in \autoref{tab:node_types}
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
 \hline
-\textbf{Type}                                                                & \textbf{Number} \\ \hline
+\textbf{Type}                                                                & \textbf{Number of nodes} \\ \hline
 all nodes                                                                    & 1331814         \\ \hline
 user nodes                                                                   & 907844          \\ \hline
 addon nodes                                                                  & 256458          \\ \hline
@@ -858,9 +879,11 @@ all edges                                                                    & 1
 \begin{tabular}[c]{@{}l@{}}user-addon edge\\   (bi-directional)\end{tabular} & 17612159        \\ \hline
 \begin{tabular}[c]{@{}l@{}}addon-term edge\\   (bi-directional)\end{tabular} & 940463          \\ \hline
 \end{tabular}
-\caption{Nodes and Edges}
+\caption{Graph statistics}
 \label{tab:node_types}
 \end{table}
+
+Finally,~\autoref{fig:zipf} describes the distribution of addons, users and terms vs. their node outdegree on a log-log-scale. As shown, addons (Figure~\ref{fig:zipf}(a)) are distributed according to Zipf law, with a roughly linear curve: a few of the addons are highly prevalent, having a large outdegree as they link to many users, where a `long tail' of addons are each observed at a small number of users. 
 
 \begin{figure}[t]
 \centering
@@ -956,7 +979,7 @@ Webpages.
 The PageRank algorithm described computes universal node importance,
 or `centrality' scores, solely based on the network structure, that is,
 ignoring user preferences. The {\it Personalized PageRank} variant, as in
-\citep{richardson2001intelligent}, biases the random walk model to
+\cite{richardson2001intelligent}, biases the random walk model to
 generate rankings that reflect user preferences. This bias is modeled by
 a small and natural adaptation of the PageRank random walk formula--instead of assuming that the user would reset to any graph node uniformly, reflecting equal interest in all Webpages, it is assumed that only a subset of the graph nodes are of interest to the user. The reset operation is accordingly directed to those nodes, having the random walk scheme modified as follows:
 \begin{equation}
@@ -967,7 +990,7 @@ Here, $V_u$ denotes a distribution of interest over the graph nodes,
 e.g., nodes that are known to be of interest to user $u$. In general, $V_u$ corresponds to a {\it query} modeled as a distribution over the graph node. The
 Personalized PageRank scores, derived from the corresponding stationary state distribution, reflect structural similarity, or relevancy, of the graph nodes with respect to the query. 
 
-It has been shown that the Personalized PageRank score for a target node $z$ and a query node $x$ equals a summation over all of the connecting paths between $x$ and $z$ (including cyclic paths, and paths that cross $z$ multiple times), where paths are weighted by their probability \citep{jeh2003scaling},\citep{fogaras2004towards}. In words, the graph walk
+It has been shown that the Personalized PageRank score for a target node $z$ and a query node $x$ equals a summation over all of the connecting paths between $x$ and $z$ (including cyclic paths, and paths that cross $z$ multiple times), where paths are weighted by their probability \citep{jeh2003scaling,fogaras2004towards}. In words, the graph walk
 distributes probability mass from the start distribution over nodes through edges in the graph---incidentally accumulating evidence of similarity over multiple connecting paths. Due to the reset probability $(1- \alpha)$, the paths between $x$ and a destination node $z$ are weighted exponentially lower as their length
 increases. This implies that graph nodes that are connected to the query nodes over shorter connecting paths, as well as over multiple connecting paths, are considered more important with respect to $V_u$. Fortunately, the computation for a multi-node query is no more difficult than for a single-node query due to the
 \textit{Linearity Theorem} \citep{jeh2003scaling}, as the Personalized
@@ -1026,7 +1049,7 @@ may be called a topic-specific PageRank vector.  \fi
 
 \iffalse
 Personalized PageRank is an extension of the famous PageRank algorithm
-\cite{page1999pagerank}, both of which are based on a random surfer
+\citep{page1999pagerank}, both of which are based on a random surfer
 model. To understand Personalized PageRank, we first review the
 original PageRank briefly. A random surfer starts at any node on the
 graph. At each step, with a probability of 1\−$\alpha$ the surfer moves
@@ -1175,7 +1198,7 @@ ten.\\ \textcolor{green}{\textit{Sela: Example:}}
 We experiment in this work with PPR and alternative methods. All methods generate scores, which are processed into output ranked lists of addons. Accordingly, we assess performance using a set of metrics designed for the evaluation of ranked lists. Note that in our settings, there is a single known `correct' answer. The various metrics assess the extent to which each method places the relevant response at the top of the ranked list, on average across all queries. A short description of the evaluation measures follows.
 
 \paragraph{Recall at rank k}
-This is the fraction of queries, for which the relevant response is included among the top $k$ ranks (see also \citep{minkov2010improving}). The non-interpolated recall at rank k of a given ranked list is defined to be 0 for each rank $k = 0, ..., k_{i−1}$, where $k_i$ is the rank that holds the single correct entry, and 1 for ranks $k\geq k_i$. The (mean) recall at rank $k$ averages the recall
+This is the fraction of queries, for which the relevant response is included among the top $k$ ranks (see also \cite{minkov2010improving}). The non-interpolated recall at rank k of a given ranked list is defined to be 0 for each rank $k = 0, ..., k_{i−1}$, where $k_i$ is the rank that holds the single correct entry, and 1 for ranks $k\geq k_i$. The (mean) recall at rank $k$ averages the recall
 scores at each rank $k$ across the rankings of multiple queries. Thus, mean recall is in the range [0,1] at each rank $k$. For example, recall at rank
 3= 0.7, means that in 70\% of the queries, the correct answer appears among the
 top 3 ranks of the retrieved lists.
@@ -1202,7 +1225,7 @@ by design choices concerning the graph structure and the random walk scheme. Thi
 \subsection{Methods}
 \label{sec:methods}
 
-In the experiments, we make use of a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package \citep{lehoucq1998arpack}, a numerical software library written in FORTRAN 77, for solving large scale eigenvalue problems (often used in analyzing large social networks, e.g., \citep{ting2004minig}). ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
+In the experiments, we make use of a fast and memory-efficient implementation of Personalized PageRank included in {\it igraph} \citep{igraph}, a software library optimized for the processing large-scale graphs. {\it iGraph} uses internally the ARPACK package \citep{lehoucq1998arpack}, a numerical software library written in FORTRAN 77, for solving large scale eigenvalue problems (often used in analyzing large social networks, e.g., \cite{ting2004minig}). ARPACK applies an implicitly restarted Arnoldi method to calculate the random walk scores. \iffalse igraph expects as an adjacency list of numeric
 vertices. We have created a unique number for each node and store the
 mapping to an actual node name in a separate file.\fi The computation of PPR scores is highly efficient, as the whole graph is loaded into memory. \iffalse, we had to be very careful with memory
 management (every very small leak would cause a serious global memory
@@ -1230,7 +1253,7 @@ The proposed graph schema is simple and natural in the sense that it directly re
 
 \subsubsection{Pruning of high-degree nodes} 
 
-Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. High density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. According to \citep{sarkar2010fast}, removing high degree nodes should only result in only a small approximation error, see also \autoref{sec:ppr_high_degree}. Indeed, the graph walk schema implies that the probability mass assigned to high-degree nodes be distributed among a large variety of neighboring nodes in the random walk process, thus having little impact on the final rankings. At the same time, high-degree nodes receive a large number of contributions from their neighbors, and are therefore highly-ranked. Removing these nodes from the graph will increase the `visibility' of lower-degree nodes. Finally, we wish that the Personalized PageRank scores reflect node relevancy with respect to the input query vector, representing the user's ecosystem. Influential high degree nodes may weaken the association with the query seeds.
+Several previous works have indicated that high-degree nodes in the graph have negative impact on the PPR similarity measure \citep{tong2006center}. High density of the transition matrix results in increased computation cost of the random walk process. Further, the random walk process exhibits some bias in favor of high degree nodes. According to \cite{sarkar2010fast}, removing high degree nodes should only result in only a small approximation error, see also \autoref{sec:ppr_high_degree}. Indeed, the graph walk schema implies that the probability mass assigned to high-degree nodes be distributed among a large variety of neighboring nodes in the random walk process, thus having little impact on the final rankings. At the same time, high-degree nodes receive a large number of contributions from their neighbors, and are therefore highly-ranked. Removing these nodes from the graph will increase the `visibility' of lower-degree nodes. Finally, we wish that the Personalized PageRank scores reflect node relevancy with respect to the input query vector, representing the user's ecosystem. Influential high degree nodes may weaken the association with the query seeds.
 
 We report experimental results using the full graph, as well as using a graph variant, in which high-degree nodes are removed. We define high-degree nodes in this work as nodes for which the out-degree is equal or higher than 500. As shown in Figure~\ref{fig:zipf}, only a fraction of the most popular {\it addons} have a greater out-degree and are pruned in this fashion. Note that given a graph variant in which these `popular' nodes have been removed, the sampled queries no long include popular {\it addons}, but rather contain only lower-frequency addons, which are more challenging to predict. We believe that this latter configuration is of special interest for recommendation purposes; if one wishes to recommend addons to users, focusing on non-trivial items can be highly beneficial.
 
@@ -1373,7 +1396,7 @@ Overall, we conclude from these experiments that there indeed exists high struct
 
 As discusses earlier, we include {\it terms} in the graph, so as to model term-based lexical similarity between co-referent (or generally similar) addon descriptions. We are thus interested in evaluating the contribution of term modeling to our task. Table~\ref{tab:full} shows the results of all methods using the same underlying graph, where {\it term} nodes have been removed. The resulting graph is therefore bi-partite, including {\it user} and {\it addon} nodes only, connected over bi-directional {\it has-addon} edges. Again, we evaluate two graph configurations--with and without the high-degree {\it addon} nodes. According to the reported results, term modeling has positive yet low impact on the produced rankings. Overall, MRR performance is slightly higher with terms included when popular nodes are present (.151 vs. .146), partly due to better recall  performance at the top 10 ranks (.354 vs. .350). Using the graph without the popular nodes, recall performance at the top 10 ranks also improves (.405 vs. .401), and recall-at-rank-50 and recall-at-rank-100 show similar improvement; MRR is roughly comparable in this case (.320 vs. .322). Overall, while positive, the contribution of {\it term} modeling is modest. 
 
-We were interested in investigating the reasons for the relatively low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it addons} and {\it term} nodes only (i.e., without {\it users}); ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it addon} nodes are typically connected to a large number of {\it user} nodes, and only to a very few {\it term} nodes. To illustrate this, consider some arbitrary addon for which a short description is available. This {\it addon} node will link to a few (roughly, three) {\it term} nodes, and a medium user set neighborhood (roughly, 200) {\it user} nodes. Since the random walk distributes probability mass uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes (see~\citep{minkov2010improving}) will increase their traversal probability and increase their impact. We leave the exploration of this possibility for future work.
+We were interested in investigating the reasons for the relatively low impact of {\it term} nodes in the graph. In another experiment we used a graph variant that included {\it addons} and {\it term} nodes only (i.e., without {\it users}); ranking performance using this graph variant was poor. We suggest the following explanation for these results. In the graph, {\it addon} nodes are typically connected to a large number of {\it user} nodes, and only to a very few {\it term} nodes. To illustrate this, consider some arbitrary addon for which a short description is available. This {\it addon} node will link to a few (roughly, three) {\it term} nodes, and a medium user set neighborhood (roughly, 200) {\it user} nodes. Since the random walk distributes probability mass uniformly over all neighbors of a source node, the total probability flow through the {\it term} nodes is relatively small. Assigning higher weight to links leading to {\it term} nodes (see~\cite{minkov2010improving}) will increase their traversal probability and increase their impact. We leave the exploration of this possibility for future work.
 
 \subsubsection{Sensitivity to path information}
 
