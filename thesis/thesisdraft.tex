@@ -197,6 +197,9 @@ issues. Finally, descriptions of the prediction models that we plan to use, and 
 
 The Web browser is a complex ecosystem: addons are being installed and uninstalled on user machines, new addons are introduced by software companies over time, become prevalent and fade. As new addon companies are fighting their way to recognition, old players are gaining or losing their power. Addon companies establish partnerships or compete with each other (and sometimes both), etc.---all this happening on a daily basis, and mostly hidden from the user, who is not always aware of the vibrant life of his/her Web browser. These developments occur solely within the digital media---addons being software executables---however, each addon has a lifecycle full of events, and a spectrum of interactions with its environment, such that the Web browser's ecosystem strikingly resembles the biological ecosystem of the nature.
 
+We define a ''browser ecosystem'', similarly to \citep{christensen2014analysis}, as: the interaction of a set of actors on top of a web browsers platform.
+Actors may be addons or addons manufacturing companies. Similarly to biological ecosystem, the addons are interconnected with each other and their environment (users and browsers).
+
 To illustrate this analogy, let us say that an addon manufacturer corresponds to a biological \emph{species}. An instance of an addon developed by company $c$ can be viewed as a \emph{subject} of species $c$ that coexists in the browser ecosystem with other subjects of the same or different species. We assume that, in many cases, addons that coexist in the Web browser do not affect each other. This assumption is no more than a modeling simplification, because---apparently---all addons seek the user's attention which is a limited (natural) resource; nevertheless, the influence of one addon on another is often negligible and can be ignored. However, some subjects (that is, addons) may stay in a close interaction with each other: they live in \emph{symbiosis} or they \emph{clash} with each other in the Web browser.
 
 Two subjects are in a symbiotic relationship when at least one of them benefits from the other. Consider, for example, situations when some addons get installed on a user's machine during (or following) the installation process of another addon. This can be considered a direct benefit to the addon, as it would not have reached the machine if the other addon was not installed on it. Often, addons of the same company are being installed together. Moreover, in some cases, two addon companies have a distribution agreement such as one company provides means for installing the other company's addons. Generally speaking, the symbiosis relationship can occur on a local level (between two addons installed on the same machine), as well as on a global level (e.g., two addon companies engaged in a partnership).
@@ -280,6 +283,24 @@ In what follows, we first discuss related work (Chapter~\ref{sec:related}). Chap
 \chapter{Related Research}
 \label{sec:related}
 
+\section{The Software Ecosystem}
+\label{sec:bio_ecosystem}
+In this work, we study the \emph{software ecosystem} of the Web browser, while drawing a strong analogy between addon behavior in the browser and organism behavior in a biological ecosystem. Specifically, we study the resilience effect in the browser's ``habitat'' and symbiotic / clash relations between addon ``species''. While no prior work was done on the ecosystem of the addons in the Web browser, some previous work noticed the connection between the developments in the software industry and the biological processes. All related work is strictly theoretical -- no empirical studies have been done so far, to the best of our knowledge.
+
+%The term ``business ecosystem'' was coined by James F.~Moore in \cite{mooer1996death}, this type of ecosystem involves individuals and organizations with whom the business interact or as \cite{jansen2013defining} put it "economic community supported by a foundation of interacting organizations and individuals: the organisms of the business world."
+
+\cite{jansen2013defining} conducted a thorough survey of known software ecosystems and came up with a classification model for software ecosystems. [RON: one more sentence about the classification.In general show that thay are talking about companies and not ...] They briefly mention the analogy to biological ecosystems but claim that the most significant difference between the two is that the software species can "consciously" decide to exit the ecosystem as opposes to the species in biological ecosystem. In the browser addon ecosystem, however, this difference appears to be less significant, as addons never leave the system ``in their own will''. The addons behave strikingly similar to the biological species: once they are in the ecosystem, only external factors limit their survival. \cite{jansen2013defining} compare the user to ``plankton'' in a biological ecosystem, as the ecosystem members are ``fed'' by the users. In our view, the users are rather ecosystem connectivity elements, as described in \cite{stanford1993ecosystem}: [RON: a little more of explanation on the last paper here]
+
+In \cite{dhungana2010software}, the authors provide a theoretical analysis of the connection between software and biological ecosystems and find similar mechanisms that exist in both ecosystem. The software ecosystem is defined there on the level of the entire software industry, as large software companies outlining the competitive landscape of the indistry. The authors notice that ecosystem resilience is due to its biodiversity, which makes it possible for species to compensate each other. They define a sustainable software ecosystem as the one that can survive a significant habitat changes coming from competitors. We also observe that the phenomena of the ecosystem resilience takes place in the browser/addons ecosystems and as such follows the sustainable software ecosystem definition.
+
+The symbiotic and clash relations described in \autoref{chap:Symbiosis} correspond to business relations between addon manufacturing companies. The analogy between biological and business ecosystems has been drawn by many researches, as described in \cite{jansen2013defining}, while we are not referring to the addons ecosystem as business ecosystem, one may find many common points (e.g. competition and business relations between companies). [RON: connect to above]
+
+The connection between computer science and biology is a topic of ongoing research. As a recent example, \cite{rasmus2015computational} found a connection between the complexity theory and ecological processes.
+
+\subsection{Ecological Resilience}
+\label{sec:eco_resilience}
+
+Ecosystem resilience was first introduced by \citep{holling1973resilience} and was defined as the amount of disturbance that an ecosystem could withstand without changing self-organized processes and structures. Later it was also defined as the return time to a stable state after a perturbation [RON: CITE]. Ecological memory is a component of ecosystem resilience that plays a major role in reorganization of ecosystems. Ecological memory is described in \citep{schaefer2009alien}, as \emph{``After a community or ecosystem is lost, it may leave behind an ecological memory. The site history, soil properties, spores, seeds, stem fragments, mycorrizae, species, populations, and other remnants may influence the composition of the replacement community or ecosystem to varying degrees. The remnants may also hold the site to a trajectory that has implications for ecological restoration''.} \citep{gunderson2000ecological} relate to ecological memory as one of major components of ecosystem resiliance. Ecological memory consists of internal and external components. The internal component consist of renmants of species in the immediate area, while the external component consists of the surrounding areas. Ecological memory includes the biological legacies within habitat and the genetic composition of populations.
 
 \section{User Profiling}
 \label{sec:user_profilingg}
@@ -461,7 +482,9 @@ Link prediction in complex networks attracts an increasing attention of the comp
 networks, where nodes represent subjects, and links denote the relations or interactions between the nodes. \textit{Link Prediction} aims to estimate the likelihood of the existence of a link between two nodes, based on observed links and the attributes of nodes \citep{getoor2005link}.
 %Social network analysis comes up against the missing data problem \citep{kossinets2006effects}, where link prediction algorithms play an important role. In addition, the underlying data in biological and social networks may contain inaccurate information, resulting in spurious links \citep{von2002comparative, butts2003network}. Link prediction algorithms can be applied in identifying these spurious links \citep{guimera2009missing}.
 Besides helping in analyzing networks with missing data, the link prediction algorithms can be used to predict the links that may appear in networks. For example, in online social networks, very likely but not yet existent links can be recommended as promising friendships. Similar techniques can be applied to evaluate the evolving mechanism for given networks or finding a missing user addon.
-A learning algorithm for link prediction, presented in \cite{lao2010relational}, uses random walk processes to define a distribution, rather than some other forms of logical inference, such as belief propagation.It was shown that also personalized PageRank can be used to approximate belief propagation on certain graphs \citep{cohen2010graph}. \textit{Link analysis} exploits the relationship between resources through links and is a well-researched area \citep{henzinger2000link}. In \cite{gyongyi2006link}, link analysis link analysis has been suggested to help fight web spam. The authors of this paper introduced a measurement called \textit{Spam Mass}. It indicates how much PageRank a page accumulates through being linked to by spam pages. The spam mass is computed  by combining two PageRank scores: the regular PageRank score and a biased one. The biased one is computed by assigning a higher weight to a large group of known reputable pages. The absolute mass estimation can then be calculated by taking the difference between the regular PageRank score and the biased one. The relative spam mass estimation becomes the ratio between the absolute estimation and the total PageRank score. This estimation is similar to our estimations that we use in \autoref{chap:Symbiosis}, when looking for sharp changes between companies PageRank scores.
+A learning algorithm for link prediction, presented in \cite{lao2010relational}, uses random walk processes to define a distribution, rather than some other forms of logical inference, such as belief propagation. It was also shown that personalized PageRank can be used to approximate belief propagation on certain graphs \citep{cohen2010graph}. \textit{Link analysis} exploits the relationship between resources through links and is a well-researched area \citep{henzinger2000link}. 
+
+In \cite{gyongyi2006link}, link analysis link analysis has been suggested to help fight web spam. The authors of this paper introduced a measurement called \textit{Spam Mass}. It indicates how much PageRank a page accumulates through being linked to by spam pages. The spam mass is computed  by combining two PageRank scores: the regular PageRank score and a biased one. The biased one is computed by assigning a higher weight to a large group of known reputable pages. The absolute mass estimation can then be calculated by taking the difference between the regular PageRank score and the biased one. The relative spam mass estimation becomes the ratio between the absolute estimation and the total PageRank score. This estimation is similar to our estimations that we use in \autoref{chap:Symbiosis}, when looking for sharp changes between companies PageRank scores.
 
 \section{Clustering}
 
@@ -526,23 +549,11 @@ in \cite{bekkerman2007multi}.
 \chapter{Data}
 \label{sec:datasets}
 
-%\section{Data}
-\iffalse
-\textcolor{green}{\textit{Einat:
-Describe here the data that we've used. How it was extracted, relevant
-statistics (how many users, time span, distribution of addon nunber
-per user).. the types of information that we have about each addon
-(addon name, description.. -- include examples). Discuss the issue of
-versioning -- there are often small lexical differences between
-addons, in particular, in version number, but essentially it is the
-same addon.}}
-\fi
-
-We experiment in this study with large-scale authentic data.  The data includes the record  of browser addons installed on real users' computers over time, collected on a daily basis from users all over the world who have agreed to anonymously share this information. It is a common scenario that users maintain multiple browsers; for example, Microsoft Internet Explorer is pre-installed on Windows machines, and many users install an additional browser. The database is comprehensive, in the sense that it lists the addons installed in multiple browsers, including Microsoft Internet Explorer, Mozilla Firefox and Google Chrome. This large-scale data is stored using a relational database on the cloud at Amazon RDS. As of 2013, the dataset included over 1.5 billion records. 
+We experiment in this study with large-scale authentic data.  The data includes the record  of browser addons installed on real users' computers over time, collected from users all over the world who have agreed to anonymously share this information. It is a common scenario that users maintain multiple browsers; for example, Microsoft Internet Explorer is pre-installed on Windows machines, and many users install an additional browser. The database is comprehensive, in the sense that it lists the addons installed in multiple browsers, including Microsoft Internet Explorer, Mozilla Firefox and Google Chrome. This large-scale data is stored using a relational database on the cloud at Amazon RDS. As of 2013, the dataset included over 1.5 billion records. 
 
 \section{Experimental data}
 
-For the purposes of this study, we consider a subset of the data, including all of the records collected over a  period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--addon associations. It consists of 907,844 unique users and 256,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of addons installed per user machine. As shown,  most users have between 9 and 21 addons installed on their PCs.
+For the purposes of this study, we consider a subset of the data, including all of the records collected over a period of two months between Aug. 1 2013--Oct, 1, 2013. Overall, this dataset contains 17,942,715 daily user--addon associations. It consists of 907,844 unique users and 256,458 unique addons. Figure \ref{fig:user_addons_histogram} shows the distribution of the number of addons installed per user machine. As shown,  most users have between 9 and 21 addons installed on their PCs.
 
 \iffalse
 \begin{figure}[t]
@@ -617,7 +628,10 @@ The field values contain raw information extracted from the users' machines. Acc
 \end{figure}
 \fi
 
+\iffalse
 Finally, we note another characteristic of interest of this data.  Since the addons lists per user are updated on a daily basis, it is straightforward to derive addon changes (installation and removal) over time. However, there is no tracking of user actions or other programs' actions. It is therefore impossible to determine which party initiated any of the status changes; for example, we cannot infer whether a particular addon has been removed (or installed) by the user or automatically, or by a hostile/protecting program. 
+\fi
+Finally, we note another characteristic of this data. Although, the addons lists per user are updated on a daily basis, we store only the first occurrence of addons per user. Meaning, we store unique users with a unique set of addons.
 
 \section{Graph representation}
 \label{tab:graph_representation}
@@ -870,14 +884,14 @@ edges. Detailed statistics are provided in \autoref{tab:node_types}
 \begin{tabular}{|l|l|}
 \hline
 \textbf{Type}                                                                & \textbf{Number of nodes} \\ \hline
-all nodes                                                                    & 1331814         \\ \hline
-user nodes                                                                   & 907844          \\ \hline
-addon nodes                                                                  & 256458          \\ \hline
-term nodes                                                                   & 167512          \\ \hline
-high degree nodes (\textgreater500)                                          & 2430            \\ \hline
-all edges                                                                    & 18552622        \\ \hline
-\begin{tabular}[c]{@{}l@{}}user-addon edge\\   (bi-directional)\end{tabular} & 17612159        \\ \hline
-\begin{tabular}[c]{@{}l@{}}addon-term edge\\   (bi-directional)\end{tabular} & 940463          \\ \hline
+all nodes                                                                    & 1,331,814         \\ \hline
+user nodes                                                                   & 907,844          \\ \hline
+addon nodes                                                                  & 256,458          \\ \hline
+term nodes                                                                   & 167,512          \\ \hline
+high degree nodes (\textgreater500)                                          & 2,430            \\ \hline
+all edges                                                                    & 18,552,622        \\ \hline
+\begin{tabular}[c]{@{}l@{}}user-addon edge\\   (bi-directional)\end{tabular} & 17,612,159        \\ \hline
+\begin{tabular}[c]{@{}l@{}}addon-term edge\\   (bi-directional)\end{tabular} & 940,463          \\ \hline
 \end{tabular}
 \caption{Graph statistics}
 \label{tab:node_types}
@@ -1732,7 +1746,12 @@ We estimate the ``importance'' of company $c$ by its \emph{expected} PR score, w
 $$
 S_c = \sum_{a_i \in \mathbf{A}_c} p_i s_i
 $$
-where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Specifically, we define $p_i = freq(a_i) / freq(\mathbf{A}_c)$, where $freq(a_i)$ is the frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed; $freq(\mathbf{A}_c)$ is the sum of frequencies of all $c$'s addons.
+where $p_i$ is the probability of drawing addon $a_i$ from all $c$'s addons. Specifically, we define $p_i = freq(a_i) / freq(\mathbf{A}_c)$, where $freq(a_i)$ is the frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed; $freq(\mathbf{A}_c)$ is the sum of frequencies of all $c$'s addons.\\
+$S_c = \sum_{a_i \in \mathbf{A}_c} p_i s_i$ : expected score $S_c$ (of the company $c$)\\
+$s_i$ : PR score of addon $a_i$ that belongs to the set $\mathbf{A}_c$ of all addons of $c$\\
+$p_i = freq(a_i) / freq(\mathbf{A}_c)$ : the probability of drawing addon $a_i$ from all $c$'s addons\\
+$freq(a_i)$ : frequency of addon $a_i$ in terms of the number of user browsers on which $a_i$ is installed\\
+$freq(\mathbf{A}_c)$ : sum of frequencies of all $c$'s addons.
 
 %After running the PPR with all addons of a company $C_q$ in the query, we first remove $C_q$'s addons from the ranked list in order to make a clean experiment: depending on the number of addons $C_q$ is maintaining --- and their original PR ranks --- their PPR ranks can significantly affect the change in ranks of other addons. We want to eliminate this influence and focus on the rank change of the other companies' addons. That is why we remove $C_q$'s addons both from the PPR ranked list and from the original PR ranked list.
 
