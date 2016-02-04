@@ -248,7 +248,7 @@ We address these questions empirically using authentic data, describing user-add
 
 Consider a habitat observed on an individual user's machine---it can be represented as a star-shaped graph, in which a node corresponding to the \emph{user} is linked to nodes corresponding to the \emph{addons} that reside on the user's machine; {\it addon} nodes may be further linked to descriptive {\it terms}. Multiple habitats can be naturally represented in a joint graph, e.g., each {\it addon} is directly connected to all {\it users} that have it installed. The graph representation is compact, supporting efficient processing of large-scale data. In particular, graph-based measures can be employed that assess structural inter-node relatedness. 
 
-We evaluate the first research question stated above through the task of {\it missing addon prediction.} To the extent that there exists a stable state of the habitat, we expect to be able to infer an addon that is "missing" from that ecosystem. In our experiments, we simulate such a setting by artificially disassociating a randomly sampled addon from its habitat. Given the identity of the remaining species in the habitat (i.e., the other addons that exist on that user's machine), we wish to recover the missing addon. If addons do not compose a resilient habitat, then one would expect `one-fit-all' methods (e.g., preference of popular addons) to perform best on this task on average. Otherwise, addon prediction would benefit from the modeling of  structural similarities among habitats in the general population. In our experiments, we use \emph{Personalized PageRank (PPR)}, a random-walk based similarity metric, to predict the missing addon. We show that PPR dramatically outperforms habitat-agnostic methods such as popularity-guided prediction, or non-personalized PageRank centrality scoring. Our answer to the first research question is therefore a definitive yes.
+We evaluate the first research question stated above through the task of {\it missing addon prediction.} To the extent that there exists a stable state of the habitat, we expect to be able to infer an addon that is "missing" from that ecosystem. In our experiments, we simulate such a setting by artificially disassociating a randomly sampled addon from its habitat. Given the identity of the remaining species in the habitat (i.e., the other addons that exist on that user's machine), we wish to recover the missing addon. If addons do not compose a resilient habitat, then one would expect `one-fit-all' methods (e.g., preference of popular addons) to perform best on this task on average. Otherwise, addon prediction would benefit from the modeling of  structural similarities among habitats in the general population. In our experiments, we use \emph{Personalized PageRank (PPR)}, a random-walk based similarity metric, to predict the missing addon. The missing addon is calculated out of more than 250,000 possible addons. We show that PPR dramatically outperforms habitat-agnostic methods such as popularity-guided prediction, or non-personalized PageRank centrality scoring. Our answer to the first research question is therefore a definitive yes.
 
 The subsequent problems abstract the user data into insights at the addon company level. We identify which addon companies tend to benefit from each other or clash with each other. Both analyses (user-level and company-level) can be used for prediction purposes. Given a specific collection of addons of a specific user, we can make a prediction which addons might get installed on this user's machine. Given two addon companies that were identified as partnering / competing with each other, we can predict their behavior in the future as the addon industry evolves.
 
@@ -678,6 +678,15 @@ In addition, each {\it addon} is associated with its bag of terms representation
 \end{enumerate}
 \end{small}
 
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[width=\textwidth]{figures/symbolic_graph.pdf}
+\end{small}
+\caption{Distribution of number of addons per user}
+\label{fig:user_addons_histogram}
+\end{figure}
+
 \begin{itemize}
 \renewcommand{\labelitemi}{$\bullet$} 
 \item "w-c:"
@@ -840,6 +849,17 @@ We have added additional steps for data cleanup.
     \label{fig:sample_graph2}
   \end{figure}
   
+\begin{figure}[t]
+\centering
+\begin{small}
+\includegraphics[width=\textwidth]{figures/symbolic_graph.pdf}
+\end{small}
+\caption{User-Addons-Terms connections}
+\label{fig:symbolic_graph}
+\end{figure}
+
+\autoref{fig:symbolic_graph} illustrates the connections between users, addons and corresponding term nodes. In \autoref{fig:symbolic_graph} two user nodes are connected with bi-directional edges to its addons, the addon nodes, in turn, are connected to the corresponding term nodes. For example, user-2 is connected to two addons - Babylon-addon and Conduit-toolbar. These addon nodes are connected to their corresponding term nodes - Babylon, Conduit, addon and toolbar.
+  
 Figure \ref{fig:sample_graph} illustrates the graph generation process. Given a user, it is represented by a graph node, where we append the prefix "u-" to the user ID in order to simplify the identification of node types; for example, in the figure, the user is denoted by the node `u-00004c1b-8ffc-4ca4-b406-a27e436fa34a'. For each user, we iterate over all its addons, where each unique addon is mapped to a graph node. {\it Addon} graph node names include the prefix "a-", followed by a concatenation of the addon attribute values; in the figure, a single addon exists, for which only path information is available, and the respective node name is\\
 `a-c:/programfiles(x86)/skype/toolbars/internetexplorer/skypeieplugin.dll'. Finally, each {\it addon} \\
 node is mapped to {\it term} nodes: the fields describing the addon record are split into a Bag-Of-Words, having the unique words mape to {\it term} nodes. The term nodes start with the prefix "w-"., for example, the {\it addon} node in the figure is linked to six term nodes, which resulted from the string tokenization and processing.
@@ -873,6 +893,7 @@ We will apply random walks in the graph in order to assess similarity, or relate
 	\caption{Terms layer example}
 	\label{fig:terms_layer}
 \end{figure}
+
 
 \subsection{Data statistics}
 
@@ -1366,7 +1387,7 @@ As shown in Figure~\ref{fig:main}(a), PPR rankings yield consistently preferable
 
 \begin{table}[p]
 \centering
-\caption{Standard deviation and Standard error of the Mean}
+\caption{All experiments conducted on full/without popular nodes graph}
 \label{tab:full}
 \begin{tabular}{llcccc} \hline
 	& & Recall-at-10 & Recall-at-50 & Recall-at-100 & MRR	 \\
@@ -1385,7 +1406,7 @@ Full path & POP & 0.065 (0.005) & 0.177 (0.010) & 0.224 (0.010) & 0.023 (0.004) 
 & PR & 0.185 (0.013) & 0.409 (0.016) & 0.538 (0.012) & 0.079 (0.010) \\
 & PPR	& 0.294	(0.017) & 0.592	(0.015) & 0.708	(0.010) & 0.150	(0.008) \\
 \hline
-\multicolumn{6}{c}{SANS POPULAR NODES} \\
+\multicolumn{6}{c}{WITHOUT POPULAR NODES} \\
 \hline
  & POP & 	0.006 (0.004) & 0.034 (0.009) & 0.065 (0.009) & 0.004 (0.001) \\
  & PR	& 0.001	(0.000) & 0.009	(0.009) & 0.022	(0.003) & 0.001	(0.000) \\
@@ -1402,7 +1423,7 @@ Full path & POP & 	0.004 (0.003) & 0.019 (0.006) & 0.033 (0.007) & 0.003 (0.001)
 \end{tabular}
 \end{table}
 
-Next, we discuss our results using the graph variant, in which highly-connected addons have been removed (Sec.~\ref{sec:design}). This scenario is more challenging, as the queried disassociated {\it addons} are not highly-frequent in the global population. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular addons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This indicates that popular nodes occupying the top ranks `push' relevant yet less popular answer nodes to lower positions of the ranked list.  
+Next, we discuss our results using the graph variant, in which highly-connected addons have been removed (Sec.~\ref{sec:design}). This scenario is more challenging, as the queried disassociated {\it addons} are not highly-frequent in the global population. The results of this experiment are shown in Figure~\ref{fig:main}(b) and Table~\ref{tab:full}. As one might expect, performance of the popularity-based baseline plummet in this case; recall-at-10 is nearly zero (.006) and recall-at-100 is also very low (.065). Using PageRank gives comparable (and slightly lower) results compared with the popularity rankings. In contrast, PPR maintains its effectiveness: recall-at-rank-10 is .405 using PPR, reaching .491 and .527 at ranks 50 and 100, respectively. While recovering links to non-popular addons may be harder, recall performance at the top 10 ranks is in fact better using PPR in this scenario (.405 vs. .354). This indicates that popular nodes occupying the top ranks `push' relevant yet less popular answer nodes to lower positions of the ranked list. The results of recall@K are significant since the missing addon is predicted out of 256,458 unique addons and having recall-at-rank-10 over .40 is outstanding.
 
 Overall, we conclude from these experiments that there indeed exists high structural semantic association between the addons installed on one's machine, to the extent that it is possible to predict one of these addons if removed randomly. Personalized PageRank is shown to provide an effective mechanism for this task, as it evaluates nodes by their structural joint similarity to the set of addons present at the specified environment. 
 
