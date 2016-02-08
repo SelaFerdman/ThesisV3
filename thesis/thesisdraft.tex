@@ -285,22 +285,28 @@ In what follows, we first discuss related work (Chapter~\ref{sec:related}). Chap
 
 \section{The Software Ecosystem}
 \label{sec:bio_ecosystem}
-In this work, we study the \emph{software ecosystem} of the Web browser, while drawing a strong analogy between addon behavior in the browser and organism behavior in a biological ecosystem. Specifically, we study the resilience effect in the browser's ``habitat'' and symbiotic / clash relations between addon ``species''. While no prior work was done on the ecosystem of the addons in the Web browser, some previous work noticed the connection between the developments in the software industry and the biological processes. All related work is strictly theoretical -- no empirical studies have been done so far, to the best of our knowledge.
+In this work, we study the \emph{software ecosystem} \citep{messerschmitt2005software} ,of the Web browser, while drawing a strong analogy between addon behavior in the browser and organism behavior in a biological ecosystem. Specifically, we study the resilience effect \citep{holling1973resilience} in the browser's ``habitat'' and symbiotic / clash relations between addon ``species''. While no prior work was done on the ecosystem of the addons in the Web browser, some previous work \citep{jansen2013defining,dhungana2010software}, noticed the connection between the developments in the software industry and the biological processes. All related work is strictly theoretical -- no empirical studies have been done so far, to the best of our knowledge.
+In this article, we analyse software ecosystem of Web browsers and browser addons. To our knowledge there is no previous work on software ecosystems for browser addons or even for Web browsers as such, apart from this research. However, there is significant work on modelling and designing ecosystems.	 
+
+We define a ''Web browser ecosystem'', similarly to \cite{christensen2014analysis,jansen2009sense}, as the interaction of a set of actors in a Web browser platform.
+Web browser ecosystem has two scope levels.
+While other works \cite{boucharas2009formalizing, jansen2013defining} are separating the ecosystems into three scope levels, we choose to define  two levels of Web browser ecosystem. \emph{Micro} level - an internal view of addons at their local environment, the actors are addons and their relationships. \emph{Macro} level - an external view of addons as entities defined by their manufacture companies, the actors are the companies and their relationships.
+Similarly to biological ecosystems, the addons interact with each other and with their environment (browsers and browser users).
+Actors may be addons or addon manufacturing companies.
 
 %The term ``business ecosystem'' was coined by James F.~Moore in \cite{mooer1996death}, this type of ecosystem involves individuals and organizations with whom the business interact or as \cite{jansen2013defining} put it "economic community supported by a foundation of interacting organizations and individuals: the organisms of the business world."
 
-\cite{jansen2013defining} conducted a thorough survey of known software ecosystems and came up with a classification model for software ecosystems. [RON: one more sentence about the classification.In general show that thay are talking about companies and not ...] They briefly mention the analogy to biological ecosystems but claim that the most significant difference between the two is that the software species can "consciously" decide to exit the ecosystem as opposes to the species in biological ecosystem. In the browser addon ecosystem, however, this difference appears to be less significant, as addons never leave the system ``in their own will''. The addons behave strikingly similar to the biological species: once they are in the ecosystem, only external factors limit their survival. \cite{jansen2013defining} compare the user to ``plankton'' in a biological ecosystem, as the ecosystem members are ``fed'' by the users. In our view, the users are rather ecosystem connectivity elements, as described in \cite{stanford1993ecosystem}: [RON: a little more of explanation on the last paper here]
+\cite{jansen2013defining} conducted a thorough survey of known software ecosystems and came up with a classification model for software ecosystems. The authors looked at 19 cases of software ecosystems, like Ubuntu, Eclipse and other organization level ecosystems. They briefly mention the analogy to biological ecosystems but claim that the most significant difference between the two is that the software species can "consciously" decide to exit the ecosystem as opposes to the species in biological ecosystem. In the browser addon ecosystem, however, this difference appears to be less significant, as addons never leave the system ``in their own will''. The addons behave strikingly similar to the biological species: once they are in the ecosystem, only external factors limit their survival. \cite{jansen2013defining} compare the user to ``plankton'' in a biological ecosystem, as the ecosystem members are ``fed'' by the users. In our view, the users are rather ecosystem connectivity elements, as described in \cite{stanford1993ecosystem}.
 
-In \cite{dhungana2010software}, the authors provide a theoretical analysis of the connection between software and biological ecosystems and find similar mechanisms that exist in both ecosystem. The software ecosystem is defined there on the level of the entire software industry, as large software companies outlining the competitive landscape of the indistry. The authors notice that ecosystem resilience is due to its biodiversity, which makes it possible for species to compensate each other. They define a sustainable software ecosystem as the one that can survive a significant habitat changes coming from competitors. We also observe that the phenomena of the ecosystem resilience takes place in the browser/addons ecosystems and as such follows the sustainable software ecosystem definition.
+\cite{dhungana2010software} provide a theoretical analysis of the connection between software and biological ecosystems and find similar mechanisms that exist in both ecosystem. The software ecosystem is defined there on the level of the entire software industry, as large software companies outlining the competitive landscape of the indistry. The authors notice that ecosystem resilience is due to its biodiversity, which makes it possible for species to compensate each other. They define a sustainable software ecosystem as the one that can survive a significant habitat changes coming from competitors. We also observe that the phenomena of the ecosystem resilience takes place in the browser/addons ecosystems and as such follows the sustainable software ecosystem definition.
 
-The symbiotic and clash relations described in \autoref{chap:Symbiosis} correspond to business relations between addon manufacturing companies. The analogy between biological and business ecosystems has been drawn by many researches, as described in \cite{jansen2013defining}, while we are not referring to the addons ecosystem as business ecosystem, one may find many common points (e.g. competition and business relations between companies). [RON: connect to above]
+The symbiotic and clash relations described in \autoref{chap:Symbiosis} correspond to business relations between addon manufacturing companies. The analogy between biological and business ecosystems has been drawn by many researches, as described in \cite{jansen2013defining}, while we are not referring to the addons ecosystem as business ecosystem, one may find many common points (e.g. competition and business relations between companies).
 
 The connection between computer science and biology is a topic of ongoing research. As a recent example, \cite{rasmus2015computational} found a connection between the complexity theory and ecological processes.
-
 \subsection{Ecological Resilience}
 \label{sec:eco_resilience}
 
-Ecosystem resilience was first introduced by \citep{holling1973resilience} and was defined as the amount of disturbance that an ecosystem could withstand without changing self-organized processes and structures. Later it was also defined as the return time to a stable state after a perturbation [RON: CITE]. Ecological memory is a component of ecosystem resilience that plays a major role in reorganization of ecosystems. Ecological memory is described in \citep{schaefer2009alien}, as \emph{``After a community or ecosystem is lost, it may leave behind an ecological memory. The site history, soil properties, spores, seeds, stem fragments, mycorrizae, species, populations, and other remnants may influence the composition of the replacement community or ecosystem to varying degrees. The remnants may also hold the site to a trajectory that has implications for ecological restoration''.} \citep{gunderson2000ecological} relate to ecological memory as one of major components of ecosystem resiliance. Ecological memory consists of internal and external components. The internal component consist of renmants of species in the immediate area, while the external component consists of the surrounding areas. Ecological memory includes the biological legacies within habitat and the genetic composition of populations.
+Ecosystem resilience was first introduced by \citep{holling1973resilience} and was defined as the amount of disturbance that an ecosystem could withstand without changing self-organized processes and structures. Later it was also defined as the return time to a stable state after a perturbation in \cite{tilman1996biodiversity}. Ecological memory is a component of ecosystem resilience that plays a major role in reorganization of ecosystems. Ecological memory is described in \citep{schaefer2009alien}, as \emph{``After a community or ecosystem is lost, it may leave behind an ecological memory. The site history, soil properties, spores, seeds, stem fragments, mycorrizae, species, populations, and other remnants may influence the composition of the replacement community or ecosystem to varying degrees. The remnants may also hold the site to a trajectory that has implications for ecological restoration''.} \citep{gunderson2000ecological} relate to ecological memory as one of major components of ecosystem resiliance. Ecological memory consists of internal and external components. The internal component consist of renmants of species in the immediate area, while the external component consists of the surrounding areas. Ecological memory includes the biological legacies within habitat and the genetic composition of populations.
 
 \section{User Profiling}
 \label{sec:user_profilingg}
@@ -1788,25 +1794,25 @@ $freq(\mathbf{A}_c)$ : sum of frequencies of all $c$'s addons.
 \begin{tabular}{@{}lllll@{}}
 \toprule
  & \textbf{\#addons} &  \textbf{Expected PageRank score} &  \\ \midrule
-\textbf{ASK} & 229038 & 3.930655827 \\
-\textbf{AVG} & 131337 & 1.458013998 \\
-\textbf{Avira} & 10624 & 0.165028673 \\
-\textbf{Babylon} & 191386 & 9.064855902 \\
-\textbf{Blekko} & 14381 & 0.147602568 \\
-\textbf{Conduit} & 21671 & 0.188175047 \\
-\textbf{Google} & 187455 & 3.327125475 \\
-\textbf{iMesh} & 23954 & 1.439130402 \\
-\textbf{IncrediMail} & 76198 & 2.375531006 \\
-\textbf{Hotspot} & 54675 & 1.053817694 \\
-\textbf{Kaspersky} & 47793 & 0.849401341 \\
+\textbf{ASK} & 229,038 & 3.930655827 \\
+\textbf{AVG} & 131,337 & 1.458013998 \\
+\textbf{Avira} & 10,624 & 0.165028673 \\
+\textbf{Babylon} & 191,386 & 9.064855902 \\
+\textbf{Blekko} & 14,381 & 0.147602568 \\
+\textbf{Conduit} & 21,671 & 0.188175047 \\
+\textbf{Google} & 187,455 & 3.327125475 \\
+\textbf{iMesh} & 23,954 & 1.439130402 \\
+\textbf{IncrediMail} & 76,198 & 2.375531006 \\
+\textbf{Hotspot} & 54,675 & 1.053817694 \\
+\textbf{Kaspersky} & 47,793 & 0.849401341 \\
 \textbf{Montiera} & 809 & 0.017516 \\
-\textbf{Norton} & 53826 & 1.078813495 \\
-\textbf{Searchtoolbar} & 5169 & 0.043609128 \\
-\textbf{Softonic} & 29410 & 0.274080246 \\
-\textbf{SspeedBit} & 484676 & 7.540780048 \\
-\textbf{SweetIM} & 84871 & 1.445297894 \\
-\textbf{TrendMicro} & 10325 & 0.155437633 \\
-\textbf{ZoneAlarm} & 3597 & 0.030242981 \\ \hline
+\textbf{Norton} & 53,826 & 1.078813495 \\
+\textbf{Searchtoolbar} & 5,169 & 0.043609128 \\
+\textbf{Softonic} & 29,410 & 0.274080246 \\
+\textbf{SspeedBit} & 48,4676 & 7.540780048 \\
+\textbf{SweetIM} & 84,871 & 1.445297894 \\
+\textbf{TrendMicro} & 10,325 & 0.155437633 \\
+\textbf{ZoneAlarm} & 3,597 & 0.030242981 \\ \hline
 \end{tabular}
 %}
 \end{table}
